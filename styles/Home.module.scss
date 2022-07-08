@@ -1,7 +1,9 @@
+$ltest-brown: #cec0b3;
+
 .container {
   padding: 2rem;
 	height: 70vh;
-	background-color: #a38b77;
+	background-color: $ltest-brown;
 }
 
 .wrapper {
