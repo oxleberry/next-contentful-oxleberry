@@ -1,29 +1,79 @@
-html,
+@use './utilities/mixins' as *;
+@use './utilities/colors';
+@use './utilities/fonts';
+
+
+// ==========================
+// Update REM units to base 10
+// instead of 16 (easier to work with)
+html {
+	font-size: 62.5%; // updates the base to 10
+}
+
 body {
-	padding: 0;
-	margin: 0;
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+	font-size: 1.6rem; // will set to 16px;
 }
+// ==========================
 
-a {
-	color: inherit;
-	text-decoration: none;
-}
 
+/* General */
 * {
 	box-sizing: border-box;
 }
 
-nav {
-	display: flex;
-	justify-content: center;
+html,
+body {
+	margin: 0;
+	padding: 0;
+	background-color: colors.$bg;
+	color: colors.$text;
+	font-family: fonts.$sans-serif;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	color: colors.$text;
+	font-family: fonts.$sans-serif;
+}
+
+p, li {
+	font-family: fonts.$sans-serif;
+	font-size: 1.6rem;
+	color: colors.$text;
+}
+
+a {
+	font-family: fonts.$sans-serif;
+	font-size: 1.6rem;
+	// color: inherit;
+	color: colors.$link;
+	text-decoration: none;
+
+	&:hover {
+		color: colors.$link-hover;
+	}
+}
+
+ul {
+	padding-left: 0;
+}
+
+li {
+	list-style: none;
+}
+
+hr {
+	border-top: 1px solid colors.$lt-brown;
+	opacity: 0.3;
+}
+
+
+// ==========================
+/* Temp Styles */
 h1, p {
 	text-align: center;
 }
 
-nav a {
-	padding: 30px;
+h1 {
+	font-size: 4rem;
 }
+// ==========================

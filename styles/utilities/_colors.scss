@@ -1,0 +1,34 @@
+
+/* Site Colors */
+$brown: #512b05;
+$mid-brown: #7e5d3c;
+$lt-brown: #a38b77;
+$ltest-brown: #cec0b3;
+$pale-brown: #e9e4de;
+$dk-gry: #28303d;
+$off-white: #f3f3f3;
+$white: #fff;
+$black: #000;
+$text-brown: #8e7763; // alt for creative cards
+
+
+/* Background */
+$bg: $pale-brown;
+
+
+/* Text Colors */
+$text: $brown;
+$link-hover: $brown;
+$link: $lt-brown;
+
+
+/* Main Navbar Colors */
+$navbar: $brown;
+$nav-link: rgba(255, 255, 255, 0.5);
+$nav-link-hover: rgba(255, 255, 255, 1);
+$nav-active: $white;
+
+
+/* Social Icons */
+$social-icon: rgba(143, 116, 93, .6);  // mid brown (transparent)
+$social-icon-hover: rgba(143, 116, 93, 1);  // mid brown
