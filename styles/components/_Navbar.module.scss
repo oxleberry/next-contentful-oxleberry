@@ -1,0 +1,96 @@
+
+@use '../utilities/mixins' as *;
+@use '../utilities/colors';
+@use '../utilities/fonts';
+
+
+/* Variables */
+$mobile-nav-count: 5;  // helper for building out mobile nav li
+$mobile-nav-z-index: (1: 5, 2: 4, 3: 3, 4: 2, 5: 1);
+
+
+// /* Shared Navbar */
+.desktop-nav,
+.mobile-nav {
+	a {
+		color: colors.$nav-link;
+		font-family: fonts.$subtitle;
+		display: flex;
+		align-items: center;
+		height: 100%;
+
+		&:hover {
+			color: colors.$nav-link-hover;
+		}
+
+		&.active {
+			color: colors.$nav-active;
+		}
+	}
+}
+
+/* Desktop Navbar */
+.desktop-nav-full-width-wrapper {
+	position: fixed;
+	background-color: colors.$navbar;
+	width: 100%;
+	height: var(--desktop-nav-height);
+	z-index: 100;
+
+	@include bp(m) {
+		display: none;
+	}
+
+	&.hidden {
+		display: none;
+	}
+
+	.desktop-nav {
+		padding: 6px 48px;
+		position: fixed;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		height: var(--desktop-nav-height);
+		max-width: 1400px;
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		ul {
+			display: flex;
+			align-items: center;
+			height: 100%;
+		}
+
+		li {
+			display: flex;
+			align-items: center;
+			height: 100%;
+		}
+
+		picture, img {
+			height: 100%;
+		}
+
+		.left-nav a {
+			padding-right: 44px;
+		}
+
+		.right-nav a {
+			height: 100%;
+		}
+	}
+
+	// Oxleberry Logo
+	.left-nav li:first-of-type a {
+		font-family: fonts.$nav-logo;
+		font-size: 32px;
+		font-weight: 600;
+
+		&:hover {
+			color: colors.$nav-link;
+		}
+	}
+}
