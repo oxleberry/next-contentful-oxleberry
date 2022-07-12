@@ -1,0 +1,41 @@
+
+@use '../utilities/mixins' as *;
+@use '../utilities/colors';
+// @use '../utilities/fonts';
+
+
+.footer {
+	padding-top: 10px;
+	padding-bottom: 18px;
+
+	svg {
+		width: 30px;
+	}
+
+	ul {
+		margin: 0 auto;
+		width: 500px;
+		display: flex;
+		justify-content: center;
+
+		@include bp(l) {
+			width: 100%;
+		}
+	}
+
+	li {
+		padding: 16px 28px 9px;
+
+		@include bp(l) {
+			padding: 16px 18px 10px;
+		}
+	}
+
+	.copyright {
+		color: colors.$lt-brown;
+		opacity: 0.8;
+		text-align: center;
+		display: inline-block;
+		width: 100%;
+	}
+}
