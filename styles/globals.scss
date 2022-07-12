@@ -73,13 +73,21 @@ hr {
 
 
 // ==========================
-/* Temp Styles */
-h1, p {
-	text-align: center;
+/* Backboard Styles */
+// ==========================
+
+.full-backboard {
+	background-color: colors.$backboard-bg;
+	min-height: calc(100vh - 110px); // accounting for the footer's height
+	padding-top: var(--desktop-nav-height);
 }
 
-h1 {
-	margin-top: var(--desktop-nav-height);
-	font-size: 4rem;
+.page-backboard {
+	background-color: colors.$backboard-bg;
+	max-width: 1000px;
+	min-height: calc(100vh - 110px); // accounting for the footer's height
+	padding: 4rem;
+	padding-top: calc(var(--desktop-nav-height) + 4rem);
+	box-shadow: 0px 20px 60px -20px rgba(0, 0, 0, 0.4);
+	margin: 0 auto;
 }
-// ==========================

@@ -1,17 +1,17 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.scss'
+import Header from '../components/Header'
 
 export default function Home() {
-  return (
+	return (
 		<div>
 			<Head>
 				<title>Oxleberry | Home</title>
 				<meta name="description" content="The works of creative coder Sharon Paz."/>
 			</Head>
-			<main className={styles.container}>
-				<h1>Coding Project Highlights</h1>
+			<main className="page-backboard">
+				<Header headline="Coding Project Highlights"></Header>
 			</main>
 		</div>
-  )
+	)
 }
