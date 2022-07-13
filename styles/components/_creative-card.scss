@@ -1,0 +1,86 @@
+@use '../utilities/mixins' as *;
+@use '../utilities/colors';
+// @use '../utilities/fonts';
+
+
+.creative-cards {
+	margin-top: 22px;
+	margin-bottom: 10px;
+	column-count: 4;
+	gap: 2rem;
+
+	@include bp(l) {
+		column-count: 3;
+	}
+
+	@include bp(m) {
+		column-count: 2;
+	}
+
+	@include bp(s) {
+		column-count: 1;
+		text-align: center;
+	}
+
+	.card-item {
+		width: 100%;
+		display: inline-block;
+		border-radius: 16px;
+		margin-top: 2rem;
+
+		@include bp(s) {
+			max-width: 280px;
+			text-align: center;
+		}
+
+		.img-block {
+			background: colors.$lt-brown;
+			border: 2px solid colors.$lt-brown;
+			border-bottom: 0px;
+			border-radius: 12px 12px 0px 0px;
+			margin-bottom: -1px;
+
+			picture {
+				width: 100%;
+				display: block;
+			}
+
+			img {
+				width: 100%;
+				border-radius: 10px 10px 0px 0px;
+			}
+		}
+
+		.text-block {
+			background: #fff;
+			background-image: linear-gradient(#fff, #ddd);
+			border: 2px solid colors.$lt-brown;
+			border-radius: 0px 0px 8px 8px;
+			padding: 10px 10px 10px;
+			margin-top: -3px;
+
+			h2 {
+				margin: 0 0;
+				color: colors.$lt-brown;
+				font-size: 16px;
+				line-height: 18px;
+				font-weight: 400;
+				text-align: center;
+			}
+		}
+
+
+		// Card Animation
+		&.bounce:hover {
+			opacity: 1;
+			animation: bounce 500ms ease-in-out 1 forwards;
+		}
+
+		@keyframes bounce {
+			0% { transform: translateY(0px) translateX(0px); }
+			60% { transform: translateY(-8px) translateX(0px); }
+			90% { transform: translateY(2px) translateX(0px); }
+			100% { transform: translateY(0px) translateX(0px); }
+		}
+	}
+}

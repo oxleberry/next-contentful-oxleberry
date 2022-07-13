@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
+import CreativeCard from '../../components/CreativeCard';
 
 const CreativeCoding = () => {
 	return (
@@ -10,8 +11,16 @@ const CreativeCoding = () => {
 			</Head>
 			<main className="page-backboard">
 				<Header headline="Creative Coding Projects"></Header>
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab cum culpa mollitia corporis corrupti nisi deleniti exercitationem ad deserunt! Pariatur sed perferendis repellat nisi labore odio? Non aliquam illo quidem.</p>
-				<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ab cum culpa mollitia corporis corrupti nisi deleniti exercitationem ad deserunt! Pariatur sed perferendis repellat nisi labore odio? Non aliquam illo quidem.</p>
+				<section className="creative-cards">
+					<CreativeCard />
+					<CreativeCard />
+					<CreativeCard />
+					<CreativeCard />
+					<CreativeCard />
+					<CreativeCard />
+					<CreativeCard />
+					<CreativeCard />
+				</section>
 			</main>
 		</div>
 	);
