@@ -1,8 +1,29 @@
 import Head from 'next/head'
+import { createClient } from 'contentful'
+
 import Header from '../../components/Header'
 import CreativeCard from '../../components/CreativeCard';
 
-const CreativeCoding = () => {
+
+export async function getStaticProps() {
+	const client = createClient({
+		space: process.env.CONTENTFUL_SPACE_ID,
+		accessToken: process.env.CONTENTFUL_ACCESS_KEY
+	})
+
+	const res = await client.getEntries({ content_type: 'creativeCard' })
+
+	return {
+		props: {
+			creativeCards: res.items
+		}
+	}
+}
+
+export default function CreativeCoding({ creativeCards }) {
+
+	console.log(creativeCards)
+
 	return (
 		<div>
 			<Head>
@@ -25,5 +46,3 @@ const CreativeCoding = () => {
 		</div>
 	);
 }
-
-export default CreativeCoding;
