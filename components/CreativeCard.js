@@ -9,11 +9,12 @@ const CreativeCard = ({ card }) => {
 			<Link href={url ? `${url}` : `/creative-coding/${slug}`}>
 				<a>
 					<div className="img-block">
-						<Image src="/creative-card/all-stars.png" width={300} height={324} alt="Oxle Miitomo"/>
-						{/* <picture>
-							<source srcSet="/creative-card/all-stars.png" />
-							<img src="/creative-card/all-stars.png" alt="Oxle Miitomo" />
-						</picture> */}
+						<Image
+							src={`https:${image.fields.file.url}`}
+							width={image.fields.file.details.image.width}
+							height={image.fields.file.details.image.height}
+							alt={image.fields.description}
+						/>
 					</div>
 					<div className="text-block">
 						<h2 dangerouslySetInnerHTML={{__html: title}} />

@@ -22,7 +22,6 @@ export async function getStaticProps() {
 
 export default function CreativeCoding({ creativeCards }) {
 
-	// console.log(creativeCards)
 	creativeCards.sort((a, b) => a.fields.order - b.fields.order);
 
 	return (
