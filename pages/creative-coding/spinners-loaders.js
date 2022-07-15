@@ -1,7 +1,37 @@
 import Head from 'next/head'
 
+import { createClient } from 'contentful'
 
-const SpinnersLoaders = () => {
+
+export async function getStaticProps() {
+	const client = createClient({
+		space: process.env.CONTENTFUL_SPACE_ID,
+		accessToken: process.env.CONTENTFUL_ACCESS_KEY
+	});
+
+	const res = await client.getEntries({ content_type: 'spinnersLoaders' });
+
+	return {
+		props: {
+			spinnersLoaders: res.items
+		}
+	}
+}
+
+
+export default function SpinnersLoaders({ spinnersLoaders }) {
+	console.log(spinnersLoaders)
+
+	function getBgImage(id) {
+		let bgImage;
+		spinnersLoaders.forEach((item) => {
+			if (item.fields.id === id) {
+				bgImage = {backgroundImage: `url(https:${item.fields.image.fields.file.url})`};
+			}
+		});
+		return bgImage;
+	}
+
 	return (
 		<>
 			<Head>
@@ -33,11 +63,15 @@ const SpinnersLoaders = () => {
 					<h2> LOADERS </h2>
 					<div className="load-cont">
 						<div className="loader2">
-							<div className="tree-monster"></div>
+							<div className="tree-monster">
+								<span className="image" style={getBgImage('tree-monster')}></span>
+							</div>
 						</div>
 						<br />
 						<div className="loader3">
-							<div className="ghost"></div>
+							<div className="ghost">
+								<span className="image" style={getBgImage('ghost')}></span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -45,5 +79,3 @@ const SpinnersLoaders = () => {
 		</>
 	);
 }
-
-export default SpinnersLoaders;

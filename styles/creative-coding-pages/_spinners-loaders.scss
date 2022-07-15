@@ -382,7 +382,6 @@
 	}
 
 
-
 	/*  LOADERS ALL */
 	.loaders-wrapper {
 		margin: auto;
@@ -422,14 +421,15 @@
 			margin-left: -54px;
 			-webkit-animation: moveSideways 6s 6s linear 4;
 							animation: moveSideways 6s 6s linear 4;
-		}
-		.tree-monster:after {
-			content: '';
-			display: block;
-			height: 100%;
-			width: 100%;
-			background: url(/creative-coding-pages/spinners-loaders/tree-monster.png) center no-repeat;
-			background-size: 50px;
+
+			.image {
+				display: inline-block;
+				height: 100%;
+				width: 100%;
+				background-size: 50px;
+				background-repeat: no-repeat;
+				background-position: center;
+			}
 		}
 		@-webkit-keyframes moveSideways {
 			0%, 100% {
@@ -461,14 +461,15 @@
 												up-N-downGhost 2s 7s linear 12;
 							animation: sidewaysGhost 6s 7s linear 4,
 												up-N-downGhost 2s 7s linear 12;
-		}
-		.ghost:after {
-			content: '';
-			display: block;
-			height: 100%;
-			width: 100%;
-			background: url(/creative-coding-pages/spinners-loaders/ghost_RU.png) center no-repeat;
-			background-size: 40px;
+
+			.image {
+				display: inline-block;
+				height: 100%;
+				width: 100%;
+				background-size: 40px;
+				background-repeat: no-repeat;
+				background-position: center;
+			}
 		}
 		@-webkit-keyframes sidewaysGhost {
 			0%, 100% {
