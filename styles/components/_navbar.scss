@@ -1,4 +1,3 @@
-
 @use '../utilities/mixins' as *;
 @use '../utilities/colors';
 @use '../utilities/fonts';
@@ -81,16 +80,16 @@ $mobile-nav-z-index: (1: 5, 2: 4, 3: 3, 4: 2, 5: 1);
 		.right-nav a {
 			height: 100%;
 		}
-	}
 
-	// Oxleberry Logo
-	.left-nav li:first-of-type a {
-		font-family: fonts.$nav-logo;
-		font-size: 32px;
-		font-weight: 600;
+		// Oxleberry Logo
+		.left-nav li:first-of-type a {
+			font-family: fonts.$nav-logo;
+			font-size: 32px;
+			font-weight: 600;
 
-		&:hover {
-			color: colors.$nav-link;
+			&:hover {
+				color: colors.$nav-link;
+			}
 		}
 	}
 }
