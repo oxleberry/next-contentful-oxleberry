@@ -1,13 +1,9 @@
-
 // @use '../utilities/mixins' as *;
 @use '../utilities/colors';
 @use '../utilities/fonts';
 
 
 .header {
-	text-align: center;
-	text-transform: uppercase;
-
 	h1 {
 		font-family: fonts.$title;
 		font-size: 4rem;
@@ -19,5 +15,16 @@
 		padding: 20px 20px 16px;
 		margin: 0;
 		min-height: 80px;
+		text-align: center;
+		text-transform: uppercase;
+	}
+}
+
+.alt-header {
+	h1 {
+		font-family: fonts.$alt-title;
+		font-size: 3.8rem;
+		text-align: center;
+		text-transform: uppercase;
 	}
 }

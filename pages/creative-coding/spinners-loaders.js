@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Header from '../../components/Header'
 
 import { createClient } from 'contentful'
 
@@ -20,8 +21,6 @@ export async function getStaticProps() {
 
 
 export default function SpinnersLoaders({ spinnersLoaders }) {
-	console.log(spinnersLoaders)
-
 	function getBgImage(id) {
 		let bgImage;
 		spinnersLoaders.forEach((item) => {
@@ -39,7 +38,7 @@ export default function SpinnersLoaders({ spinnersLoaders }) {
 				<meta name="description" content="Oxleberry Spinners and Loaders using CSS animations." />
 			</Head>
 			<main className="full-backboard spinners-loaders-page">
-				<h1>Spinners and Loaders</h1>
+				<Header headline="Spinners and Loaders" alt={true}></Header>
 				<div className="spinners-wrapper">
 					<h2> SPINNERS </h2>
 					<div className="spinner sp-spinner1">

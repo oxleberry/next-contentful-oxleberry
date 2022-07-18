@@ -1,7 +1,7 @@
-import styles from '/styles/components/_Header.module.scss'
 
-const Header = ({ headline }) => (
-	<header className={styles.header}>
+// alt is optional prop for sub-pages
+const Header = ({ headline, alt }) => (
+	<header className={alt ? 'alt-header' : 'header'}>
 		<h1>{headline}</h1>
 	</header>
 );
