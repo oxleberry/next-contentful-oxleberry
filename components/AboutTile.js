@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+{/* Rich Text does not support markdown or <br /> */}
+// import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+// Example of Use:
+{/* <div className="text-block">{documentToReactComponents(description)}</div> */}
 
 
 function AboutTile({ tile }) {
@@ -34,7 +37,7 @@ function AboutTile({ tile }) {
 						</div>
 					: null }
 					{description ?
-						<div className="text-block">{documentToReactComponents(description)}</div>
+						<div className="text-block" dangerouslySetInnerHTML={{__html: description}} />
 					: null }
 				</a>
 			</Link>
@@ -53,7 +56,7 @@ function AboutTile({ tile }) {
 				</div>
 			: null }
 			{description ?
-				<div className="text-block">{documentToReactComponents(description)}</div>
+				<div className="text-block" dangerouslySetInnerHTML={{__html: description}} />
 			: null }
 		</div>
 	);
