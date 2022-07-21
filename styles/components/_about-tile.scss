@@ -79,6 +79,43 @@
 		}
 
 
+		// Scroll Gradient
+		&.scroll-gradient-container .img-block {
+			// Scroll Gradient Colors
+			$dk-orange: #c67702;
+			$dk-gold: #e09a00;
+			$gold: #ffc33e;
+			$highlight-gold: #f4d48e;
+
+			height: 212px;
+			background-color: black;
+			border-radius: 5px;
+
+			.scroll-gradient-mask {
+				align-self: center;
+				width: 150px;
+				height: 150px;
+				background-color: $dk-orange;
+				background-image: linear-gradient(112deg,
+					transparent 10%,
+					$dk-gold 35%,
+					$gold 45%,
+					$highlight-gold,
+					$gold 60%,
+					$dk-gold 70%,
+					transparent 80%);
+				background-size: 300% 100%;
+				background-position: 0% 50%;
+				background-repeat: no-repeat;
+				-webkit-mask-repeat: no-repeat;
+				-webkit-mask-size: contain;
+				mask-size: contain;
+				mask-position: center;
+				mask-repeat: no-repeat;
+			}
+		}
+
+
 		// Text Block
 		.text-block {
 			background: #fff;
