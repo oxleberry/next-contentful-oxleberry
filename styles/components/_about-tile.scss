@@ -142,5 +142,18 @@
 			border-radius: 0px 0px 6px 6px;
 			margin-top: -4px;
 		}
+
+
+		// Social List in AboutSocialTile Component
+		ul.social-list {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 8px;
+
+			li {
+				width: 24px;
+				margin: 0 8px;
+			}
+		}
 	}
 }

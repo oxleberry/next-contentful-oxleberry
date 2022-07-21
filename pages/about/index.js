@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { createClient } from 'contentful'
 
 import Header from '../../components/Header'
-import AboutTile from '../../components/AboutTile'
+import { AboutTile, AboutSocialTile } from '../../components/AboutTile'
 
 
 export async function getStaticProps() {
@@ -21,7 +21,6 @@ export async function getStaticProps() {
 }
 
 export default function About({ aboutTiles }) {
-	// console.log(aboutTiles)
 	aboutTiles.sort((a, b) => a.fields.order - b.fields.order);
 
 	return (
@@ -36,6 +35,7 @@ export default function About({ aboutTiles }) {
 					{aboutTiles.map((tile) => {
 						return <AboutTile key={tile.sys.id} tile={tile}/>
 					})}
+					<AboutSocialTile />
 				</section>
 			</main>
 		</>
