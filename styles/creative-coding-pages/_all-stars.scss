@@ -1,0 +1,265 @@
+// @use '../utilities/mixins' as *;
+// @use '../utilities/colors';
+@use '../utilities/fonts';
+
+.all-stars-page {
+	text-align: center;
+	padding-bottom: 8rem;
+
+	.intro {
+		padding-top: 4rem;
+	}
+
+	.alt-header {
+		display: inline-block;
+		padding: 0px 40px;
+
+		h1 {
+			text-transform: uppercase;
+			color: rgba(0, 0, 0, 0.6);
+			font-family: fonts.$title;
+			font-size: 3.8rem;
+		}
+	}
+	.star-large {
+		height: 30px;
+	}
+	.star-small {
+		height: 20px;
+	}
+
+
+	.title {
+		border-radius: 15px 15px 0px 0px;
+		background: #e1f4ec;
+	}
+	.stripeC:last-child {
+		height: 42px;
+	}
+
+	/*highlights the ALL STAR tab triggered by the reset button */
+	.highlight {
+		background: #f5f7b9;
+		border-radius: 15px 15px 0px 0px;
+	}
+
+	/*drop down menu flip down animation*/
+	.miitomos-container > ul {
+		list-style: none;
+		padding: 0;
+		margin: 0 3px 20px;
+		display: inline-block;
+		background: #e1f4ec;
+		border-radius: 15px 15px 0px 0px;
+	}
+	.miitomos-container > ul > li {
+		float: left;
+		width: 150px;
+		height: 42px;
+		line-height: 42px;
+		position: relative;
+		text-transform: uppercase;
+		font-size: 14px;
+		color: rgba(0, 0, 0, 0.6);
+		cursor: pointer;
+	}
+
+	.miitomos-container > ul> li:hover {
+		background: rgba(174, 232, 210, 1);
+		color: rgba(0, 0, 0, 0.8);
+		border-radius: 15px 15px 0px 0px;
+	}
+
+	ul.drop-menu {
+		position: absolute;
+		top: 100%;
+		left: 0%;
+		width: 100%;
+		padding: 0;
+	}
+	ul.drop-menu li {
+		list-style: none;
+		color: rgba(255, 255, 255, 0.7);
+		border-bottom: 1px solid #666;
+		height: 43px;
+	}
+	ul.drop-menu li:last-child {
+		border-bottom: none;
+	}
+
+	/* HIDES DROP DOWN IMAGES */
+	ul.drop-menu li {
+		display: none;
+	}
+	/* SHOW DROP DOWN IMAGES WHEN HOVERED*/
+	li:hover > ul.drop-menu li {
+		display: block;
+	}
+	/* REVEALS DROP DOWN IMAGES */
+	li> ul.drop-menu li.show {
+		display: block;
+	}
+
+
+	/* FLAP DOWN ANIMATION
+		DEV TIPS PRACTICE - MENU 4
+		https://codepen.io/devtips/pen/PzJqza
+	*/
+	li:hover > ul.drop-menu.flap-down-motion li {
+		opacity: 0;
+		transform-origin: top center;
+	}
+	li:hover > ul.drop-menu.flap-down-motion li:nth-child(1) {
+		-webkit-animation-name: flap-down-motion;
+						animation-name: flap-down-motion;
+		-webkit-animation-duration: 300ms;
+						animation-duration: 300ms;
+		-webkit-animation-delay: -150ms;
+						animation-delay: -150ms;
+		-webkit-animation-timing-function: ease-in-out;
+						animation-timing-function: ease-in-out;
+		-webkit-animation-fill-mode: forwards;
+						animation-fill-mode: forwards;
+	}
+	li:hover > ul.drop-menu.flap-down-motion li:nth-child(2) {
+		-webkit-animation-name: flap-down-motion;
+						animation-name: flap-down-motion;
+		-webkit-animation-duration: 300ms;
+						animation-duration: 300ms;
+		-webkit-animation-delay: 0ms;
+						animation-delay: 0ms;
+		-webkit-animation-timing-function: ease-in-out;
+						animation-timing-function: ease-in-out;
+		-webkit-animation-fill-mode: forwards;
+						animation-fill-mode: forwards;
+	}
+	li:hover > ul.drop-menu.flap-down-motion li:nth-child(3) {
+		-webkit-animation-name: flap-down-motion;
+						animation-name: flap-down-motion;
+		-webkit-animation-duration: 300ms;
+						animation-duration: 300ms;
+		-webkit-animation-delay: 150ms;
+						animation-delay: 150ms;
+		-webkit-animation-timing-function: ease-in-out;
+						animation-timing-function: ease-in-out;
+		-webkit-animation-fill-mode: forwards;
+						animation-fill-mode: forwards;
+	}
+	li:hover > ul.drop-menu.flap-down-motion li:nth-child(4) {
+		-webkit-animation-name: flap-down-motion;
+						animation-name: flap-down-motion;
+		-webkit-animation-duration: 300ms;
+						animation-duration: 300ms;
+		-webkit-animation-delay: 300ms;
+						animation-delay: 300ms;
+		-webkit-animation-timing-function: ease-in-out;
+						animation-timing-function: ease-in-out;
+		-webkit-animation-fill-mode: forwards;
+						animation-fill-mode: forwards;
+	}
+	li:hover > ul.drop-menu.flap-down-motion li:nth-child(5) {
+		-webkit-animation-name: flap-down-motion;
+						animation-name: flap-down-motion;
+		-webkit-animation-duration: 300ms;
+						animation-duration: 300ms;
+		-webkit-animation-delay: 450ms;
+						animation-delay: 450ms;
+		-webkit-animation-timing-function: ease-in-out;
+						animation-timing-function: ease-in-out;
+		-webkit-animation-fill-mode: forwards;
+						animation-fill-mode: forwards;
+	}
+	li:hover > ul.drop-menu.flap-down-motion li:nth-child(6) {
+		-webkit-animation-name: flap-down-motion;
+						animation-name: flap-down-motion;
+		-webkit-animation-duration: 300ms;
+						animation-duration: 300ms;
+		-webkit-animation-delay: 600ms;
+						animation-delay: 600ms;
+		-webkit-animation-timing-function: ease-in-out;
+						animation-timing-function: ease-in-out;
+		-webkit-animation-fill-mode: forwards;
+						animation-fill-mode: forwards;
+	}
+	@keyframes flap-down-motion {
+		0% {
+			opacity: 0;
+			-webkit-transform: rotateX(-90deg);
+							transform: rotateX(-90deg);
+		}
+		60%{
+			-webkit-transform: rotateX(60deg);
+							transform: rotateX(60deg);
+		}
+		100% {
+			opacity: 1;
+			-webkit-transform: rotateX(0deg);
+							transform: rotateX(0deg);
+		}
+	}
+	@-webkit-keyframes flap-down-motion {
+		0% {
+			opacity: 0;
+			-webkit-transform: rotateX(-90deg);
+							transform: rotateX(-90deg);
+		}
+		60%{
+			-webkit-transform: rotateX(60deg);
+							transform: rotateX(60deg);
+		}
+		100% {
+			opacity: 1;
+			-webkit-transform: rotateX(0deg);
+							transform: rotateX(0deg);
+		}
+	}
+
+	/*background grey stripes*/
+	.stripe-header {
+		height: 43px;
+		border-radius: 15px 15px 0px 0px;
+		margin-left: auto;
+		margin-right: auto;
+		background: #f7f7f7;
+	}
+	.stripe-light {
+		height: 43px;
+		background: #fcfcfc;
+	}
+	.stripe-dark {
+		height: 43px;
+		background: #f7f7f7;
+	}
+
+	// buttons
+	.btn {
+		margin-right: 5px;
+		margin-left: 5px;
+		padding: 5px 10px 5px 10px;
+		width: 88px;
+		display: inline-block;
+		color: rgba(0, 0, 0, 0.4);
+		background: rgba(201, 221, 214, 0.3);
+		text-align: right;
+		border: none;
+		border-radius: 5px;
+		font-size: 11px;
+	}
+	.btn:hover {
+		animation-name: fade-in;
+		animation-duration: 200ms;
+		animation-timing-function: ease-in-out;
+		animation-iteration-count: 1;
+		animation-fill-mode: forwards;
+	}
+	@keyframes fade-in {
+		0% {
+			background: rgba(201, 221, 214, 0.3);
+			color: rgba(0, 0, 0, 0.4);
+		}
+		100% {
+			background: rgba(203, 239, 222, 1);
+			color: rgba(0, 0, 0, 0.7);
+		}
+	}
+}
