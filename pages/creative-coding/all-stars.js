@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 
 
@@ -8,6 +9,10 @@ export default function AllStars() {
 	const numOfImageSlices = 6;
 	const numOfCharacters = 5;
 	const characterIds = ['a', 'b', 'c', 'd', 'e'];
+
+	// States =================
+	const [allStarId, setAllStarId] = useState([]);
+
 
 	const data = [
 		{
@@ -44,11 +49,33 @@ export default function AllStars() {
 
 
 	// Helper Function =================
+	function randomIdxGenerator(range) {
+		const randomNum = Math.floor(Math.random() * range);
+		return randomNum;
+	};
+
+	function createRandomAllStar() {
+		let tempIds = []
+		for (let i = 0; i < numOfImageSlices; i++) {
+			const randomIdx = randomIdxGenerator(numOfCharacters);
+			tempIds.push(characterIds[randomIdx])
+		}
+		console.log(tempIds);
+		setAllStarId(tempIds);
+	};
+
 	function getMiitomoImageSlices(miitomo) {
 		let imageSlices = [];
+		if (miitomo.random) {
+			for (let i = 1; i <= numOfImageSlices; i++) {
+				let allStarIdx = i - 1;
+				imageSlices.push(<li key={`all-star${i}`} className={`star`}><Image src={`/creative-coding-pages/all-stars/${allStarId[allStarIdx]}${i}.png`} width={150} height={42} alt="miitomo piece" /></li>)
+			}
+		} else {
 			for (let i = 1; i <= numOfImageSlices; i++) {
 				imageSlices.push(<li key={`${miitomo.id}${i}`}><Image src={`/creative-coding-pages/all-stars/${miitomo.id}${i}.png`} width={150} height={42} alt="miitomo piece" priority /></li>)
 			}
+		}
 		return imageSlices;
 	}
 
@@ -75,6 +102,13 @@ export default function AllStars() {
 		})
 		return miitomos;
 	}
+
+
+	// Initial Page Load =================
+	useEffect(() => {
+		createRandomAllStar();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 
 	return (
