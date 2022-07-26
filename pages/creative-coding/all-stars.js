@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Header from '../../components/Header'
 
 
@@ -10,8 +10,16 @@ export default function AllStars() {
 	const numOfCharacters = 5;
 	const characterIds = ['a', 'b', 'c', 'd', 'e'];
 
+	// Elements =================
+	const soundEffectRef = useRef(null);
+
 	// States =================
 	const [allStarId, setAllStarId] = useState([]);
+	const [miitomoClass, setMiitomoClass] = useState('');
+	const [miitomoBtn, setMiitomoBtn] = useState('SHOW ALL');
+	const [allStarClass, setAllStarClass] = useState('');
+	const [allStarBtn, setAllStarBtn] = useState('SHOW STAR');
+	const [highlight, setHighlight] = useState('');
 
 
 	const data = [
@@ -69,11 +77,11 @@ export default function AllStars() {
 		if (miitomo.random) {
 			for (let i = 1; i <= numOfImageSlices; i++) {
 				let allStarIdx = i - 1;
-				imageSlices.push(<li key={`all-star${i}`} className={`star`}><Image src={`/creative-coding-pages/all-stars/${allStarId[allStarIdx]}${i}.png`} width={150} height={42} alt="miitomo piece" /></li>)
+				imageSlices.push(<li key={`all-star${i}`} className={`star${allStarClass}`}><Image src={`/creative-coding-pages/all-stars/${allStarId[allStarIdx]}${i}.png`} width={150} height={42} alt="miitomo piece" /></li>)
 			}
 		} else {
 			for (let i = 1; i <= numOfImageSlices; i++) {
-				imageSlices.push(<li key={`${miitomo.id}${i}`}><Image src={`/creative-coding-pages/all-stars/${miitomo.id}${i}.png`} width={150} height={42} alt="miitomo piece" priority /></li>)
+				imageSlices.push(<li key={`${miitomo.id}${i}`} className={`${miitomoClass}`}><Image src={`/creative-coding-pages/all-stars/${miitomo.id}${i}.png`} width={150} height={42} alt="miitomo piece" priority /></li>)
 			}
 		}
 		return imageSlices;
@@ -83,7 +91,7 @@ export default function AllStars() {
 		const miitomos = data.map((miitomo, idx) => {
 			return (
 				<ul key={idx}>
-					<li id={miitomo.id} className='title'>{miitomo.name}
+					<li id={miitomo.id} className={`title${miitomo.random ? highlight : ''}`}>{miitomo.name}
 						<ul className="drop-menu flap-down-motion">
 							{getMiitomoImageSlices(miitomo)}
 						</ul>
@@ -101,6 +109,29 @@ export default function AllStars() {
 			)
 		})
 		return miitomos;
+	}
+
+
+	// Event Handlers =================
+	function showClickHandler() {
+		(miitomoClass === '') ? setMiitomoClass('show') : setMiitomoClass('');
+		(miitomoClass === '') ? setMiitomoBtn('HIDE ALL') : setMiitomoBtn('SHOW ALL');
+		(miitomoClass === '') ? setAllStarClass(' show') : setAllStarClass('');
+		(miitomoClass === '') ? setAllStarBtn('HIDE STAR') : setAllStarBtn('SHOW STAR');
+	}
+
+	function starClickHandler() {
+		(allStarClass === '') ? setAllStarClass(' show') : setAllStarClass('');
+		(allStarClass === '') ? setAllStarBtn('HIDE STAR') : setAllStarBtn('SHOW STAR');
+	}
+
+	function resetClickHandler() {
+		createRandomAllStar();
+		soundEffectRef.current.play();
+		setHighlight(' highlight');
+		setTimeout(() => {
+			setHighlight('');
+		}, 3000);
 	}
 
 
@@ -149,9 +180,10 @@ export default function AllStars() {
 					{createMiitomoTiles()}
 				</div>
 				<div className="buttons-container">
-					<button className="btn">SHOW ALL</button>
-					<button className="btn">SHOW STAR</button>
-					<button className="btn">RESET</button>
+					<button onClick={showClickHandler} className="btn">{miitomoBtn}</button>
+					<button onClick={starClickHandler} className="btn">{allStarBtn}</button>
+					<button onClick={resetClickHandler} className="btn">RESET</button>
+					<audio ref={soundEffectRef} preload="auto" src="/creative-coding-pages/all-stars/note1o.mp3"></audio>
 				</div>
 			</main>
 		</>
