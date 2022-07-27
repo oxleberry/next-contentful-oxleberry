@@ -3,8 +3,26 @@ import Image from 'next/image'
 import { useEffect, useState, useRef } from 'react'
 import Header from '../../components/Header'
 
+import { createClient } from 'contentful'
 
-export default function AllStars() {
+
+export async function getStaticProps() {
+	const client = createClient({
+		space: process.env.CONTENTFUL_SPACE_ID,
+		accessToken: process.env.CONTENTFUL_ACCESS_KEY
+	});
+
+	const res = await client.getEntries({ content_type: 'allStars' });
+
+	return {
+		props: {
+			allStarsItems: res.items
+		}
+	}
+}
+
+
+export default function AllStars({ allStarsItems }) {
 	// Variables =================
 	const numOfImageSlices = 6;
 	const numOfCharacters = 5;
@@ -14,7 +32,7 @@ export default function AllStars() {
 	const soundEffectRef = useRef(null);
 
 	// States =================
-	const [allStarId, setAllStarId] = useState([]);
+	const [allStarId, setAllStarId] = useState([0, 0, 0, 0, 0, 0]);
 	const [miitomoClass, setMiitomoClass] = useState('');
 	const [miitomoBtn, setMiitomoBtn] = useState('SHOW ALL');
 	const [allStarClass, setAllStarClass] = useState('');
@@ -66,22 +84,44 @@ export default function AllStars() {
 		let tempIds = []
 		for (let i = 0; i < numOfImageSlices; i++) {
 			const randomIdx = randomIdxGenerator(numOfCharacters);
-			tempIds.push(characterIds[randomIdx])
+			tempIds.push(randomIdx)
 		}
-		console.log(tempIds);
 		setAllStarId(tempIds);
 	};
 
 	function getMiitomoImageSlices(miitomo) {
 		let imageSlices = [];
+
 		if (miitomo.random) {
-			for (let i = 1; i <= numOfImageSlices; i++) {
-				let allStarIdx = i - 1;
-				imageSlices.push(<li key={`all-star${i}`} className={`star${allStarClass}`}><Image src={`/creative-coding-pages/all-stars/${allStarId[allStarIdx]}${i}.png`} width={150} height={42} alt="miitomo piece" /></li>)
+			for (let i = 0; i < numOfImageSlices; i++) {
+				const allStarIdx = allStarId[i];
+				const imagePath = allStarsItems[allStarIdx].fields.assets[i].fields;
+				imageSlices.push(
+					<li key={`${miitomo.id}${i}`} className={`star${allStarClass}`}>
+						<Image
+							src={`https:${imagePath.file.url}`}
+							width={imagePath.file.details.image.width}
+							height={imagePath.file.details.image.height}
+							alt={imagePath.description}
+							priority />
+					</li>
+				)
 			}
 		} else {
-			for (let i = 1; i <= numOfImageSlices; i++) {
-				imageSlices.push(<li key={`${miitomo.id}${i}`} className={`${miitomoClass}`}><Image src={`/creative-coding-pages/all-stars/${miitomo.id}${i}.png`} width={150} height={42} alt="miitomo piece" priority /></li>)
+			const miitomoIds = allStarsItems.map((items) => items.fields.assetsId);
+			const miitomoIdx = miitomoIds.findIndex((miitomoId) => miitomoId === miitomo.id);
+			for (let i = 0; i < numOfImageSlices; i++) {
+				const imagePath = allStarsItems[miitomoIdx].fields.assets[i].fields;
+				imageSlices.push(
+					<li key={`${miitomo.id}${i}`} className={`${miitomoClass}`}>
+						<Image
+							src={`https:${imagePath.file.url}`}
+							width={imagePath.file.details.image.width}
+							height={imagePath.file.details.image.height}
+							alt={imagePath.description}
+							priority />
+					</li>
+				)
 			}
 		}
 		return imageSlices;
