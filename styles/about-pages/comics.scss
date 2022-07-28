@@ -1,0 +1,47 @@
+@use '../utilities/mixins' as *;
+// @use '../utilities/colors';
+// @use '../utilities/fonts';
+
+.comic-page {
+	text-align: center;
+
+	h1 {
+		margin: 0;
+	}
+
+	.comic-container {
+		margin: 0 auto;
+		padding: 0 0 20px;
+		max-width: 880px;
+	}
+
+	picture {
+		margin: 0 auto;
+		width: 100%;
+
+	}
+
+	img {
+		width: 100%;
+		margin-top: 40px;
+		box-shadow: 1px 3px 8px 1px rgb(49 43 41 / 30%);
+	}
+
+
+// ==================================
+/* Little Super Hero Boy -  Styles */
+// ==================================
+	&.little-super-hero-boy img {
+		width: auto;
+		max-height: 450px;
+
+		@include bp(m) {
+			max-height: 350px;
+		}
+
+		@include bp(s) {
+			max-height: 250px;
+		}
+	}
+}
+
