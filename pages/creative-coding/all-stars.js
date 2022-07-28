@@ -23,6 +23,12 @@ export async function getStaticProps() {
 
 
 export default function AllStars({ allStarsItems }) {
+	const miitomoImageSlices = allStarsItems.filter((item) => item.fields.isMiitomoSlice);
+	const introStarImage = allStarsItems.filter((item) => item.fields.assetsId === 'star');
+	const introStarImagePath = introStarImage[0].fields.assets[0].fields;
+	const audioPop = allStarsItems.filter((item) => item.fields.assetsId === 'audioPop');
+	const audioPopPath = audioPop[0].fields.assets[0].fields;
+
 	// Variables =================
 	const numOfImageSlices = 6;
 	const numOfCharacters = 5;
@@ -91,11 +97,10 @@ export default function AllStars({ allStarsItems }) {
 
 	function getMiitomoImageSlices(miitomo) {
 		let imageSlices = [];
-
 		if (miitomo.random) {
 			for (let i = 0; i < numOfImageSlices; i++) {
 				const allStarIdx = allStarId[i];
-				const imagePath = allStarsItems[allStarIdx].fields.assets[i].fields;
+				const imagePath = miitomoImageSlices[allStarIdx].fields.assets[i].fields;
 				imageSlices.push(
 					<li key={`${miitomo.id}${i}`} className={`star${allStarClass}`}>
 						<Image
@@ -108,10 +113,10 @@ export default function AllStars({ allStarsItems }) {
 				)
 			}
 		} else {
-			const miitomoIds = allStarsItems.map((items) => items.fields.assetsId);
+			const miitomoIds = miitomoImageSlices.map((items) => items.fields.assetsId);
 			const miitomoIdx = miitomoIds.findIndex((miitomoId) => miitomoId === miitomo.id);
 			for (let i = 0; i < numOfImageSlices; i++) {
-				const imagePath = allStarsItems[miitomoIdx].fields.assets[i].fields;
+				const imagePath = miitomoImageSlices[miitomoIdx].fields.assets[i].fields;
 				imageSlices.push(
 					<li key={`${miitomo.id}${i}`} className={`${miitomoClass}`}>
 						<Image
@@ -191,29 +196,29 @@ export default function AllStars({ allStarsItems }) {
 			<main className="full-backboard all-stars-page">
 				<div className="intro">
 					<picture>
-						<source srcSet="/creative-coding-pages/all-stars/star.png"/>
-						<img className="star-small" src="/creative-coding-pages/all-stars/star.png" alt="star"/>
+						<source srcSet={`https:${introStarImagePath.file.url}`}/>
+						<img className="star-small" src={`https:${introStarImagePath.file.url}`} alt={`${introStarImagePath.description}`}/>
 					</picture>
 					<picture>
-						<source srcSet="/creative-coding-pages/all-stars/star.png"/>
-						<img className="star-large" src="/creative-coding-pages/all-stars/star.png" alt="star"/>
+						<source srcSet={`https:${introStarImagePath.file.url}`}/>
+						<img className="star-large" src={`https:${introStarImagePath.file.url}`} alt={`${introStarImagePath.description}`}/>
 					</picture>
 					<picture>
-						<source srcSet="/creative-coding-pages/all-stars/star.png"/>
-						<img className="star-small" src="/creative-coding-pages/all-stars/star.png" alt="star"/>
+						<source srcSet={`https:${introStarImagePath.file.url}`}/>
+						<img className="star-small" src={`https:${introStarImagePath.file.url}`} alt={`${introStarImagePath.description}`}/>
 					</picture>
 					<Header className="title" headline="Oxleberry All-Stars" alt={true}></Header>
 					<picture>
-						<source srcSet="/creative-coding-pages/all-stars/star.png"/>
-						<img className="star-small" src="/creative-coding-pages/all-stars/star.png" alt="star"/>
+						<source srcSet={`https:${introStarImagePath.file.url}`}/>
+						<img className="star-small" src={`https:${introStarImagePath.file.url}`} alt={`${introStarImagePath.description}`}/>
 					</picture>
 					<picture>
-						<source srcSet="/creative-coding-pages/all-stars/star.png"/>
-						<img className="star-large" src="/creative-coding-pages/all-stars/star.png" alt="star"/>
+						<source srcSet={`https:${introStarImagePath.file.url}`}/>
+						<img className="star-large" src={`https:${introStarImagePath.file.url}`} alt={`${introStarImagePath.description}`}/>
 					</picture>
 					<picture>
-						<source srcSet="/creative-coding-pages/all-stars/star.png"/>
-						<img className="star-small" src="/creative-coding-pages/all-stars/star.png" alt="star"/>
+						<source srcSet={`https:${introStarImagePath.file.url}`}/>
+						<img className="star-small" src={`https:${introStarImagePath.file.url}`} alt={`${introStarImagePath.description}`}/>
 					</picture>
 				</div>
 				<div className="miitomos-container">
@@ -223,7 +228,7 @@ export default function AllStars({ allStarsItems }) {
 					<button onClick={showClickHandler} className="btn">{miitomoBtn}</button>
 					<button onClick={starClickHandler} className="btn">{allStarBtn}</button>
 					<button onClick={resetClickHandler} className="btn">RESET</button>
-					<audio ref={soundEffectRef} preload="auto" src="/creative-coding-pages/all-stars/note1o.mp3"></audio>
+					<audio ref={soundEffectRef} preload="auto" src={`https:${audioPopPath.file.url}`}></audio>
 				</div>
 			</main>
 		</>
