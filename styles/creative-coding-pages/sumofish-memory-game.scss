@@ -1,0 +1,174 @@
+@use '../utilities/mixins' as *;
+@use '../utilities/colors';
+@use '../utilities/fonts';
+
+
+.sumofish-memory-game-page {
+	// Variables
+	$num-uniq-cards: 14;
+
+	flex-direction: column;
+	display: flex;
+	align-items: center;
+
+
+	// =====================
+	// Headline & Description
+	// =====================
+	h1 {
+		margin-top: 40px;
+		margin-bottom: 8px;
+	}
+
+	.description {
+		font-size: 1.8rem;
+		line-height: 1.6rem;
+		text-align: center;
+		margin-top: 0;
+		margin-bottom: 40px;
+
+		a {
+			font-size: 1.8rem;
+			color: colors.$text;
+
+			&:hover {
+				color: colors.$link;
+			}
+		}
+	}
+
+
+	// =====================
+	// Game board
+	// =====================
+	.game-container {
+		background: lightgrey;
+		height: 100%;
+		text-align: center;
+		margin: 0 40px 40px;
+		max-width: 1000px;
+	}
+
+	.game-board {
+		background: #595959;
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		padding: 40px 80px;
+		margin: 20px 20px 0;
+		box-shadow: inset 3px 3px 5px 0px rgb(0 0 0 / 10%);
+
+		@include bp(l) {
+			padding: 40px 24px 30px;
+			margin: 0;
+		}
+
+		@include bp(s) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+
+	// =====================
+	// Card
+	// =====================
+	.card-container {
+		margin: 8px;
+		position: relative;
+		perspective: 20px;
+		transition: transform 600ms ease;
+		transform-style: preserve-3d;
+		width: 14vw;
+		height: 14vw;
+		max-width: 120px;
+		max-height: 120px;
+		border-radius: 24px;
+		box-shadow: 4px 5px 6px 0px rgb(0 0 0 / 30%);
+
+		@media (orientation: portrait) {
+			width: 20vw;
+			height: 20vw;
+		}
+
+		@include bp(m) {
+			max-width: 90px;
+			max-height: 90px;
+		}
+
+		&.flip {
+			transform: rotateY(180deg);
+		}
+	}
+
+	.card {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+		background-size: 18vw 18vw;
+		background-position: center;
+		border-radius: 24px;
+	}
+
+	.back {
+		z-index: 2;
+		transform: rotateY(0deg);
+		background-color: #aaaaaa;
+		background-image: url(../../public/creative-coding-pages/sumofish-memory-game/card-back.png);
+		background-repeat: no-repeat;
+		background-size: 95%;
+	}
+
+	.front {
+		transform: rotateY(180deg);
+		transform-style: preserve-3d;
+		background-color: #c0ddea;
+		background-repeat: no-repeat;
+		background-size: 100%;
+	}
+
+	// ==================================
+	/* Loop through card's front images */
+	// ==================================
+	@for $i from 1 through $num-uniq-cards {
+		.card-#{$i} {
+			background-image: url(../../public/creative-coding-pages/sumofish-memory-game/card-#{$i}.png);
+		}
+	}
+
+
+	// =====================
+	// Reset Button
+	// =====================
+	.btn-reset {
+		background-color: #595959;
+		border: none;
+		color: white;
+		font-family: fonts.$subtitle;
+		font-size: 1.5rem;
+		letter-spacing: .2rem;
+		padding: 14px 18px;
+		text-align: center;
+		text-decoration: none;
+		border-radius: 14px;
+		margin: 20px 20px 40px;
+		box-shadow: inset 3px 3px 6px 0px rgb(0 0 0 / 20%);
+
+		&:hover {
+			animation: reset-hover 300ms ease-in-out 1 forwards;
+		}
+	}
+
+	@keyframes reset-hover {
+		0% {
+			background: rgba(89, 89, 89, 1);
+			transform: translateX(0px) translateY(0px);
+		}
+		100% {
+			background: rgba(58, 58, 58, 1);
+			transform: translateX(0px) translateY(1px);
+		}
+	}
+}
