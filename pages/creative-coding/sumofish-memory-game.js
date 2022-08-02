@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Header from '../../components/Header'
+import { useEffect, useState } from 'react'
 
 
 // Variables =================
@@ -15,15 +16,51 @@ function createUniqCards() {
 		uniqueCards.push("card-" + [i]);
 	}
 };
-createUniqCards();
+
+function randomNumGenerator(maxNum) {
+	return Math.floor(Math.random() * maxNum);
+};
+
+// create pairs of cards used in gameplay deck
+// retuns an array of strings
+// ex: ['card-1', 'card-1', 'card-5','card-5', ...]
+const createCardsInPlayDeck = () => {
+	let cards = [];
+	let tempDupCards = [...uniqueCards]; // will duplicate the original array
+	for (let i = 0; i < pairsInPlay; i++) {
+		const randomIdx = randomNumGenerator(tempDupCards.length);
+		const singleCard = tempDupCards.splice(randomIdx, 1);  // removes the random element from the tempDupCards
+		const singleCardValue = singleCard[0];
+		cards.push(singleCardValue);
+		cards.push(singleCardValue);
+	};
+	return cards;
+}
 
 
 export default function MemoryGame() {
+	// States =================
+	const [shuffledDeck, setShuffledDeck] = useState([]); // array of strings
+
+	// Helper Functions =================
+	// generates randsomly shuffled cards from createCardsInPlayDeck
+	function shuffleDeck() {
+		let tempDeck = [];
+		const cardDeck = createCardsInPlayDeck();
+		for (var i = 0; i < (pairsInPlay * 2); i++) {
+			const randomIdx = randomNumGenerator(cardDeck.length);
+			const singleCard = cardDeck.splice(randomIdx, 1);
+			const singleCardValue = singleCard[0];
+			tempDeck.push(singleCardValue);
+		}
+		console.log('tempDeck', tempDeck);
+		setShuffledDeck(tempDeck);
+	}
 
 	function displayGameCards() {
-		const cards = uniqueCards.map((card, idx) => {
+		const cards = shuffledDeck.map((card, idx) => {
 			return (
-				<div className={`card-container flip`} key={idx}>
+				<div className={`card-container flip`} title={card} key={idx}>
 					<div className="back card"></div>
 					<div className={`front card ${card}`}></div>
 				</div>
@@ -31,6 +68,14 @@ export default function MemoryGame() {
 		})
 		return cards;
 	}
+
+	// Initial Page Load =================
+	useEffect(() => {
+		createUniqCards();
+		shuffleDeck();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 
 	return (
 		<>
