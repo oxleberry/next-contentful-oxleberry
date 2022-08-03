@@ -41,6 +41,8 @@ const createCardsInPlayDeck = () => {
 export default function MemoryGame() {
 	// States =================
 	const [shuffledDeck, setShuffledDeck] = useState([]); // array of strings
+	const [firstPick, setFirstPick] = useState(undefined); // single element
+	const [matchCounter, setMatchCounter] = useState(0); // number
 
 	// Helper Functions =================
 	// generates randsomly shuffled cards from createCardsInPlayDeck
@@ -74,9 +76,35 @@ export default function MemoryGame() {
 	function cardClickHandler(event) {
 		// checks to see if a card is flipped, before flipping or keeping face up
 		if (event.currentTarget.classList.contains('flip')){
-			return; // ends function
+			return; // ends function, does not proceed with evaluation
 		} else {
 			event.currentTarget.classList.add('flip');
+		}
+		// Evaluates match //
+		// tracks first picked card
+		if (firstPick === undefined) {
+			const firstCard = event.currentTarget;
+			setFirstPick(firstCard);
+		// evaluates second card
+		} else {
+			const secondCard = event.currentTarget;
+			const secondCardData = event.currentTarget.getAttribute('title');
+			const firstCardData = firstPick.getAttribute('title');
+			// check if second card flipped is a match
+			if (firstCardData === secondCardData) {
+				console.log("MATCH");
+				let tempCounter = matchCounter += 1;
+				setMatchCounter(tempCounter);
+			}
+			// no match - flip cards back over
+			else {
+				setTimeout(() => {
+					firstPick.classList.remove('flip');
+					secondCard.classList.remove('flip');
+				}, 1000);
+			}
+			// untracks first card to check the next match
+			setFirstPick(undefined);
 		}
 	}
 
