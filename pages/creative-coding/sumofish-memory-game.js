@@ -60,7 +60,7 @@ export default function MemoryGame() {
 	function displayGameCards() {
 		const cards = shuffledDeck.map((card, idx) => {
 			return (
-				<div className={`card-container flip`} title={card} key={idx}>
+				<div onClick={cardClickHandler} className={`card-container`} title={card} key={idx}>
 					<div className="back card"></div>
 					<div className={`front card ${card}`}></div>
 				</div>
@@ -68,6 +68,18 @@ export default function MemoryGame() {
 		})
 		return cards;
 	}
+
+
+	// Event Handlers =================
+	function cardClickHandler(event) {
+		// checks to see if a card is flipped, before flipping or keeping face up
+		if (event.currentTarget.classList.contains('flip')){
+			return; // ends function
+		} else {
+			event.currentTarget.classList.add('flip');
+		}
+	}
+
 
 	// Initial Page Load =================
 	useEffect(() => {
