@@ -43,6 +43,9 @@ export default function MemoryGame() {
 	const [shuffledDeck, setShuffledDeck] = useState([]); // array of strings
 	const [firstPick, setFirstPick] = useState(undefined); // single element
 	const [matchCounter, setMatchCounter] = useState(0); // number
+	const [audioMatch, setAudioMatch] = useState(null)
+	const [audioWin, setAudioWin] = useState(null)
+	const [audioReset, setAudioReset] = useState(null)
 
 	// Elements =================
 	const cardRefs = useRef([]);
@@ -101,11 +104,17 @@ export default function MemoryGame() {
 			const secondCard = event.currentTarget;
 			const secondCardData = event.currentTarget.getAttribute('title');
 			const firstCardData = firstPick.getAttribute('title');
+			// check if second card flipped is a match and the game is over
+			if (firstCardData === secondCardData && matchCounter === (pairsInPlay - 1)) {
+				console.log("YOU WON");
+				audioWin.play();
+			}
 			// check if second card flipped is a match
-			if (firstCardData === secondCardData) {
+			else if (firstCardData === secondCardData) {
 				console.log("MATCH");
 				let tempCounter = matchCounter += 1;
 				setMatchCounter(tempCounter);
+				audioMatch.play();
 			}
 			// no match - flip cards back over
 			else {
@@ -122,6 +131,7 @@ export default function MemoryGame() {
 	// resets the game, with all new images randomly generated
 	function resetClickHandler() {
 		console.log("RESET");
+		audioReset.play();
 		setMatchCounter(0);
 		// flips over all of the cards to the back side
 		const allCards = cardRefs.current;
@@ -140,6 +150,10 @@ export default function MemoryGame() {
 	useEffect(() => {
 		createUniqCards();
 		shuffleDeck();
+		// audio api can't be run on the server, this will only be called on client
+		setAudioMatch(new Audio('https://www.kasandbox.org/programming-sounds/rpg/hit-whack.mp3'));
+		setAudioWin(new Audio('https://www.kasandbox.org/programming-sounds/retro/coin.mp3'));
+		setAudioReset(new Audio('https://www.kasandbox.org/programming-sounds/rpg/giant-yah.mp3'));
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
