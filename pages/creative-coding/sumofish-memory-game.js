@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Header from '../../components/Header'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 
 // Variables =================
@@ -44,6 +44,10 @@ export default function MemoryGame() {
 	const [firstPick, setFirstPick] = useState(undefined); // single element
 	const [matchCounter, setMatchCounter] = useState(0); // number
 
+	// Elements =================
+	const cardRefs = useRef([]);
+	cardRefs.current = [];
+
 	// Helper Functions =================
 	// generates randsomly shuffled cards from createCardsInPlayDeck
 	function shuffleDeck() {
@@ -62,13 +66,20 @@ export default function MemoryGame() {
 	function displayGameCards() {
 		const cards = shuffledDeck.map((card, idx) => {
 			return (
-				<div onClick={cardClickHandler} className={`card-container`} title={card} key={idx}>
+				<div ref={addToCardRefs} onClick={cardClickHandler} className={`card-container`} title={card} key={idx}>
 					<div className="back card"></div>
 					<div className={`front card ${card}`}></div>
 				</div>
 			)
 		})
 		return cards;
+	}
+
+	// store Card elements
+	function addToCardRefs(cardRef) {
+		if (cardRef && !cardRefs.current.includes(cardRef)) {
+			cardRefs.current.push(cardRef);
+		}
 	}
 
 
@@ -108,6 +119,22 @@ export default function MemoryGame() {
 		}
 	}
 
+	// resets the game, with all new images randomly generated
+	function resetClickHandler() {
+		console.log("RESET");
+		setMatchCounter(0);
+		// flips over all of the cards to the back side
+		const allCards = cardRefs.current;
+		allCards.forEach((item) => {
+			item.classList.remove('flip');
+		});
+		// sets delay so new cards images are not visible
+		// before they are fully turned over
+		setTimeout(() => {
+			shuffleDeck();
+		}, 1000);
+	}
+
 
 	// Initial Page Load =================
 	useEffect(() => {
@@ -132,7 +159,7 @@ export default function MemoryGame() {
 					<div className="game-board">
 						{displayGameCards()}
 					</div>
-					<button className="btn-reset">RESET</button>
+					<button onClick={resetClickHandler} className="btn-reset">RESET</button>
 				</section>
 			</main>
 		</>
