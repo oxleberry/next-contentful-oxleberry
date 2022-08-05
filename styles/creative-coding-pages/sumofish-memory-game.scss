@@ -4,9 +4,6 @@
 
 
 .sumofish-memory-game-page {
-	// Variables
-	$num-uniq-cards: 14;
-
 	flex-direction: column;
 	display: flex;
 	align-items: center;
@@ -116,7 +113,6 @@
 		z-index: 2;
 		transform: rotateY(0deg);
 		background-color: #aaaaaa;
-		background-image: url(../../public/creative-coding-pages/sumofish-memory-game/card-back.png);
 		background-repeat: no-repeat;
 		background-size: 95%;
 	}
@@ -127,15 +123,6 @@
 		background-color: #c0ddea;
 		background-repeat: no-repeat;
 		background-size: 100%;
-	}
-
-	// ==================================
-	/* Loop through card's front images */
-	// ==================================
-	@for $i from 1 through $num-uniq-cards {
-		.card-#{$i} {
-			background-image: url(../../public/creative-coding-pages/sumofish-memory-game/card-#{$i}.png);
-		}
 	}
 
 

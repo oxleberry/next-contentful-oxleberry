@@ -2,43 +2,33 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Header from '../../components/Header'
 import { useEffect, useState, useRef } from 'react'
+import { createClient } from 'contentful'
 
 
 // Variables =================
-const numUniqCards = 14;
 const pairsInPlay = 6;
-let uniqueCards = []; // once created, original list is not to be mutated
 
-// Helper Functions =================
-// create original array of possible cards
-function createUniqCards() {
-	for (var i = 1; i <= numUniqCards; i++) {
-		uniqueCards.push("card-" + [i]);
+
+// get CMS content =================
+export async function getStaticProps() {
+	const client = createClient({
+		space: process.env.CONTENTFUL_SPACE_ID,
+		accessToken: process.env.CONTENTFUL_ACCESS_KEY
+	});
+	const res = await client.getEntries({ content_type: 'memoryGame' });
+	return {
+		props: { memoryGameItems: res.items }
 	}
-};
-
-function randomNumGenerator(maxNum) {
-	return Math.floor(Math.random() * maxNum);
-};
-
-// create pairs of cards used in gameplay deck
-// retuns an array of strings
-// ex: ['card-1', 'card-1', 'card-5','card-5', ...]
-const createCardsInPlayDeck = () => {
-	let cards = [];
-	let tempDupCards = [...uniqueCards]; // will duplicate the original array
-	for (let i = 0; i < pairsInPlay; i++) {
-		const randomIdx = randomNumGenerator(tempDupCards.length);
-		const singleCard = tempDupCards.splice(randomIdx, 1);  // removes the random element from the tempDupCards
-		const singleCardValue = singleCard[0];
-		cards.push(singleCardValue);
-		cards.push(singleCardValue);
-	};
-	return cards;
 }
 
 
-export default function MemoryGame() {
+export default function MemoryGame({ memoryGameItems }) {
+	// Assets =================
+	const cardBackImages = memoryGameItems.filter((item) => item.fields.id === 'card-back');
+	const cardFrontImages = memoryGameItems.filter((item) => item.fields.id === 'card-front');
+	const frontImageAssets = cardFrontImages[0].fields.cardImages;
+	// console.log(frontImageAssets);
+
 	// States =================
 	const [shuffledDeck, setShuffledDeck] = useState([]); // array of strings
 	const [firstPick, setFirstPick] = useState(undefined); // single element
@@ -52,6 +42,26 @@ export default function MemoryGame() {
 	cardRefs.current = [];
 
 	// Helper Functions =================
+	function randomNumGenerator(maxNum) {
+		return Math.floor(Math.random() * maxNum);
+	};
+
+	// create pairs of cards used in gameplay deck
+	// retuns an array of objects
+	const createCardsInPlayDeck = () => {
+		let cards = [];
+		let tempDupCards = [...frontImageAssets]; // will duplicate the original array
+		for (let i = 0; i < pairsInPlay; i++) {
+			const randomIdx = randomNumGenerator(tempDupCards.length);
+			const singleCard = tempDupCards.splice(randomIdx, 1);  // removes the random element from the tempDupCards array
+			const singleCardValue = singleCard[0];
+			cards.push(singleCardValue);
+			cards.push(singleCardValue);
+		};
+		// console.log('cards', cards);
+		return cards;
+	}
+
 	// generates randsomly shuffled cards from createCardsInPlayDeck
 	function shuffleDeck() {
 		let tempDeck = [];
@@ -67,11 +77,14 @@ export default function MemoryGame() {
 	}
 
 	function displayGameCards() {
+		const backBgImage = {backgroundImage: `url(https:${cardBackImages[0].fields.cardImages[0].fields.file.url})`};
 		const cards = shuffledDeck.map((card, idx) => {
+			const frontBgImage = {backgroundImage: `url(https:${card.fields.file.url})`};
+			const title = card.fields.title;
 			return (
-				<div ref={addToCardRefs} onClick={cardClickHandler} className={`card-container`} title={card} key={idx}>
-					<div className="back card"></div>
-					<div className={`front card ${card}`}></div>
+				<div ref={addToCardRefs} onClick={cardClickHandler} className={`card-container`} title={title} key={idx}>
+					<div className="back card" style={backBgImage}></div>
+					<div className={"front card"} style={frontBgImage}></div>
 				</div>
 			)
 		})
@@ -148,7 +161,6 @@ export default function MemoryGame() {
 
 	// Initial Page Load =================
 	useEffect(() => {
-		createUniqCards();
 		shuffleDeck();
 		// audio api can't be run on the server, this will only be called on client
 		setAudioMatch(new Audio('https://www.kasandbox.org/programming-sounds/rpg/hit-whack.mp3'));
