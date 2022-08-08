@@ -32,9 +32,9 @@ export default function MemoryGame({ memoryGameItems }) {
 	const [shuffledDeck, setShuffledDeck] = useState([]); // array of strings
 	const [firstPick, setFirstPick] = useState(undefined); // single element
 	const [matchCounter, setMatchCounter] = useState(0); // number
-	const [audioMatch, setAudioMatch] = useState(null)
-	const [audioWin, setAudioWin] = useState(null)
-	const [audioReset, setAudioReset] = useState(null)
+	const [audioMatch, setAudioMatch] = useState(null);
+	const [audioWin, setAudioWin] = useState(null);
+	const [audioReset, setAudioReset] = useState(null);
 
 	// Elements =================
 	const cardRefs = useRef([]);
@@ -116,12 +116,14 @@ export default function MemoryGame({ memoryGameItems }) {
 			const firstCardData = firstPick.lastElementChild.getAttribute('title');
 			// check if second card flipped is a match and the game is over
 			if (firstCardData === secondCardData && matchCounter === (pairsInPlay - 1)) {
+				audioWin.volume = 0.2;
 				audioWin.play();
 			}
 			// check if second card flipped is a match
 			else if (firstCardData === secondCardData) {
 				let tempCounter = matchCounter += 1;
 				setMatchCounter(tempCounter);
+				audioMatch.volume = 0.2;
 				audioMatch.play();
 			}
 			// no match - flip cards back over
@@ -138,6 +140,7 @@ export default function MemoryGame({ memoryGameItems }) {
 
 	// resets the game, with all new images randomly generated
 	function resetClickHandler() {
+		audioReset.volume = 0.4;
 		audioReset.play();
 		setMatchCounter(0);
 		// flips over all of the cards to the back side
