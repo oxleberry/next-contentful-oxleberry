@@ -27,7 +27,6 @@ export default function MemoryGame({ memoryGameItems }) {
 	const cardBackImages = memoryGameItems.filter((item) => item.fields.id === 'card-back');
 	const cardFrontImages = memoryGameItems.filter((item) => item.fields.id === 'card-front');
 	const frontImageAssets = cardFrontImages[0].fields.cardImages;
-	// console.log(frontImageAssets);
 
 	// States =================
 	const [shuffledDeck, setShuffledDeck] = useState([]); // array of strings
@@ -58,7 +57,6 @@ export default function MemoryGame({ memoryGameItems }) {
 			cards.push(singleCardValue);
 			cards.push(singleCardValue);
 		};
-		// console.log('cards', cards);
 		return cards;
 	}
 
@@ -72,7 +70,6 @@ export default function MemoryGame({ memoryGameItems }) {
 			const singleCardValue = singleCard[0];
 			tempDeck.push(singleCardValue);
 		}
-		console.log('tempDeck', tempDeck);
 		setShuffledDeck(tempDeck);
 	}
 
@@ -82,9 +79,9 @@ export default function MemoryGame({ memoryGameItems }) {
 			const frontBgImage = {backgroundImage: `url(https:${card.fields.file.url})`};
 			const title = card.fields.title;
 			return (
-				<div ref={addToCardRefs} onClick={cardClickHandler} className={`card-container`} title={title} key={idx}>
+				<div ref={addToCardRefs} onClick={cardClickHandler} className={`card-container`} key={idx}>
 					<div className="back card" style={backBgImage}></div>
-					<div className={"front card"} style={frontBgImage}></div>
+					<div className={`front card`} style={frontBgImage} title={title}></div>
 				</div>
 			)
 		})
@@ -115,16 +112,14 @@ export default function MemoryGame({ memoryGameItems }) {
 		// evaluates second card
 		} else {
 			const secondCard = event.currentTarget;
-			const secondCardData = event.currentTarget.getAttribute('title');
-			const firstCardData = firstPick.getAttribute('title');
+			const secondCardData = secondCard.lastElementChild.getAttribute('title');
+			const firstCardData = firstPick.lastElementChild.getAttribute('title');
 			// check if second card flipped is a match and the game is over
 			if (firstCardData === secondCardData && matchCounter === (pairsInPlay - 1)) {
-				console.log("YOU WON");
 				audioWin.play();
 			}
 			// check if second card flipped is a match
 			else if (firstCardData === secondCardData) {
-				console.log("MATCH");
 				let tempCounter = matchCounter += 1;
 				setMatchCounter(tempCounter);
 				audioMatch.play();
@@ -143,7 +138,6 @@ export default function MemoryGame({ memoryGameItems }) {
 
 	// resets the game, with all new images randomly generated
 	function resetClickHandler() {
-		console.log("RESET");
 		audioReset.play();
 		setMatchCounter(0);
 		// flips over all of the cards to the back side
