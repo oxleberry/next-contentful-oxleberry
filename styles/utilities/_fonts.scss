@@ -1,10 +1,14 @@
 
 /* Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Lato:wght@300;400&display=swap');
 
+// import below does not load on deployed Vercel site, instead being loaded through _document.js
+// @import url('https://fonts.googleapis.com/css2?family=Amaranth:wght@400;700&family=Baloo+2:wght@400;600;800&family=Hammersmith+One&family=Lato:wght@300;400;700;900&family=Poppins:wght@400;600;800&display=swap');
+// Century Gothic - alt title & links (first choice, not avail on Google Fonts)
+// Amaranth - alt title (second choice), but not a fan of the Uppercase G
+// Poppins - alt-title (third choice), links (second choice)
 
-$title: 'Baloo 2', sans-serif;
-$subtitle: 'Century Gothic', Helvetica, sans-serif;
+$title: 'Baloo 2', 'Poppins', 'Helvetica', sans-serif;
+$subtitle: 'Century Gothic', 'Amaranth', 'Poppins', 'Geneva', 'Helvetica Neue', Helvetica, sans-serif;
 
 $sans-serif: 'Lato', sans-serif;
 $serif: 'Garamond', serif;
@@ -12,8 +16,9 @@ $serif: 'Garamond', serif;
 
 /* Main Navbar Fonts */
 $nav-logo: $title;
-$nav-links: $subtitle;
+$nav-links: 'Century Gothic', 'Poppins', 'Geneva', 'Helvetica Neue', Helvetica, sans-serif;
 
 
 /* Sub Pages Fonts */
 $alt-title: $subtitle;
+$alt-title-for-g: 'Poppins', 'Geneva', 'Helvetica Neue', Helvetica, sans-serif;
