@@ -9,23 +9,30 @@
 	align-items: center;
 
 
-	// =====================
+	// ======================
 	// Headline & Description
-	// =====================
+	// ======================
 	h1 {
 		margin-top: 40px;
 		margin-bottom: 8px;
+		padding: 0 20px;
 	}
 
 	.description {
 		font-size: 1.8rem;
-		line-height: 1.6rem;
+		line-height: 2rem;
 		text-align: center;
 		margin-top: 0;
 		margin-bottom: 40px;
+		padding: 0 40px;
+
+		@include bp(s) {
+			padding: 0 70px;
+		}
 
 		a {
 			font-size: 1.8rem;
+			line-height: 1.8rem;
 			color: colors.$text;
 
 			&:hover {
@@ -91,6 +98,10 @@
 			max-height: 90px;
 		}
 
+		@include bp(s) {
+			border-radius: 20px;
+		}
+
 		&.flip {
 			transform: rotateY(180deg);
 		}
@@ -107,6 +118,10 @@
 		background-size: 18vw 18vw;
 		background-position: center;
 		border-radius: 24px;
+
+		@include bp(s) {
+			border-radius: 20px;
+		}
 	}
 
 	.back {
