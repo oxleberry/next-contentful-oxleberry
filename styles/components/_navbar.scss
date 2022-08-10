@@ -3,20 +3,25 @@
 @use '../utilities/fonts';
 
 
-/* Variables */
+// =====================
+// Variables
+// =====================
 $mobile-nav-count: 5;  // helper for building out mobile nav li
 $mobile-nav-z-index: (1: 5, 2: 4, 3: 3, 4: 2, 5: 1);
 
 
-// /* Shared Navbar */
+// =====================
+// Shared Navbar
+// =====================
 .desktop-nav,
 .mobile-nav {
 	a {
 		color: colors.$nav-link;
-		font-family: fonts.$subtitle;
+		font-family: fonts.$nav-links;
 		display: flex;
 		align-items: center;
 		height: 100%;
+		text-align: center;
 
 		&:hover {
 			color: colors.$nav-link-hover;
@@ -28,7 +33,10 @@ $mobile-nav-z-index: (1: 5, 2: 4, 3: 3, 4: 2, 5: 1);
 	}
 }
 
-/* Desktop Navbar */
+
+// =====================
+// Desktop Navbar
+// =====================
 .desktop-nav-full-width-wrapper {
 	position: fixed;
 	background-color: colors.$navbar;
@@ -57,6 +65,10 @@ $mobile-nav-z-index: (1: 5, 2: 4, 3: 3, 4: 2, 5: 1);
 		align-items: center;
 		justify-content: space-between;
 
+		a {
+			font-weight: 300;
+		}
+
 		ul {
 			display: flex;
 			align-items: center;
@@ -84,11 +96,151 @@ $mobile-nav-z-index: (1: 5, 2: 4, 3: 3, 4: 2, 5: 1);
 		// Oxleberry Logo
 		.left-nav li:first-of-type a {
 			font-family: fonts.$nav-logo;
-			font-size: 32px;
+			font-size: 3.2rem;
 			font-weight: 600;
 
 			&:hover {
 				color: colors.$nav-link;
+			}
+		}
+	}
+}
+
+
+// =====================
+/* Mobile Navbar */
+// =====================
+.mobile-nav {
+	background-color: colors.$navbar;
+	position: fixed;
+	left: 0;
+	height: var(--desktop-nav-height);
+	width: 100%;
+	display: none;
+	z-index: 100;
+
+	@include bp(m) {
+		display: block;
+	}
+
+	button {
+		border: none;
+		height: 100%;
+		width: 100%;
+		padding: 0;
+		position: relative;
+		background-color: colors.$navbar;
+		z-index: 1;
+		border-bottom: 1px solid colors.$mid-brown;
+
+		img {
+			padding-top: 4px;
+			height: 86%;
+			background-color: colors.$navbar;
+		}
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	a {
+		height: 100%;
+		padding: 20px 0;
+	}
+
+	ul {
+		margin-top: 0;
+		margin-bottom: 0;
+		background-color: transparent;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		z-index: -1;
+		position: absolute;
+		top: 0;
+		width: 100%;
+
+		&.hidden {
+			li {
+				transition: transform 400ms ease-in-out;
+				// staggering the nav items transition
+				@for $i from 0 through $mobile-nav-count {
+					&:nth-child(#{$i}) {
+						transform: translateY($i * 10%);
+					}
+				}
+			}
+		}
+
+		li {
+			background-color: colors.$navbar;
+			display: flex;
+			align-items: center;
+			height: 58px;
+			width: 100%;
+			border-bottom: 1px solid colors.$mid-brown;
+			justify-content: center;
+			background: linear-gradient(0deg, colors.$brown 80%, #432303);
+			position: absolute;
+			top: 0;
+			transition: transform 700ms ease-in-out;
+			// staggering the nav items transition
+			@for $i from 0 through $mobile-nav-count {
+				&:nth-child(#{$i}) {
+					transform: translateY($i * 100%);
+				}
+			}
+
+			// Defining the z-index for each mobile nav li
+			// $mobile-nav-z-index: (1: 5, 2: 4, 3: 3, 4: 2, 5: 1);
+			// $mobile-nav-z-index: (nth-child: z-index position)
+			// example:
+			// li:nth-child(1) {
+			//   z-index: 5;
+			// }
+			@each $key, $value in $mobile-nav-z-index {
+				&:nth-child(#{$key}) {
+					z-index: $value;
+				}
+			}
+
+			a {
+				width: 100%;
+				display: inline-block;
+			}
+		}
+
+		// Oxleberry Logo
+		li:first-of-type a {
+			font-family: fonts.$nav-logo;
+			font-size: 3.2rem;
+			font-weight: 600;
+			padding: 3px 0;
+		}
+
+		// Last List item styling
+		li:last-of-type {
+			border-bottom: none;
+
+			&::after {
+				content: "";
+				position: absolute;
+				top: 58px;
+				height: 58px;
+				width: 100%;
+				background: linear-gradient(0deg, transparent 70%, rgb(0 0 0 / 15%) 85%, rgb(0 0 0 / 50%) 100%);
+				opacity: 1;
+				transition: opacity 1000ms ease-in-out;
+			}
+		}
+
+		&.hidden {
+			li:last-of-type {
+				&::after {
+					transition: opacity 200ms ease-in-out;
+					opacity: 0;
+				}
 			}
 		}
 	}

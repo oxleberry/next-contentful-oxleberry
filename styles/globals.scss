@@ -33,6 +33,7 @@ body {
 /* Variables */
 :root {
 	--desktop-nav-height: 58px;
+	--mobile-nav-height: 84px;
 }
 
 /* General */
@@ -94,6 +95,10 @@ hr {
 	background-color: colors.$backboard-bg;
 	min-height: calc(100vh - 110px); // accounting for the footer's height
 	padding-top: var(--desktop-nav-height);
+
+	@include bp(m) {
+		padding-top: var(--mobile-nav-height);
+	}
 }
 
 .page-backboard {
@@ -104,4 +109,8 @@ hr {
 	padding-top: calc(var(--desktop-nav-height) + 4rem);
 	box-shadow: 0px 20px 60px -20px rgba(0, 0, 0, 0.4);
 	margin: 0 auto;
+
+	@include bp(m) {
+		padding-top: calc(var(--mobile-nav-height) + 4rem);
+	}
 }
