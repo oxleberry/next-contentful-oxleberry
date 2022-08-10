@@ -1,4 +1,4 @@
-// @use '../utilities/mixins' as *;
+@use '../utilities/mixins' as *;
 @use '../utilities/colors';
 @use '../utilities/fonts';
 
@@ -24,8 +24,13 @@
 	h1 {
 		font-family: fonts.$alt-title;
 		font-size: 3.8rem;
+		font-weight: 600;
 		text-align: center;
 		text-transform: uppercase;
-		padding: 0 40px;
+
+		@include bp(s) {
+			font-size: 3.2rem;
+			line-height: 3.4rem;
+		}
 	}
 }
