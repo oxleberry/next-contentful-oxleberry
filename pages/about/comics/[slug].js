@@ -41,7 +41,7 @@ export async function getStaticProps(context) {
 }
 
 
-export default function comic({ comic }) {
+export default function Comic({ comic }) {
 	const { title, slug, metaDescription, images } = comic.fields;
 
 	return (
