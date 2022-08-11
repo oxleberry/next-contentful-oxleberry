@@ -1,0 +1,48 @@
+@use '../utilities/mixins' as *;
+// @use '../utilities/colors';
+// @use '../utilities/fonts';
+
+.gallery-page {
+	text-align: center;
+
+	h1 {
+		margin-top: 0;
+		margin-bottom: 40px;
+	}
+
+	.gallery-container {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 8px;
+		margin: 0 auto;
+		padding-bottom: 20px;
+
+		@include bp(l) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		@include bp(m) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@include bp(s) {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	img {
+		display: grid;
+		width: 100%;
+		margin: 0 auto;
+	}
+
+	.text {
+		margin: 0 auto;
+		max-width: 710px;
+		padding: 12px 30px 20px;
+
+		@include bp(s) {
+			padding: 12px 20px 20px;
+		}
+	}
+}
