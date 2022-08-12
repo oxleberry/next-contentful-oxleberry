@@ -106,17 +106,6 @@
 			height: 100%;
 		}
 
-		// Shared image styles
-		@for $i from 1 through 12 {
-			.img-#{$i} {
-				@include bp(s) {
-					grid-column-end: span 1;
-					max-width: 350px;
-					justify-self: center;
-				}
-			}
-		}
-
 		// Targeted image positioning
 		.img-1 {
 			grid-column-end: span 4;
@@ -178,6 +167,17 @@
 			grid-column-end: span 6;
 			img {
 				object-position: 50% 85%;
+			}
+		}
+
+		// Shared image styles
+		@for $i from 1 through 12 {
+			.img-#{$i} {
+				@include bp(s) {
+					grid-column-end: span 1;
+					max-width: 350px;
+					justify-self: center;
+				}
 			}
 		}
 	}
