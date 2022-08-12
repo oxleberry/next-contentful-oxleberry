@@ -84,4 +84,101 @@
 			}
 		}
 	}
+
+
+// =====================================
+/* Cardboard Cutout - Override Styles */
+// =====================================
+	&.cardboard-cutouts {
+		.gallery-container {
+			grid-template-columns: repeat(12, 1fr);
+			grid-template-rows: 230px 320px 320px 320px 280px;
+
+			@include bp(s) {
+				grid-template-columns: 1fr;
+				grid-template-rows: 1fr;
+			}
+		}
+
+		img {
+			object-fit: cover;
+			width: 100%;
+			height: 100%;
+		}
+
+		// Shared image styles
+		@for $i from 1 through 12 {
+			.img-#{$i} {
+				@include bp(s) {
+					grid-column-end: span 1;
+					max-width: 350px;
+					justify-self: center;
+				}
+			}
+		}
+
+		// Targeted image positioning
+		.img-1 {
+			grid-column-end: span 4;
+		}
+
+		.img-2 {
+			grid-column-end: span 4;
+			img {
+				object-position: 30% 50%;
+			}
+		}
+
+		.img-3 {
+			grid-column-end: span 4;
+		}
+
+		.img-4 {
+			grid-column-end: span 5;
+			img {
+				object-position: 60% 50%;
+			}
+		}
+
+		.img-5 {
+			grid-column-end: span 7;
+		}
+
+		.img-6 {
+			grid-column-end: span 6;
+			img {
+				object-position: 80% 50%;
+			}
+		}
+
+		.img-7 {
+			grid-column-end: span 6;
+		}
+
+		.img-8 {
+			grid-column-end: span 7;
+			img {
+				object-position: 80% 50%;
+			}
+		}
+
+		.img-9 {
+			grid-column-end: span 5;
+			img {
+				object-position: 45% 50%;
+			}
+		}
+
+		.img-10,
+		.img-11 {
+			grid-column-end: span 3;
+		}
+
+		.img-12 {
+			grid-column-end: span 6;
+			img {
+				object-position: 50% 85%;
+			}
+		}
+	}
 }
