@@ -1,0 +1,166 @@
+@use '../utilities/mixins' as *;
+@use '../utilities/colors';
+@use '../utilities/fonts';
+
+
+.portfolio-cards {
+	margin-top: 40px;
+
+	.project-card {
+		padding: 0 32px;
+		margin-left: 30px;
+		border-width: 0 0 0 8px;
+		border-style: solid;
+
+		@include bp(l) {
+			margin-left: 0;
+			padding-right: 0;
+			padding-left: 0;
+			border-width: 0 0 0 0px;
+		}
+
+		// shrink top spacing on first card
+		&:first-of-type .two-col-container {
+			padding-top: 30px;
+
+			@include bp(l) {
+				padding-top: 0;
+				margin-left: 0;
+				padding-right: 0;
+			}
+		}
+
+		// shrink bottom spacing on last card
+		&:last-of-type {
+			.two-col-container {
+				padding-bottom: 10px;
+			}
+
+			hr {
+				opacity: 0;
+			}
+		}
+
+
+		.two-col-container {
+			padding: 50px 0 30px;
+			display: flex;
+			justify-content: space-between;
+
+			@include bp(l) {
+				flex-direction: column;
+				padding-bottom: 24px;
+			}
+		}
+
+
+		// =====================
+		// Left Column
+		// =====================
+		.column-left {
+			display: flex;
+			flex-direction: column;
+			width: 65%;
+			padding-right: 32px;
+
+			@include bp(l) {
+				width: 100%;
+				padding-right: 0;
+			}
+
+			.title {
+				font-family: fonts.$title;
+				font-size: 4.8rem;
+				line-height: 4rem;
+				font-weight: 900;
+				letter-spacing: .1rem;
+				text-transform: uppercase;
+				text-align: left;
+				margin-top: 0;
+				margin-bottom: 16px;
+
+				@include bp(l) {
+					font-size: 4rem;
+					letter-spacing: 0;
+				}
+			}
+
+			img {
+				width: 100%;
+			}
+		}
+
+
+		// =====================
+		// Right Column
+		// =====================
+		.column-right {
+			display: flex;
+			flex-direction: column;
+			width: 35%;
+
+			@include bp(l) {
+				flex-direction: column-reverse;
+				width: 100%;
+			}
+
+			a.btn {
+				width: 196px;
+				margin: 0 auto;
+			}
+
+			button {
+				background-color: colors.$pale-brown;
+				background-image: linear-gradient(colors.$off-white, colors.$pale-brown);
+				cursor: pointer;
+				border: 2px solid colors.$white;
+				border-radius: 12px;
+				color: colors.$brown;
+				font-family: fonts.$title;
+				font-size: 2.2rem;
+				line-height: 3rem;
+				font-weight: 900;
+				text-transform: uppercase;
+				padding: 10px 26px 8px;
+				margin-bottom: 16px;
+				transition: border-color 300ms ease;
+
+				@include bp(l) {
+					margin-bottom: 0;
+				}
+
+				&:hover {
+					border-color: colors.$lt-brown;
+				}
+			}
+
+			.tech-label {
+				color: colors.$lt-brown;
+				font-size: 1.8rem;
+				text-transform: uppercase;
+				margin-bottom: 6px;
+			}
+
+			.tech-block {
+				text-align: center;
+			}
+
+			.description {
+				text-align: justify;
+
+				@include bp(l) {
+					margin-bottom: 0;
+				}
+			}
+
+			ul {
+				margin-top: 0;
+				margin-bottom: 12px;
+			}
+		}
+	}
+
+	hr {
+		margin-bottom: 0;
+	}
+}

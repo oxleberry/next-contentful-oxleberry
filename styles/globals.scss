@@ -5,8 +5,9 @@
 /* Components */
 @use 'components/about-tile';
 @use 'components/creative-card';
-@use 'components/navbar';
 @use 'components/header';
+@use 'components/navbar';
+@use 'components/portfolio-card';
 
 /* About sub-pages */
 @use 'about-pages/comics';
