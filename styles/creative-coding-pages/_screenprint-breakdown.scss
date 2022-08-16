@@ -1,0 +1,411 @@
+@use '../utilities/mixins' as *;
+// @use '../utilities/colors';
+@use '../utilities/fonts';
+
+
+.screenprint-breakdown-page {
+	// Variables
+	$numInkColors: 5;
+	$shirt-color: black;
+
+	// =====================
+	// Containers
+	// =====================
+	&.full-backboard {
+		background-color: #ddd7d2;
+		padding-bottom: 20px;
+	}
+
+	.screenprint-breakdown-container {
+		padding-top: 10px;
+		margin: 0 auto;
+		max-width: 1480px;
+	}
+
+
+	// =====================
+	// Shared Styles
+	// =====================
+	h1, h2, p, li, a, a:hover {
+		color: #48392f;
+	}
+
+	h2, p, a {
+		opacity: .7;
+	}
+
+	h2 {
+		font-family: fonts.$alt-title;
+		font-size: 3.4rem;
+		font-weight: 400;
+		text-align: center;
+		text-transform: uppercase;
+
+		@include bp(s) {
+			font-size: 2.8rem;
+			line-height: 3rem;
+		}
+	}
+
+	.row {
+		display: flex;
+		justify-content: center;
+	}
+
+	.outer-wrapper {
+		padding: 16px;
+		margin-bottom: 50px;
+		background: $shirt-color;
+		box-shadow: 0px 40px 60px -20px rgba(0, 0, 0, 0.3);
+	}
+
+	.inner-border {
+		border: 2px solid #474747;
+	}
+
+	.content-container {
+		margin: 0 auto;
+	}
+
+	.left-col,
+	.right-col {
+		position: relative;
+		width: 50%;
+		margin: 5px;
+		padding: 5px;
+	}
+
+	.tile {
+		left: 0%;
+		top: 0%;
+		position: absolute;
+		height: 100%;
+		width: 100%;
+		background-repeat: no-repeat;
+	}
+
+	.ink-label,
+	.reset-label {
+		font-family: fonts.$sans-serif;
+		font-size: 1.4rem;
+		font-weight: bold;
+		color: black;
+		text-transform: uppercase;
+	}
+
+
+	// =====================
+	// Intro
+	// =====================
+	.intro {
+		.inner-border {
+			background-color: white;
+		}
+
+		.content-container {
+			height: 200px;
+			max-width: 980px;
+		}
+
+		.text-block {
+			width: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+		}
+
+		.image-block {
+			width: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.intro-image {
+			height: 100%;
+			width: 100%;
+			background-size: 200px;
+			background-repeat: no-repeat;
+			background-position: center;
+
+			@include bp(s) {
+				background-size: 175px;
+			}
+		}
+	}
+
+
+	// =====================
+	// Shared Ink Block
+	// =====================
+	.ink-block {
+		button {
+			border-style: none;
+			border-radius: 6px;
+			height: 40px;
+			margin-bottom: 8px;
+			max-width: 100px;
+			width: calc(100% / ($numInkColors + 1));
+
+			&:hover {
+				opacity: 0.6;
+			}
+
+			&.is-pressed {
+				opacity: 0.6;
+				transform: translateY(2px);
+			}
+		}
+
+		.ink-label {
+			@include bp(m) {
+				font-size: 0;
+			}
+		}
+
+		.reset-label {
+			background: rgba(255, 255, 255, 0.2);
+			color: white;
+
+			@include bp(s) {
+				font-weight: lighter;
+				font-size: 1.2rem;
+			}
+		}
+
+		/*INK COLORS - CHANGE THESE PER DESIGN*/
+		.ink-1 {
+			background-color: rgba(255, 255, 255, 0.7);
+		}
+
+		.ink-2 {
+			background-color: rgba(103, 85, 69, 1);
+		}
+
+		.ink-3 {
+			background-color: rgba(201, 178, 128, 1);
+		}
+
+		.ink-4 {
+			background-color: rgba(156, 60, 37, 1);
+		}
+
+		.ink-5 {
+			background-color: rgba(255, 255, 255, 1);
+		}
+	}
+
+
+	// =====================
+	// Color Separations
+	// =====================
+	.color-separation {
+		.instructions {
+			margin: auto;
+			max-width: 680px;
+			padding: 0 20px 45px;
+			text-align: center;
+		}
+
+		.content-container {
+			height: 410px;
+			max-width: 1100px;
+
+			@include bp(m) {
+				height: 250px;
+			}
+
+			@include bp(s) {
+				height: 190px;
+			}
+		}
+
+		.tile {
+			background-size: 350px;
+			background-position: 50% 50%;
+
+			@include bp(m) {
+				background-size: 280px;
+			}
+
+			@include bp(s) {
+				background-size: 200px;
+			}
+		}
+	}
+
+
+	// =====================
+	// Halftone Closeup
+	// =====================
+	.halftone-closeup {
+		.halftone-block {
+			height: 500px;
+
+			@include bp(m) {
+				height: 280px;
+			}
+
+			@include bp(s) {
+				height: 220px;
+			}
+		}
+
+		.tile {
+			background-size: 216%;
+			background-position: 72% 44%;
+		}
+	}
+
+
+	// =====================
+	// Overview
+	// =====================
+	.overview {
+		.overview-label {
+			text-align: center;
+			height: 26px;
+			width: 100%;
+			padding: 4px;
+		}
+
+		.ink-all {
+			color: white;
+			opacity: .8;
+		}
+
+		.overview-block {
+			background-color: #232323;
+		}
+
+		.tile-container {
+			position: relative;
+			height: 140px;
+			width: 100%;
+			margin: 3px;
+			background-color: $shirt-color;
+		}
+
+		.tile {
+			background-size: 112px;
+			background-position: 50% 50%;  /*ADJUSTS THE PLACEMENT*/
+		}
+	}
+
+
+
+	// ========================
+	// Sub Nav to other designs
+	// ========================
+	.more-designs-nav {
+		ul {
+			display: flex;
+			justify-content: flex-end;
+			padding: 0 22px 0 16px;
+		}
+
+		li {
+			padding: 0 14px;
+		}
+
+		.label,
+		a:link,
+		a:visited {
+			opacity: .7;
+		}
+
+		a:hover {
+			opacity: 1;
+		}
+
+		.deactive {
+			opacity: .4;
+			pointer-events: none;
+		}
+	}
+
+
+	// ========================
+	// Animations
+	// ========================
+	.slide-right {
+		animation: slide-right 1.5s ease-in-out 1 forwards;
+	}
+
+	.slide-left {
+		animation: slide-left 1.5s ease-in-out 1 forwards;
+	}
+
+	@keyframes slide-right {
+		0% { transform: translateX(0px); }
+		100% { transform: translateX(102%); }
+	}
+
+	@keyframes slide-left {
+		0% { transform: translateX(102%); }
+		95% { opacity: 1; }
+		100% {
+			transform: translateX(0px);
+			opacity: 0;
+		}
+	}
+}
+
+
+	// ===================================
+	// Images
+	// ===================================
+	.intro-image {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-tee.jpg);
+	}
+
+	.sep-image-all {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-sep-all.png);
+	}
+
+	.sep-image-1 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-sep-1-ub.png);
+		opacity: .8; // underbase
+	}
+
+	.sep-image-2 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-sep-2.png);
+	}
+
+	.sep-image-3 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-sep-3.png);
+	}
+
+	.sep-image-4 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-sep-4.png);
+	}
+
+	.sep-image-5 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-sep-5.png);
+	}
+
+	.halftone-image-all {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-halftone-all.png);
+	}
+
+	.halftone-image-1 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-halftone-1-ub.png);
+		opacity: .8; // underbase
+	}
+
+	.halftone-image-2 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-halftone-2.png);
+	}
+
+	.halftone-image-3 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-halftone-3.png);
+	}
+
+	.halftone-image-4 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-halftone-4.png);
+	}
+
+	.halftone-image-5 {
+		background: url(../../public/creative-coding-pages/screenprint-breakdown/teo/teo-halftone-5.png);
+	}
