@@ -1,9 +1,51 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Header from '../../components/Header'
+import { useRef } from 'react'
+
+
+const data = [
+	{
+		color: "ub"
+	},
+	{
+		color: "7532"
+	},
+	{
+		color: "468"
+	},
+	{
+		color: "174"
+	},
+	{
+		color: "wht"
+	}
+]
 
 
 export default function ScreenprintBreakdown() {
+
+	// Elements =================
+	const sepTileRefs = useRef([]);
+	sepTileRefs.current = [];
+
+	// store Separation Tiles elements
+	function addSepTileRefs(sepTileRef) {
+		if (sepTileRef && !sepTileRefs.current.includes(sepTileRef)) {
+			sepTileRefs.current.push(sepTileRef);
+		}
+	}
+
+
+	// Event Handlers =================
+	function inkBtnClickHandler(event) {
+		console.log('click');
+		console.log('event.target', event.target);
+		const inkNum = event.target.getAttribute('order');
+		sepTileRefs.current[0].classList.add(`sep-image-${inkNum}`);
+		sepTileRefs.current[0].classList.add('slide-right');
+	}
+
 
 	return (
 		<>
@@ -40,21 +82,19 @@ export default function ScreenprintBreakdown() {
 						<p className="instructions">Color Separation is the process of breaking down a design into 12 or less colors to be used for the screen printing. Below is an interactive visual breakdown of a color separated design. <br /><br /><strong>Click</strong> the ink colors button below. The order in which you press down the buttons will represent the order in which the colors are printed in. Experiment with the print order!</p>
 						<div className="outer-wrapper">
 							<div className="ink-block row">
-								<button className="ink-label ink-1" order="1">ub</button>
-								<button className="ink-label ink-2" order="2">7532</button>
-								<button className="ink-label ink-3" order="3">468</button>
-								<button className="ink-label ink-4" order="4">174</button>
-								<button className="ink-label ink-5" order="5">wht</button>
+								{/* Ink buttons */}
+								{data.map((item, idx) =>
+									<button key={`sep-ink-${idx}`} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{item.color}</button>
+								)}
 								<button className="reset-label">reset</button>
 							</div>
 							<div className="sep-block inner-border">
 								<div className="content-container row">
 									<div className="left-col">
-										<div className="tile"></div>
-										<div className="tile"></div>
-										<div className="tile"></div>
-										<div className="tile"></div>
-										<div className="tile"></div>
+										{/* Separation tiles */}
+										{data.map((item, idx) =>
+											<div key={`sep-tile-${idx}`} ref={addSepTileRefs} className={`tile`}></div>
+										)}
 										<div className="tile sep-image-all"></div>
 									</div>
 									<div className="right-col">
