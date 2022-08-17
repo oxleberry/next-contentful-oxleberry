@@ -44,6 +44,27 @@ export default function ScreenprintBreakdown() {
 		const inkNum = event.target.getAttribute('order');
 		sepTileRefs.current[0].classList.add(`sep-image-${inkNum}`);
 		sepTileRefs.current[0].classList.add('slide-right');
+		sepTileRefs.current[0].setAttribute('tile', `sep-image-${inkNum}`);
+	}
+
+	function resetClickHandler() {
+		console.log('reset');
+		sepTileRefs.current.forEach(tile => {
+			// slide left animation
+			if (tile.classList.contains('slide-right')) {
+				tile.classList.remove('slide-right');
+				tile.classList.add('slide-left');
+			}
+			// delay clearing image to view slide left animation
+			setTimeout(() => {
+				if (tile.getAttribute('tile') != null) {
+					const imageId = tile.getAttribute('tile');
+					tile.classList.remove(imageId);
+					tile.setAttribute('tile', null);
+					tile.classList.remove('slide-left');
+				}
+			}, 1510);
+		});
 	}
 
 
@@ -86,14 +107,14 @@ export default function ScreenprintBreakdown() {
 								{data.map((item, idx) =>
 									<button key={`sep-ink-${idx}`} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{item.color}</button>
 								)}
-								<button className="reset-label">reset</button>
+								<button onClick={resetClickHandler} className="reset-label">reset</button>
 							</div>
 							<div className="sep-block inner-border">
 								<div className="content-container row">
 									<div className="left-col">
 										{/* Separation tiles */}
 										{data.map((item, idx) =>
-											<div key={`sep-tile-${idx}`} ref={addSepTileRefs} className={`tile`}></div>
+											<div key={`sep-tile-${idx}`} ref={addSepTileRefs} className={`tile`} tile={null}></div>
 										)}
 										<div className="tile sep-image-all"></div>
 									</div>
