@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import Header from '../../components/Header'
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
 
 
 const data = [
@@ -24,10 +24,21 @@ const data = [
 
 
 export default function ScreenprintBreakdown() {
+	// States =================
+	const [printOrder, setPrintOrder] = useState(0); // number
 
 	// Elements =================
+	const sepInkRefs = useRef([]);
+	sepInkRefs.current = [];
 	const sepTileRefs = useRef([]);
 	sepTileRefs.current = [];
+
+	// store Separation Ink Button elements
+	function addSepInkRefs(sepInkRef) {
+		if (sepInkRef && !sepInkRefs.current.includes(sepInkRef)) {
+			sepInkRefs.current.push(sepInkRef);
+		}
+	}
 
 	// store Separation Tiles elements
 	function addSepTileRefs(sepTileRef) {
@@ -41,10 +52,21 @@ export default function ScreenprintBreakdown() {
 	function inkBtnClickHandler(event) {
 		console.log('click');
 		console.log('event.target', event.target);
+		// if ink button has already been pressed, do nothing
+		if (event.target.classList.contains('is-pressed')) {
+			return;
+		}
+		event.target.classList.add('is-pressed');
+
+		// set and track image
 		const inkNum = event.target.getAttribute('order');
-		sepTileRefs.current[0].classList.add(`sep-image-${inkNum}`);
-		sepTileRefs.current[0].classList.add('slide-right');
-		sepTileRefs.current[0].setAttribute('tile', `sep-image-${inkNum}`);
+		sepTileRefs.current[printOrder].classList.add(`sep-image-${inkNum}`);
+		sepTileRefs.current[printOrder].setAttribute('tile', `sep-image-${inkNum}`);
+		sepTileRefs.current[printOrder].classList.add('slide-right');
+
+		// set print order
+		const nextOrderNum = printOrder + 1;
+		setPrintOrder(nextOrderNum);
 	}
 
 	function resetClickHandler() {
@@ -65,6 +87,13 @@ export default function ScreenprintBreakdown() {
 				}
 			}, 1510);
 		});
+
+		// clear out ink button status
+		sepInkRefs.current.forEach(ink => {
+			ink.classList.remove('is-pressed');
+		});
+
+		setPrintOrder(0);
 	}
 
 
@@ -105,7 +134,7 @@ export default function ScreenprintBreakdown() {
 							<div className="ink-block row">
 								{/* Ink buttons */}
 								{data.map((item, idx) =>
-									<button key={`sep-ink-${idx}`} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{item.color}</button>
+									<button key={`sep-ink-${idx}`} ref={addSepInkRefs} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{item.color}</button>
 								)}
 								<button onClick={resetClickHandler} className="reset-label">reset</button>
 							</div>
