@@ -66,82 +66,71 @@ export default function ScreenprintBreakdown() {
 	}
 
 
+	// Helper Functions =================
+	// animate active ink button
+	function setInkBtn(inkButtons, event) {
+		inkButtons.current.forEach(btn => {
+			if (event.target.getAttribute('order') === btn.getAttribute('order')) {
+				btn.classList.add('is-pressed');
+			}
+		});
+	}
+
+	// clear out ink button
+	function clearInkBtn(inkButtons) {
+		inkButtons.current.forEach(ink => {
+			ink.classList.remove('is-pressed');
+		});
+	}
+
+	// set and track tile image
+	function setTileImage(tiles, num, classPrefix) {
+		tiles.current[printOrder].classList.add(`${classPrefix}-image-${num}`);
+		tiles.current[printOrder].setAttribute('tile', `${classPrefix}-image-${num}`);
+		tiles.current[printOrder].classList.add('slide-right');
+	}
+
+	// clear out tile image
+	function clearImage(tiles) {
+		tiles.current.forEach(tile => {
+			// left slide animation
+			if (tile.classList.contains('slide-right')) {
+				tile.classList.remove('slide-right');
+				tile.classList.add('slide-left');
+			}
+			// delay clearing image till after left slide animation
+			setTimeout(() => {
+				if (tile.getAttribute('tile') != null) {
+					const imageId = tile.getAttribute('tile');
+					tile.classList.remove(imageId);
+					tile.setAttribute('tile', null);
+					tile.classList.remove('slide-left');
+				}
+			}, 1510);
+		});
+	}
+
+
 	// Event Handlers =================
 	function inkBtnClickHandler(event) {
-		console.log('click');
-		console.log('event.target', event.target);
 		// if ink button has already been pressed, do nothing
 		if (event.target.classList.contains('is-pressed')) {
 			return;
 		}
-		sepInkRefs.current.forEach(ink => {
-			if (event.target.getAttribute('order') === ink.getAttribute('order')) {
-				ink.classList.add('is-pressed');
-			}
-		});
-		halftoneInkRefs.current.forEach(ink => {
-			if (event.target.getAttribute('order') === ink.getAttribute('order')) {
-				ink.classList.add('is-pressed');
-			}
-		});
-
-		// set and track image
 		const inkNum = event.target.getAttribute('order');
-		sepTileRefs.current[printOrder].classList.add(`sep-image-${inkNum}`);
-		sepTileRefs.current[printOrder].setAttribute('tile', `sep-image-${inkNum}`);
-		halftoneTileRefs.current[printOrder].classList.add(`halftone-image-${inkNum}`);
-		halftoneTileRefs.current[printOrder].setAttribute('tile', `halftone-image-${inkNum}`);
-		sepTileRefs.current[printOrder].classList.add('slide-right');
-		halftoneTileRefs.current[printOrder].classList.add('slide-right');
-
-		// set print order
+		setInkBtn(sepInkRefs, event);
+		setInkBtn(halftoneInkRefs, event);
+		setTileImage(sepTileRefs, inkNum, 'sep');
+		setTileImage(halftoneTileRefs, inkNum, 'halftone');
 		const nextOrderNum = printOrder + 1;
 		setPrintOrder(nextOrderNum);
 	}
 
 	function resetClickHandler() {
-		console.log('reset');
-		sepTileRefs.current.forEach(tile => {
-			// slide left animation
-			if (tile.classList.contains('slide-right')) {
-				tile.classList.remove('slide-right');
-				tile.classList.add('slide-left');
-			}
-			// delay clearing image to view slide left animation
-			setTimeout(() => {
-				if (tile.getAttribute('tile') != null) {
-					const imageId = tile.getAttribute('tile');
-					tile.classList.remove(imageId);
-					tile.setAttribute('tile', null);
-					tile.classList.remove('slide-left');
-				}
-			}, 1510);
-		});
-		halftoneTileRefs.current.forEach(tile => {
-			// slide left animation
-			if (tile.classList.contains('slide-right')) {
-				tile.classList.remove('slide-right');
-				tile.classList.add('slide-left');
-			}
-			// delay clearing image to view slide left animation
-			setTimeout(() => {
-				if (tile.getAttribute('tile') != null) {
-					const imageId = tile.getAttribute('tile');
-					tile.classList.remove(imageId);
-					tile.setAttribute('tile', null);
-					tile.classList.remove('slide-left');
-				}
-			}, 1510);
-		});
-
-		// clear out ink button status
-		sepInkRefs.current.forEach(ink => {
-			ink.classList.remove('is-pressed');
-		});
-		halftoneInkRefs.current.forEach(ink => {
-			ink.classList.remove('is-pressed');
-		});
-
+		clearImage(sepTileRefs);
+		clearImage(halftoneTileRefs);
+		clearInkBtn(sepInkRefs);
+		clearInkBtn(halftoneInkRefs);
 		setPrintOrder(0);
 	}
 
