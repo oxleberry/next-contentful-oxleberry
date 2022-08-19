@@ -30,8 +30,12 @@ export default function ScreenprintBreakdown() {
 	// Elements =================
 	const sepInkRefs = useRef([]);
 	sepInkRefs.current = [];
+	const halftoneInkRefs = useRef([]);
+	halftoneInkRefs.current = [];
 	const sepTileRefs = useRef([]);
 	sepTileRefs.current = [];
+	const halftoneTileRefs = useRef([]);
+	halftoneTileRefs.current = [];
 
 	// store Separation Ink Button elements
 	function addSepInkRefs(sepInkRef) {
@@ -40,10 +44,24 @@ export default function ScreenprintBreakdown() {
 		}
 	}
 
+	// store Halftone Ink Button elements
+	function addHalftoneInkRefs(halftoneInkRef) {
+		if (halftoneInkRef && !halftoneInkRefs.current.includes(halftoneInkRef)) {
+			halftoneInkRefs.current.push(halftoneInkRef);
+		}
+	}
+
 	// store Separation Tiles elements
 	function addSepTileRefs(sepTileRef) {
 		if (sepTileRef && !sepTileRefs.current.includes(sepTileRef)) {
 			sepTileRefs.current.push(sepTileRef);
+		}
+	}
+
+	// store Halftone Tiles elements
+	function addHalftoneTileRefs(halftoneTileRef) {
+		if (halftoneTileRef && !halftoneTileRefs.current.includes(halftoneTileRef)) {
+			halftoneTileRefs.current.push(halftoneTileRef);
 		}
 	}
 
@@ -56,13 +74,25 @@ export default function ScreenprintBreakdown() {
 		if (event.target.classList.contains('is-pressed')) {
 			return;
 		}
-		event.target.classList.add('is-pressed');
+		sepInkRefs.current.forEach(ink => {
+			if (event.target.getAttribute('order') === ink.getAttribute('order')) {
+				ink.classList.add('is-pressed');
+			}
+		});
+		halftoneInkRefs.current.forEach(ink => {
+			if (event.target.getAttribute('order') === ink.getAttribute('order')) {
+				ink.classList.add('is-pressed');
+			}
+		});
 
 		// set and track image
 		const inkNum = event.target.getAttribute('order');
 		sepTileRefs.current[printOrder].classList.add(`sep-image-${inkNum}`);
 		sepTileRefs.current[printOrder].setAttribute('tile', `sep-image-${inkNum}`);
+		halftoneTileRefs.current[printOrder].classList.add(`halftone-image-${inkNum}`);
+		halftoneTileRefs.current[printOrder].setAttribute('tile', `halftone-image-${inkNum}`);
 		sepTileRefs.current[printOrder].classList.add('slide-right');
+		halftoneTileRefs.current[printOrder].classList.add('slide-right');
 
 		// set print order
 		const nextOrderNum = printOrder + 1;
@@ -87,9 +117,28 @@ export default function ScreenprintBreakdown() {
 				}
 			}, 1510);
 		});
+		halftoneTileRefs.current.forEach(tile => {
+			// slide left animation
+			if (tile.classList.contains('slide-right')) {
+				tile.classList.remove('slide-right');
+				tile.classList.add('slide-left');
+			}
+			// delay clearing image to view slide left animation
+			setTimeout(() => {
+				if (tile.getAttribute('tile') != null) {
+					const imageId = tile.getAttribute('tile');
+					tile.classList.remove(imageId);
+					tile.setAttribute('tile', null);
+					tile.classList.remove('slide-left');
+				}
+			}, 1510);
+		});
 
 		// clear out ink button status
 		sepInkRefs.current.forEach(ink => {
+			ink.classList.remove('is-pressed');
+		});
+		halftoneInkRefs.current.forEach(ink => {
 			ink.classList.remove('is-pressed');
 		});
 
@@ -161,20 +210,18 @@ export default function ScreenprintBreakdown() {
 						<h2>Halftone Closeup</h2>
 							<div className="outer-wrapper">
 								<div className="ink-block row">
-									<button className="ink-label ink-1" order="1">ub</button>
-									<button className="ink-label ink-2" order="2">7532</button>
-									<button className="ink-label ink-3" order="3">468</button>
-									<button className="ink-label ink-4" order="4">174</button>
-									<button className="ink-label ink-5" order="5">wht</button>
-									<button className="reset-label">reset</button>
+									{/* Ink buttons */}
+									{data.map((item, idx) =>
+										<button key={`halftone-ink-${idx}`} ref={addHalftoneInkRefs} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{item.color}</button>
+									)}
+									<button onClick={resetClickHandler} className="reset-label">reset</button>
 								</div>
 								<div className="halftone-block row inner-border">
 									<div className="left-col">
-										<div className="tile"></div>
-										<div className="tile"></div>
-										<div className="tile"></div>
-										<div className="tile"></div>
-										<div className="tile"></div>
+										{/* Halftone tiles */}
+										{data.map((item, idx) =>
+											<div key={`halftone-tile-${idx}`} ref={addHalftoneTileRefs} className={`tile`} tile={null}></div>
+										)}
 										<div className="tile halftone-image-all"></div>
 									</div>
 									<div className="right-col">
