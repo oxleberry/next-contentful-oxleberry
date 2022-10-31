@@ -226,32 +226,22 @@ export default function ScreenprintBreakdown() {
 						<h2>Overview</h2>
 						<div className="outer-wrapper">
 							<div className="ink-block row">
-								<span className="overview-label ink-label ink-all">all</span>
-								<span className="overview-label ink-label ink-1">ub</span>
-								<span className="overview-label ink-label ink-2">7532</span>
-								<span className="overview-label ink-label ink-3">468</span>
-								<span className="overview-label ink-label ink-4">174</span>
-								<span className="overview-label ink-label ink-5">wht</span>
+								<span className="overview-label ink-label ink-all"> all </span>
+								{/* Ink labels */}
+								{data.map((item, idx) =>
+									<span key={`overview-label-${idx}`} className={`overview-label ink-label ink-${idx + 1}`}>{item.color}</span>
+								)}
 							</div>
 							<div className="overview-block row inner-border">
 								<div className="tile-container">
 									<div className="tile sep-image-all"></div>
 								</div>
-								<div className="tile-container">
-									<div className="tile sep-image-1"></div>
-								</div>
-								<div className="tile-container">
-									<div className="tile sep-image-2"></div>
-								</div>
-								<div className="tile-container">
-									<div className="tile sep-image-3"></div>
-								</div>
-								<div className="tile-container">
-									<div className="tile sep-image-4"></div>
-								</div>
-								<div className="tile-container">
-									<div className="tile sep-image-5"></div>
-								</div>
+								{/* Overview tiles */}
+								{data.map((item, idx) =>
+									<div key={`overview-tile-${idx}`} className="tile-container">
+										<div className={`tile sep-image-${idx + 1}`}></div>
+									</div>
+								)}
 							</div>
 						</div>
 					</section>
