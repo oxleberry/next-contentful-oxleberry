@@ -2,28 +2,56 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Header from '../../components/Header'
 import { useState, useRef } from 'react'
+import { createClient } from 'contentful'
 
 
-const data = [
-	{
-		color: "ub"
-	},
-	{
-		color: "7532"
-	},
-	{
-		color: "468"
-	},
-	{
-		color: "174"
-	},
-	{
-		color: "wht"
-	}
-]
+const client = createClient({
+	space: process.env.CONTENTFUL_SPACE_ID,
+	accessToken: process.env.CONTENTFUL_ACCESS_KEY
+});
+
+// Generates all the paths (ie):`/screenprint-breakdown/teotihuacan`
+export async function getStaticPaths() {
+	const res = await client.getEntries({
+		content_type: 'screenprintBreakdown'
+	});
+	const paths = res.items.map(item => {
+		return {
+			params: { slug: item.fields.slug }
+		}
+	});
+	return {
+		paths: paths,
+		fallback: false // if path does not exist will show 404 page
+	};
+}
+
+// Grabs data for each page
+export async function getStaticProps(context) {
+	const res = await client.getEntries({
+		content_type: 'screenprintBreakdown',
+		'fields.slug': context.params.slug // Get data that matches this field (will output an array)
+	});
+	return {
+		props: { screenprints: res.items[0] }
+	};
+}
 
 
-export default function ScreenprintBreakdown() {
+export default function ScreenprintBreakdown({ screenprints }) {
+	const {
+		title,
+		slug,
+		introImage,
+		introDescription,
+		inkColors,
+		sepImageAll,
+		sepImageLayers,
+		halftoneImageAll,
+		halftoneImageLayers
+	} = screenprints.fields;
+
+
 	// States =================
 	const [printOrder, setPrintOrder] = useState(0); // number
 
@@ -83,10 +111,10 @@ export default function ScreenprintBreakdown() {
 		});
 	}
 
-	// set and track tile image
-	function setTileImage(tiles, num, classPrefix) {
-		tiles.current[printOrder].classList.add(`${classPrefix}-image-${num}`);
-		tiles.current[printOrder].setAttribute('tile', `${classPrefix}-image-${num}`);
+	// find image that corresponds to ink
+	function setTileImage(tiles, num, imageLayers) {
+		const layer = imageLayers.filter((item) => item.fields.title.includes(num));
+		tiles.current[printOrder].setAttribute('style', `background-image: url(https:${layer[0].fields.file.url}`);
 		tiles.current[printOrder].classList.add('slide-right');
 	}
 
@@ -100,12 +128,8 @@ export default function ScreenprintBreakdown() {
 			}
 			// delay clearing image till after left slide animation
 			setTimeout(() => {
-				if (tile.getAttribute('tile') != null) {
-					const imageId = tile.getAttribute('tile');
-					tile.classList.remove(imageId);
-					tile.setAttribute('tile', null);
-					tile.classList.remove('slide-left');
-				}
+				tile.removeAttribute('style');
+				tile.classList.remove('slide-left');
 			}, 1510);
 		});
 	}
@@ -120,8 +144,8 @@ export default function ScreenprintBreakdown() {
 		const inkNum = event.target.getAttribute('order');
 		setInkBtn(sepInkRefs, event);
 		setInkBtn(halftoneInkRefs, event);
-		setTileImage(sepTileRefs, inkNum, 'sep');
-		setTileImage(halftoneTileRefs, inkNum, 'halftone');
+		setTileImage(sepTileRefs, inkNum, sepImageLayers);
+		setTileImage(halftoneTileRefs, inkNum, halftoneImageLayers);
 		const nextOrderNum = printOrder + 1;
 		setPrintOrder(nextOrderNum);
 	}
@@ -141,10 +165,9 @@ export default function ScreenprintBreakdown() {
 				<title>Oxleberry | Screenprint</title>
 				<meta name="description" content="Oxleberry Screenprint Breakdown - an interactive visual breakdown of a design by examining the color separation."/>
 			</Head>
-			<main className={`full-backboard screenprint-breakdown-page`}>
+			<main className={`full-backboard screenprint-breakdown-page ${slug}`}>
 				<div className="screenprint-breakdown-container">
-					<Header headline="Teotihuacán Screenprint Breakdown" alt={true}></Header>
-
+				<Header headline={`${title} - Screenprint Breakdown`} alt={true}></Header>
 
 					{/* Intro */}
 					<section className="intro">
@@ -153,10 +176,10 @@ export default function ScreenprintBreakdown() {
 							<div className="inner-border">
 								<div className="content-container row">
 									<div className="text-block">
-										<p>Design from the De Young Museum. <br />Color Separations by Oxleberry.</p>
+										<p dangerouslySetInnerHTML={{__html: introDescription}} />
 									</div>
 									<div className="image-block">
-										<div className="intro-image"></div>
+										<div className="intro-image" style={{backgroundImage: `url(https:${introImage.fields.file.url})`}}></div>
 									</div>
 								</div>
 							</div>
@@ -171,8 +194,8 @@ export default function ScreenprintBreakdown() {
 						<div className="outer-wrapper">
 							<div className="ink-block row">
 								{/* Ink buttons */}
-								{data.map((item, idx) =>
-									<button key={`sep-ink-${idx}`} ref={addSepInkRefs} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{item.color}</button>
+								{inkColors.map((color, idx) =>
+									<button key={`sep-ink-${idx}`} ref={addSepInkRefs} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{color}</button>
 								)}
 								<button onClick={resetClickHandler} className="reset-label">reset</button>
 							</div>
@@ -180,10 +203,10 @@ export default function ScreenprintBreakdown() {
 								<div className="content-container row">
 									<div className="left-col">
 										{/* Separation tiles */}
-										{data.map((item, idx) =>
-											<div key={`sep-tile-${idx}`} ref={addSepTileRefs} className={`tile`} tile={null}></div>
+										{sepImageLayers.map((layer, idx) =>
+											<div key={`sep-tile-${idx}`} ref={addSepTileRefs} className={`tile`}></div>
 										)}
-										<div className="tile sep-image-all"></div>
+										<div className="tile sep-image-all" style={{backgroundImage: `url(https:${sepImageAll.fields.file.url})`}}></div>
 									</div>
 									<div className="right-col">
 										<div className="tile"></div>
@@ -200,18 +223,18 @@ export default function ScreenprintBreakdown() {
 							<div className="outer-wrapper">
 								<div className="ink-block row">
 									{/* Ink buttons */}
-									{data.map((item, idx) =>
-										<button key={`halftone-ink-${idx}`} ref={addHalftoneInkRefs} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{item.color}</button>
+									{inkColors.map((color, idx) =>
+										<button key={`sep-ink-${idx}`} ref={addHalftoneInkRefs} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{color}</button>
 									)}
 									<button onClick={resetClickHandler} className="reset-label">reset</button>
 								</div>
 								<div className="halftone-block row inner-border">
 									<div className="left-col">
 										{/* Halftone tiles */}
-										{data.map((item, idx) =>
-											<div key={`halftone-tile-${idx}`} ref={addHalftoneTileRefs} className={`tile`} tile={null}></div>
+										{halftoneImageLayers.map((item, idx) =>
+											<div key={`halftone-tile-${idx}`} ref={addHalftoneTileRefs} className={`tile`}></div>
 										)}
-										<div className="tile halftone-image-all"></div>
+										<div className="tile halftone-image-all" style={{backgroundImage: `url(https:${halftoneImageAll.fields.file.url})`}}></div>
 									</div>
 									<div className="right-col">
 										<div className="tile"></div>
@@ -228,18 +251,18 @@ export default function ScreenprintBreakdown() {
 							<div className="ink-block row">
 								<span className="overview-label ink-label ink-all"> all </span>
 								{/* Ink labels */}
-								{data.map((item, idx) =>
-									<span key={`overview-label-${idx}`} className={`overview-label ink-label ink-${idx + 1}`}>{item.color}</span>
+								{inkColors.map((color, idx) =>
+									<span key={`overview-label-${idx}`} className={`overview-label ink-label ink-${idx + 1}`}>{color}</span>
 								)}
 							</div>
 							<div className="overview-block row inner-border">
 								<div className="tile-container">
-									<div className="tile sep-image-all"></div>
+									<div className="tile" style={{backgroundImage: `url(https:${sepImageAll.fields.file.url})`}}></div>
 								</div>
 								{/* Overview tiles */}
-								{data.map((item, idx) =>
+								{sepImageLayers.map((layer, idx) =>
 									<div key={`overview-tile-${idx}`} className="tile-container">
-										<div className={`tile sep-image-${idx + 1}`}></div>
+										<div className="tile" style={{backgroundImage: `url(https:${layer.fields.file.url})`}}></div>
 									</div>
 								)}
 							</div>
