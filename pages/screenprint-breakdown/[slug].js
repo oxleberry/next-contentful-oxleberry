@@ -111,9 +111,16 @@ export default function ScreenprintBreakdown({ screenprints }) {
 		});
 	}
 
+	function checkIfUnderbase(layer) {
+		return layer[0].fields.title.includes('ub') ? true : false;
+	}
+
 	// find image that corresponds to ink
 	function setTileImage(tiles, num, imageLayers) {
 		const layer = imageLayers.filter((item) => item.fields.title.includes(num));
+		if (checkIfUnderbase(layer)) {
+			tiles.current[printOrder].classList.add('ub');
+		}
 		tiles.current[printOrder].setAttribute('style', `background-image: url(https:${layer[0].fields.file.url}`);
 		tiles.current[printOrder].classList.add('slide-right');
 	}
@@ -130,6 +137,9 @@ export default function ScreenprintBreakdown({ screenprints }) {
 			setTimeout(() => {
 				tile.removeAttribute('style');
 				tile.classList.remove('slide-left');
+				if (tile.classList.contains('ub')) {
+					tile.classList.remove('ub');
+				}
 			}, 1510);
 		});
 	}

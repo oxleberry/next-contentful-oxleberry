@@ -84,6 +84,10 @@
 		background-repeat: no-repeat;
 	}
 
+	.ub {
+		opacity: .8;
+	}
+
 	.ink-label,
 	.reset-label {
 		font-family: fonts.$sans-serif;
@@ -337,6 +341,10 @@
 		animation: slide-left 1.5s ease-in-out 1 forwards;
 	}
 
+	.ub.slide-left {
+		animation: slide-left-ub 1.5s ease-in-out 1 forwards;
+	}
+
 	@keyframes slide-right {
 		0% { transform: translateX(0px); }
 		100% { transform: translateX(102%); }
@@ -345,6 +353,15 @@
 	@keyframes slide-left {
 		0% { transform: translateX(102%); }
 		95% { opacity: 1; }
+		100% {
+			transform: translateX(0px);
+			opacity: 0;
+		}
+	}
+
+	@keyframes slide-left-ub {
+		0% { transform: translateX(102%); }
+		95% { opacity: .8; }
 		100% {
 			transform: translateX(0px);
 			opacity: 0;
