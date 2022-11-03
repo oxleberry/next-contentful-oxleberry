@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router';
 import Header from '../../components/Header'
 import { useState, useRef } from 'react'
 import { createClient } from 'contentful'
@@ -51,6 +52,7 @@ export default function ScreenprintBreakdown({ screenprints }) {
 		halftoneImageLayers
 	} = screenprints.fields;
 
+	const router = useRouter();
 
 	// States =================
 	const [printOrder, setPrintOrder] = useState(0); // number
@@ -142,6 +144,10 @@ export default function ScreenprintBreakdown({ screenprints }) {
 				}
 			}, 1510);
 		});
+	}
+
+	function checkPath(slug) {
+		return router.query.slug.includes(slug) ? true : false
 	}
 
 
@@ -284,10 +290,10 @@ export default function ScreenprintBreakdown({ screenprints }) {
 					<nav className="more-designs-nav">
 						<ul>
 							<li className="label">SEE MORE DESIGNS:</li>
-							<li><Link href="/screenprint-breakdown/hrb/"><a>Hrb</a></Link></li>
-							<li className="deactive">Teo</li>
-							<li><Link href="/screenprint-breakdown/gor/"><a>Gor</a></Link></li>
-							<li><Link href="/screenprint-breakdown/kis/"><a>Kis</a></Link></li>
+							<li><Link href="/screenprint-breakdown/hot-rod-bunny/"><a className={checkPath('hot-rod-bunny') ? "deactive" : null}>Hrb</a></Link></li>
+							<li><Link href="/screenprint-breakdown/teotihuacan/"><a className={checkPath('teotihuacan') ? "deactive" : null}>Teo</a></Link></li>
+							<li><Link href="/screenprint-breakdown/gorillaz/"><a className={checkPath('gorillaz') ? "deactive" : null}>Gor</a></Link></li>
+							<li><Link href="/screenprint-breakdown/kiss/"><a className={checkPath('kiss') ? "deactive" : null}>Kiss</a></Link></li>
 						</ul>
 					</nav>
 
