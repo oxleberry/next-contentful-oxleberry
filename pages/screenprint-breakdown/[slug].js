@@ -211,9 +211,17 @@ export default function ScreenprintBreakdown({ screenprints }) {
 							<div className="ink-block row">
 								{/* Ink buttons */}
 								{inkColors.map((color, idx) =>
-									<button key={`sep-ink-${idx}`} ref={addSepInkRefs} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{color}</button>
+									<button
+										key={`sep-ink-${idx}`}
+										ref={addSepInkRefs}
+										onClick={inkBtnClickHandler}
+										className={`ink-label ink-${idx + 1}`}
+										order={idx + 1}
+										style={{width: `calc(100% / (${inkColors.length} + 1))`}}>
+											{color}
+									</button>
 								)}
-								<button onClick={resetClickHandler} className="reset-label">reset</button>
+								<button onClick={resetClickHandler} className="reset-label" style={{width: `calc(100% / (${inkColors.length} + 1))`}}>reset</button>
 							</div>
 							<div className="sep-block inner-border">
 								<div className="content-container row">
@@ -240,14 +248,22 @@ export default function ScreenprintBreakdown({ screenprints }) {
 								<div className="ink-block row">
 									{/* Ink buttons */}
 									{inkColors.map((color, idx) =>
-										<button key={`sep-ink-${idx}`} ref={addHalftoneInkRefs} onClick={inkBtnClickHandler} className={`ink-label ink-${idx + 1}`} order={idx + 1}>{color}</button>
+										<button
+											key={`sep-ink-${idx}`}
+											ref={addHalftoneInkRefs}
+											onClick={inkBtnClickHandler}
+											className={`ink-label ink-${idx + 1}`}
+											order={idx + 1}
+											style={{width: `calc(100% / (${inkColors.length} + 1))`}}>
+												{color}
+										</button>
 									)}
-									<button onClick={resetClickHandler} className="reset-label">reset</button>
+									<button onClick={resetClickHandler} className="reset-label" style={{width: `calc(100% / (${inkColors.length} + 1))`}}>reset</button>
 								</div>
 								<div className="halftone-block row inner-border">
 									<div className="left-col">
 										{/* Halftone tiles */}
-										{halftoneImageLayers.map((item, idx) =>
+										{halftoneImageLayers.map((layer, idx) =>
 											<div key={`halftone-tile-${idx}`} ref={addHalftoneTileRefs} className={`tile`}></div>
 										)}
 										<div className="tile halftone-image-all" style={{backgroundImage: `url(https:${halftoneImageAll.fields.file.url})`}}></div>

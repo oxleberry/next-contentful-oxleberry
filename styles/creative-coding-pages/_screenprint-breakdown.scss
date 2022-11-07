@@ -5,7 +5,6 @@
 
 .screenprint-breakdown-page {
 	// Variables
-	$numInkColors: 5;
 	$shirt-color: black;
 
 	// =====================
@@ -146,11 +145,10 @@
 	.ink-block {
 		button {
 			border-style: none;
-			border-radius: 6px;
+			border-radius: 8px;
 			height: 40px;
 			margin-bottom: 8px;
-			max-width: 100px;
-			width: calc(100% / ($numInkColors + 1));
+			max-width: 104px;
 
 			&:hover {
 				opacity: 0.6;
@@ -172,31 +170,11 @@
 			background: rgba(255, 255, 255, 0.2);
 			color: white;
 
-			@include bp(s) {
+			@include bp(m) {
 				font-weight: lighter;
 				font-size: 1.2rem;
+				min-width: 60px;
 			}
-		}
-
-		/*INK COLORS - CHANGE THESE PER DESIGN*/
-		.ink-1 {
-			background-color: rgba(255, 255, 255, 0.7);
-		}
-
-		.ink-2 {
-			background-color: rgba(103, 85, 69, 1);
-		}
-
-		.ink-3 {
-			background-color: rgba(201, 178, 128, 1);
-		}
-
-		.ink-4 {
-			background-color: rgba(156, 60, 37, 1);
-		}
-
-		.ink-5 {
-			background-color: rgba(255, 255, 255, 1);
 		}
 	}
 
@@ -365,6 +343,32 @@
 		100% {
 			transform: translateX(0px);
 			opacity: 0;
+		}
+	}
+
+
+	// ===================================
+	// Teotihuacan Style Overrides
+	// ===================================
+	&.teotihuacan {
+		.ink-1 {
+			background-color: rgba(255, 255, 255, 0.7);
+		}
+
+		.ink-2 {
+			background-color: rgba(103, 85, 69, 1);
+		}
+
+		.ink-3 {
+			background-color: rgba(201, 178, 128, 1);
+		}
+
+		.ink-4 {
+			background-color: rgba(156, 60, 37, 1);
+		}
+
+		.ink-5 {
+			background-color: rgba(255, 255, 255, 1);
 		}
 	}
 }
