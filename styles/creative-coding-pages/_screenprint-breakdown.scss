@@ -271,7 +271,7 @@
 
 		.tile {
 			background-size: 112px;
-			background-position: 50% 50%;  /*ADJUSTS THE PLACEMENT*/
+			background-position: 50% 50%;
 		}
 	}
 
@@ -369,6 +369,56 @@
 
 		.ink-5 {
 			background-color: rgba(255, 255, 255, 1);
+		}
+	}
+
+
+	// ===================================
+	// Hot Rod Bunny Style Overrides
+	// ===================================
+	&.hot-rod-bunny {
+		.ink-1 {
+			background-color: rgba(255, 255, 255, 0.7);
+		}
+
+		.ink-2 {
+			background-color: rgba(147, 121, 208, 1);
+		}
+
+		.ink-3 {
+			background-color: rgba(232, 30, 117, 1);
+		}
+
+		.ink-4 {
+			background-color: rgba(255, 111, 32, 1);
+		}
+
+		.ink-5 {
+			background-color: rgba(255, 255, 255, 1);
+		}
+
+		.intro-image {
+			background-size: 190px;
+		}
+
+		.color-separation .tile {
+			background-size: 500px;
+
+			@include bp(m) {
+				background-size: 320px;
+			}
+
+			@include bp(s) {
+				background-size: 180px;
+			}
+		}
+
+		.halftone-closeup .tile {
+			background-position: 60% 29%;
+		}
+
+		.overview .tile {
+			background-size: 175px;
 		}
 	}
 }
