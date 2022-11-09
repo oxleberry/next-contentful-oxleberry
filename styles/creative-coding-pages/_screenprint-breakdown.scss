@@ -5,7 +5,16 @@
 
 .screenprint-breakdown-page {
 	// Variables
-	$shirt-color: black;
+	--shirt-color: black;
+	--inner-border-color: #474747;
+	--overview-tile-border-color: #232323;
+
+	&.gorillaz {
+		--shirt-color: #f3f1f3;
+		--inner-border-color: #b7b5b2;
+		--overview-tile-border-color: #e0e0e0;
+	}
+
 
 	// =====================
 	// Containers
@@ -54,12 +63,12 @@
 	.outer-wrapper {
 		padding: 16px;
 		margin-bottom: 50px;
-		background: $shirt-color;
+		background: var(--shirt-color);
 		box-shadow: 0px 40px 60px -20px rgba(0, 0, 0, 0.3);
 	}
 
 	.inner-border {
-		border: 2px solid #474747;
+		border: 2px solid var(--inner-border-color);
 	}
 
 	.content-container {
@@ -72,6 +81,16 @@
 		width: 50%;
 		margin: 5px;
 		padding: 5px;
+		background-color: var(--shirt-color);
+
+		@include bp(s) {
+			margin: 2px;
+		}
+	}
+
+	// display over right col during animation
+	.left-col .tile {
+		z-index: 1;
 	}
 
 	.tile {
@@ -116,6 +135,7 @@
 			justify-content: center;
 			align-items: center;
 			text-align: center;
+			padding-left: 20px;
 		}
 
 		.image-block {
@@ -192,7 +212,6 @@
 
 		.content-container {
 			height: 410px;
-			max-width: 1100px;
 
 			@include bp(m) {
 				height: 250px;
@@ -236,7 +255,7 @@
 
 		.tile {
 			background-size: 216%;
-			background-position: 72% 44%;
+			background-position: 50% 50%;
 		}
 	}
 
@@ -258,7 +277,7 @@
 		}
 
 		.overview-block {
-			background-color: #232323;
+			background-color: var(--overview-tile-border-color);
 		}
 
 		.tile-container {
@@ -266,7 +285,7 @@
 			height: 140px;
 			width: 100%;
 			margin: 3px;
-			background-color: $shirt-color;
+			background-color: var(--shirt-color);
 		}
 
 		.tile {
@@ -274,7 +293,6 @@
 			background-position: 50% 50%;
 		}
 	}
-
 
 
 	// ========================
@@ -370,6 +388,16 @@
 		.ink-5 {
 			background-color: rgba(255, 255, 255, 1);
 		}
+
+		.color-separation {
+			.content-container {
+				max-width: 1100px;
+			}
+		}
+
+		.halftone-closeup .tile {
+			background-position: 72% 44%;
+		}
 	}
 
 
@@ -401,15 +429,21 @@
 			background-size: 190px;
 		}
 
-		.color-separation .tile {
-			background-size: 500px;
-
-			@include bp(m) {
-				background-size: 320px;
+		.color-separation {
+			.content-container {
+				max-width: 1000px;
 			}
 
-			@include bp(s) {
-				background-size: 180px;
+			.tile {
+				background-size: 500px;
+
+				@include bp(m) {
+					background-size: 320px;
+				}
+
+				@include bp(s) {
+					background-size: 180px;
+				}
 			}
 		}
 
@@ -419,6 +453,105 @@
 
 		.overview .tile {
 			background-size: 175px;
+		}
+	}
+
+
+	// ===================================
+	// Gorillaz Style Overrides
+	// ===================================
+	&.gorillaz {
+		&.full-backboard {
+			background-color: #867089;
+		}
+
+		h1, h2, li, a, a:hover, .instructions {
+			color: #ffffff;
+		}
+
+		.ink-1 {
+			background-color: rgba(255, 255, 255, 0.7);
+			border: 1px solid var(--inner-border-color);
+		}
+
+		.ink-2 {
+			background-color: rgba(227, 216, 185, 1);
+		}
+
+		.ink-3 {
+			background-color: rgba(229, 138, 158, 1);
+		}
+
+		.ink-4 {
+			background-color: rgba(41, 212, 199, 1);
+		}
+
+		.ink-5 {
+			background-color: rgba(91, 180, 229, 1);
+		}
+
+		.ink-6 {
+			background-color: rgba(230, 103, 74, 1);
+		}
+
+		.ink-7 {
+			background-color: rgba(202, 94, 155, 1);
+		}
+
+		.ink-8 {
+			background-color: rgba(149, 81, 158, 1);
+		}
+
+		.ink-9 {
+			background-color: rgba(87, 81, 123, 1);
+		}
+
+		.ink-10 {
+			background-color: rgba(232, 30, 117, 1);
+		}
+
+		.ink-11 {
+			background-color: rgba(0, 0, 0, 1);
+			color: white;
+		}
+
+		.ink-all {
+			color: rgba(0, 0, 0, 1);
+		}
+
+		.reset-label {
+			background: rgba(0, 0, 0, 0.4);
+		}
+
+		.intro-image {
+			background-size: 145px;
+		}
+
+		.color-separation {
+			.content-container {
+				max-width: 880px;
+			}
+
+			.tile {
+				background-size: 300px;
+
+				@include bp(m) {
+					background-size: 180px;
+				}
+
+				@include bp(s) {
+					background-size: 140px;
+				}
+			}
+		}
+
+		.halftone-closeup .tile {
+			background-size: 280%;
+			background-position: 53% 22%;
+		}
+
+		.overview .tile {
+			background-size: 100px;
 		}
 	}
 }
