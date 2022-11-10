@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import Header from '../../components/Header'
-import { useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { createClient } from 'contentful'
 
 
@@ -146,6 +146,19 @@ export default function ScreenprintBreakdown({ screenprints }) {
 		});
 	}
 
+	// reset images on new design page
+	function quickClearImage(tiles) {
+		tiles.current.forEach(tile => {
+			if (tile.classList.contains('slide-right')) {
+				tile.classList.remove('slide-right');
+			}
+			tile.removeAttribute('style');
+			if (tile.classList.contains('ub')) {
+				tile.classList.remove('ub');
+			}
+		});
+	}
+
 	function checkPath(slug) {
 		return router.query.slug.includes(slug) ? true : false
 	}
@@ -173,6 +186,28 @@ export default function ScreenprintBreakdown({ screenprints }) {
 		clearInkBtn(halftoneInkRefs);
 		setPrintOrder(0);
 	}
+
+	// clear page after switching to another design page
+	function resetNewDesign() {
+		quickClearImage(sepTileRefs);
+		quickClearImage(halftoneTileRefs);
+		clearInkBtn(sepInkRefs);
+		clearInkBtn(halftoneInkRefs);
+		setPrintOrder(0);
+	}
+
+
+	// Initial Page Load =================
+	useEffect(() => {
+		// https://nextjs.org/docs/api-reference/next/router#routerevents
+		router.events.on('routeChangeComplete', resetNewDesign)
+
+		// If the component is unmounted, unsubscribe from the event
+		return () => {
+			router.events.off('routeChangeComplete', resetNewDesign)
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 
 	return (
