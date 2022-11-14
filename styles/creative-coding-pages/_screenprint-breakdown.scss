@@ -369,6 +369,14 @@
 	// Teotihuacan Style Overrides
 	// ===================================
 	&.teotihuacan {
+		&.full-backboard {
+			background-color: #80472e;
+		}
+
+		h1, h2, li, a, a:hover, .instructions {
+			color: #ffffff;
+		}
+
 		.ink-1 {
 			background-color: rgba(255, 255, 255, 0.7);
 		}
