@@ -56,6 +56,8 @@ export default function ScreenprintBreakdown({ screenprints }) {
 
 	// States =================
 	const [printOrder, setPrintOrder] = useState(0); // number
+	// tracks if the reset button was the last pressed
+	const [hasReset, setHasReset] = useState(true); // boolean
 
 	// Elements =================
 	const sepInkRefs = useRef([]);
@@ -177,23 +179,32 @@ export default function ScreenprintBreakdown({ screenprints }) {
 		setTileImage(halftoneTileRefs, inkNum, halftoneImageLayers);
 		const nextOrderNum = printOrder + 1;
 		setPrintOrder(nextOrderNum);
+		if (hasReset) {
+			setHasReset(false);
+		}
 	}
 
 	function resetClickHandler() {
-		clearImage(sepTileRefs);
-		clearImage(halftoneTileRefs);
-		clearInkBtn(sepInkRefs);
-		clearInkBtn(halftoneInkRefs);
-		setPrintOrder(0);
+		if (hasReset === false) { // preventing multiple resets
+			clearImage(sepTileRefs);
+			clearImage(halftoneTileRefs);
+			clearInkBtn(sepInkRefs);
+			clearInkBtn(halftoneInkRefs);
+			setPrintOrder(0);
+			setHasReset(true);
+		}
 	}
 
 	// clear page after switching to another design page
 	function resetNewDesign() {
-		quickClearImage(sepTileRefs);
-		quickClearImage(halftoneTileRefs);
-		clearInkBtn(sepInkRefs);
-		clearInkBtn(halftoneInkRefs);
-		setPrintOrder(0);
+		if (hasReset === false) { // preventing multiple resets
+			quickClearImage(sepTileRefs);
+			quickClearImage(halftoneTileRefs);
+			clearInkBtn(sepInkRefs);
+			clearInkBtn(halftoneInkRefs);
+			setPrintOrder(0);
+			setHasReset(true);
+		}
 	}
 
 
@@ -207,7 +218,7 @@ export default function ScreenprintBreakdown({ screenprints }) {
 			router.events.off('routeChangeComplete', resetNewDesign)
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [hasReset]);
 
 
 	return (
