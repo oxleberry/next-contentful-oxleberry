@@ -2,7 +2,45 @@ import Head from 'next/head'
 import Header from '../../components/Header'
 
 
-const SlidePuzzle = () => {
+export default function SlidePuzzle() {
+	// Variables =================
+	const solvedBoard = [
+		'tile-1',
+		'tile-2',
+		'tile-3',
+		'tile-4',
+		'tile-5',
+		'tile-6',
+		'tile-7',
+		'tile-8',
+		'tile-9',
+		'tile-10',
+		'tile-11',
+		'tile-12',
+		'tile-13',
+		'tile-14',
+		'tile-15',
+		'tile-blank'
+	];
+
+	// Tracking the board tiles in play
+	let puzzleBoard = [...solvedBoard]; // will duplicate the original array
+
+
+	// ============================
+	// Setup Functions
+	// ============================
+	// returns: button elements to be displayed
+	function displayTiles() {
+		const tilePieces = puzzleBoard.map((tileName, idx) => {
+			return (
+				<button key={idx} className={`tile ${tileName}`} id={idx}></button>
+			)
+		});
+		return tilePieces;
+	}
+
+
 	return (
 		<>
 			<Head>
@@ -17,11 +55,11 @@ const SlidePuzzle = () => {
 				</section>
 				<section className="slide-puzzle-container">
 					<div className="reference-image"></div>
-					<div className="puzzle-board"></div>
+					<div className="puzzle-board">
+						{displayTiles()}
+					</div>
 				</section>
 			</main>
 		</>
 	);
 }
-
-export default SlidePuzzle;

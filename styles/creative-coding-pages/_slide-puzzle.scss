@@ -4,6 +4,9 @@
 
 
 .slide-puzzle-page {
+	// Variables
+	$puzzle-bg-color: #0a0a0a;
+
 	.slide-puzzle-container {
 		display: grid;
 		grid-template-columns: 410px 410px;
@@ -14,21 +17,96 @@
 		.reference-image {
 			width: 100%;
 			height: 410px;
+			// background: url('/slide-puzzle/narwhal-animated.gif');
 			background: url('/slide-puzzle/narwhal-static.jpg');
 			background-position: 50%;
 			background-size: contain;
 			background-repeat: no-repeat;
+			border: 10px solid transparent;
 		}
 
 		.puzzle-board {
 			display: grid;
 			grid-template-columns: 1fr 1fr 1fr 1fr;
 			gap: 2px;
-			width: 100%;
-			background-color: black;
+			width: 426px;
+			background-color: $puzzle-bg-color;
+			border: 10px solid $puzzle-bg-color;
 		}
 	}
 
+
+	// ===========================
+	// Tile
+	// ===========================
+	.tile {
+		width: 100px;
+		height: 100px;
+		background-repeat: no-repeat;
+		border: none;
+		// background: url('/slide-puzzle/narwhal-animated.gif');
+		background: url('/slide-puzzle/narwhal-static.jpg');
+		background-size: 400% 400%;
+	}
+
+	.tile-blank {
+		background: none;
+		background-color: $puzzle-bg-color;
+	}
+
+	.tile-1 {
+		background-position: 0 0;
+	}
+	.tile-2 {
+		background-position: 33.33% 0;
+	}
+	.tile-3 {
+		background-position: 66.66% 0;
+	}
+	.tile-4 {
+		background-position: 100% 0;
+	}
+	.tile-5 {
+		background-position: 0 33.33%;
+	}
+	.tile-6 {
+		background-position: 33.33% 33.33%;
+	}
+	.tile-7 {
+		background-position: 66.66% 33.33%;
+	}
+	.tile-8 {
+		background-position: 100% 33.33%;
+	}
+	.tile-9 {
+		background-position: 0% 66.66%;
+	}
+	.tile-10 {
+		background-position: 33.33% 66.66%;
+	}
+	.tile-11 {
+		background-position: 66.66% 66.66%;
+	}
+	.tile-12 {
+		background-position: 100% 66.66%;
+	}
+	.tile-13 {
+		background-position: 0% 100%;
+	}
+	.tile-14 {
+		background-position: 33.33% 100%;
+	}
+	.tile-15 {
+		background-position: 66.66% 100%;
+	}
+	.tile-16 {
+		background-position: 100% 100%;
+	}
+
+
+	// ===========================
+	// Intro
+	// ===========================
 	.description {
 		text-align: center;
 		padding: 0 20px;
