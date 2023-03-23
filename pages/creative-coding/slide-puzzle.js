@@ -49,10 +49,30 @@ export default function SlidePuzzle() {
 			</Head>
 			<main className="full-backboard slide-puzzle-page">
 				<section className="intro">
-					<Header headline="Slide Puzzle" alt={true}></Header>
-					<p className="description">Slide the tiles to restore the original image. Customize the puzzle by updating the setting levels and uploading your own image!</p>
-					<p className="description">This game has been adapted from The Coding Train - <a href="https://www.youtube.com/watch?v=uQZLzhrzEs4">Coding Challenge 165</a> tutorial video.</p>
+					<div className="text-block">
+						<Header headline="Slide Puzzle" alt={true}></Header>
+						<p className="description">Slide the tiles to restore the original image. Customize the puzzle by updating the setting levels and uploading your own image!</p>
+						<p className="description">This game has been adapted from The Coding Train - <a href="https://www.youtube.com/watch?v=uQZLzhrzEs4">Coding Challenge 165</a> tutorial video.</p>
+					</div>
+					<div className="puzzle-settings">
+						<div className="row">
+							<label htmlFor="shuffle-level">Shuffle difficulty:&nbsp;</label>
+							<input type="range" id="shuffle-level" name="shuffle-level" className="shuffle-level" min="10" max="500" value="10"></input>
+						</div>
+						<div className="row">
+							<label htmlFor="cols-input">Columns:&nbsp;&nbsp;</label>
+							<input type="number" min="2" max="8" id="cols-input" name="cols-input" className="cols-input" value="4"></input>
+						</div>
+						<div className="row">
+							<label htmlFor="custom-rows-num"># of rows:</label>
+							<input type="number" min="2" max="8" id="rows-input" name="rows-input" className="rows-input" value="4"></input>
+						</div>
+						<div className="row">
+							<input id="custom-image" type="file" name="custom-image" accept=".png, .jpg, .jpeg, .gif, .webp"/>
+						</div>
+					</div>
 				</section>
+
 				<section className="slide-puzzle-container">
 					<div className="reference-image"></div>
 					<div className="puzzle-board">

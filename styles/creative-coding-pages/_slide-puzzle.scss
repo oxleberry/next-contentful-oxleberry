@@ -12,7 +12,7 @@
 		grid-template-columns: 410px 410px;
 		gap: 30px;
 		justify-content: center;
-		padding: 20px 50px 50px;
+		padding: 0 50px 50px;
 
 		.reference-image {
 			width: 100%;
@@ -31,7 +31,7 @@
 			gap: 2px;
 			width: 426px;
 			background-color: $puzzle-bg-color;
-			border: 10px solid $puzzle-bg-color;
+			border: 10px solid transparent;
 		}
 	}
 
@@ -104,11 +104,54 @@
 	}
 
 
-	// ===========================
+	// ==============================
 	// Intro
+	// ==============================
+	.intro {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 20px;
+
+		.text-block {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.alt-header h1 {
+			text-align: left;
+			margin-top: 10px;
+			margin-bottom: 0;
+		}
+
+		.description {
+			padding: 0 20px;
+		}
+
+		p+p {
+			margin-top: 0;
+		}
+	}
+
+
 	// ===========================
-	.description {
+	// Custom Puzzle Settings
+	// ===========================
+	.puzzle-settings {
+		display: flex;
+		flex-direction: column;
+		border: 1px solid colors.$brown;
 		text-align: center;
-		padding: 0 20px;
+		padding: 20px;
+
+		.row {
+			margin-bottom: 5px;
+		}
+
+		.shuffle-level {
+			width: 86px;
+		}
 	}
 }
