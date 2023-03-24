@@ -27,7 +27,6 @@
 
 		.puzzle-board {
 			display: grid;
-			grid-template-columns: 1fr 1fr 1fr 1fr;
 			gap: 2px;
 			width: 426px;
 			background-color: $puzzle-bg-color;
@@ -40,7 +39,6 @@
 	// Tile
 	// ===========================
 	.tile {
-		width: 100px;
 		height: 100px;
 		background-repeat: no-repeat;
 		border: none;

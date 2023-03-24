@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
+import { useEffect, useState, useRef } from 'react'
 
 
 export default function SlidePuzzle() {
@@ -26,6 +27,9 @@ export default function SlidePuzzle() {
 	// Tracking the board tiles in play
 	let puzzleBoard = [...solvedBoard]; // will duplicate the original array
 
+	// States =================
+	const [colsCount, setColsCount] = useState(4);
+
 
 	// ============================
 	// Setup Functions
@@ -34,10 +38,21 @@ export default function SlidePuzzle() {
 	function displayTiles() {
 		const tilePieces = puzzleBoard.map((tileName, idx) => {
 			return (
-				<button key={idx} className={`tile ${tileName}`} id={idx}></button>
+				<button key={idx} className={`tile ${tileName}`} id={idx} style={{width: `calc(400px / ${colsCount})`}}></button>
 			)
 		});
 		return tilePieces;
+	}
+
+
+	// =================================
+	// Custom Settings Event Listeners
+	// =================================
+	function colHandler(event) {
+		console.log('event.target.value', event.target.value);
+		console.log('colsCount', colsCount);
+		const value = event.target.value;
+		setColsCount(value);
 	}
 
 
@@ -61,7 +76,7 @@ export default function SlidePuzzle() {
 						</div>
 						<div className="row">
 							<label htmlFor="cols-input">Columns:&nbsp;&nbsp;</label>
-							<input type="number" min="2" max="8" id="cols-input" name="cols-input" className="cols-input" value="4"></input>
+							<input onChange={colHandler} type="number" min="2" max="8" id="cols-input" name="cols-input" className="cols-input" value={colsCount}></input>
 						</div>
 						<div className="row">
 							<label htmlFor="custom-rows-num"># of rows:</label>
@@ -75,7 +90,7 @@ export default function SlidePuzzle() {
 
 				<section className="slide-puzzle-container">
 					<div className="reference-image"></div>
-					<div className="puzzle-board">
+					<div className="puzzle-board" style={{gridTemplateColumns: `repeat(${colsCount}, 1fr)`}}>
 						{displayTiles()}
 					</div>
 				</section>
