@@ -5,40 +5,40 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function SlidePuzzle() {
 	// Variables =================
-	const solvedBoard = [
-		'tile-1',
-		'tile-2',
-		'tile-3',
-		'tile-4',
-		'tile-5',
-		'tile-6',
-		'tile-7',
-		'tile-8',
-		'tile-9',
-		'tile-10',
-		'tile-11',
-		'tile-12',
-		'tile-13',
-		'tile-14',
-		'tile-15',
-		'tile-blank'
-	];
-
-	// Tracking the board tiles in play
-	let puzzleBoard = [...solvedBoard]; // will duplicate the original array
+	const blankTile = 'tile-blank';
 
 	// States =================
+	const [solvedBoard, setSolvedBoard] = useState([]); // array of object tiles in solved board order
+	const [puzzleBoard, setPuzzleBoard] = useState([]); // array of object tiles for tracking the position of the tiles on the board
 	const [colsCount, setColsCount] = useState(4);
+	const [rowsCount, setRowsCount] = useState(4);
 
 
 	// ============================
 	// Setup Functions
 	// ============================
+	// Create tiles to fill the board
+	function createTiles() {
+		let tiles = [];
+		const totalNumTiles = colsCount * rowsCount;
+		for (let i = 1; i < totalNumTiles; i++) {
+			tiles.push(`tile-${i}`)
+		}
+		tiles.push(blankTile);
+		setSolvedBoard(tiles);
+		setPuzzleBoard(tiles);
+	}
+
 	// returns: button elements to be displayed
 	function displayTiles() {
-		const tilePieces = puzzleBoard.map((tileName, idx) => {
+		const tilePieces = puzzleBoard.map((tile, idx) => {
 			return (
-				<button key={idx} className={`tile ${tileName}`} id={idx} style={{width: `calc(400px / ${colsCount})`}}></button>
+				<button key={idx} className={`tile ${tile}`} id={idx}
+					style={{
+						width: `calc(400px / ${colsCount})`,
+						height: `calc(400px / ${rowsCount})`
+					}}>
+				</button>
 			)
 		});
 		return tilePieces;
@@ -49,11 +49,21 @@ export default function SlidePuzzle() {
 	// Custom Settings Event Listeners
 	// =================================
 	function colHandler(event) {
-		console.log('event.target.value', event.target.value);
-		console.log('colsCount', colsCount);
-		const value = event.target.value;
-		setColsCount(value);
+		setColsCount(event.target.value);
 	}
+
+	function rowHandler(event) {
+		setRowsCount(event.target.value);
+	}
+
+
+	// ============================
+	// Event Listeners
+	// ============================
+	useEffect(() => {
+		createTiles();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [colsCount, rowsCount]);
 
 
 	return (
@@ -68,6 +78,7 @@ export default function SlidePuzzle() {
 						<Header headline="Slide Puzzle" alt={true}></Header>
 						<p className="description">Slide the tiles to restore the original image. Customize the puzzle by updating the setting levels and uploading your own image!</p>
 						<p className="description">This game has been adapted from The Coding Train - <a href="https://www.youtube.com/watch?v=uQZLzhrzEs4">Coding Challenge 165</a> tutorial video.</p>
+						<p className="description">Board: {puzzleBoard}</p>
 					</div>
 					<div className="puzzle-settings">
 						<div className="row">
@@ -79,8 +90,8 @@ export default function SlidePuzzle() {
 							<input onChange={colHandler} type="number" min="2" max="8" id="cols-input" name="cols-input" className="cols-input" value={colsCount}></input>
 						</div>
 						<div className="row">
-							<label htmlFor="custom-rows-num"># of rows:</label>
-							<input type="number" min="2" max="8" id="rows-input" name="rows-input" className="rows-input" value="4"></input>
+							<label htmlFor="rows-input">Rows:&nbsp;&nbsp;</label>
+							<input onChange={rowHandler} type="number" min="2" max="8" id="rows-input" name="rows-input" className="rows-input" value={rowsCount}></input>
 						</div>
 						<div className="row">
 							<input id="custom-image" type="file" name="custom-image" accept=".png, .jpg, .jpeg, .gif, .webp"/>
