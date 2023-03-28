@@ -17,31 +17,67 @@ export default function SlidePuzzle() {
 	// ============================
 	// Setup Functions
 	// ============================
-	// Create tiles to fill the board
-	function createTiles() {
-		let tiles = [];
-		const totalNumTiles = colsCount * rowsCount;
-		for (let i = 1; i < totalNumTiles; i++) {
-			tiles.push(`tile-${i}`)
-		}
-		tiles.push(blankTile);
+	// Setup tiles based on amount of cols & rows
+	function updatePuzzleBoard() {
+		const tileNames = createEmptyTiles();
+		const tiles = createTilesData(tileNames);
 		setSolvedBoard(tiles);
 		setPuzzleBoard(tiles);
 	}
 
+	// Create tiles to fill the board
+	// returns: array of tile names
+	function createEmptyTiles() {
+		let newTileNames = [];
+		const totalNumTiles = colsCount * rowsCount;
+		for (let i = 1; i < totalNumTiles; i++) {
+			newTileNames.push(`tile-${i}`);
+		}
+		// create a blank tile
+		newTileNames.push(blankTile);
+		return newTileNames;
+	}
+
+	// Create tiles with styles data based on puzzle settings
+	// parameters: tileNames = array of strings
+	// returns: array of tile objects
+	function createTilesData(tileNames) {
+		const tiles = tileNames.map((tile, idx) => {
+			const colSize = colsCount * 100;
+			const rowSize = rowsCount * 100;
+			const colStep = 100 / (colsCount - 1);
+			const rowStep = 100 / (rowsCount - 1);
+			const horizPos = colStep * (idx % colsCount);
+			const vertPos = rowStep * (Math.floor(idx / colsCount));
+			return (
+				{
+					key: {idx},
+					name: tile,
+					width: `calc(400px / ${colsCount})`,
+					height: `calc(400px / ${rowsCount})`,
+					backgroundSize: `${colSize}% ${rowSize}%`,
+					backgroundPosition: `${horizPos}% ${vertPos}%`
+				}
+			)
+		});
+		return tiles;
+	}
+
 	// returns: button elements to be displayed
 	function displayTiles() {
-		const tilePieces = puzzleBoard.map((tile, idx) => {
+		const tiles = puzzleBoard.map((tile, idx) => {
 			return (
-				<button key={idx} className={`tile ${tile}`} id={idx}
+				<button key={idx} className={`tile ${tile.name}`} id={idx}
 					style={{
-						width: `calc(400px / ${colsCount})`,
-						height: `calc(400px / ${rowsCount})`
+						width: tile.width,
+						height: tile.height,
+						backgroundSize: tile.backgroundSize,
+						backgroundPosition: tile.backgroundPosition
 					}}>
 				</button>
 			)
 		});
-		return tilePieces;
+		return tiles;
 	}
 
 
@@ -60,8 +96,9 @@ export default function SlidePuzzle() {
 	// ============================
 	// Event Listeners
 	// ============================
+	// Custom settings updates
 	useEffect(() => {
-		createTiles();
+		updatePuzzleBoard();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [colsCount, rowsCount]);
 
@@ -78,7 +115,6 @@ export default function SlidePuzzle() {
 						<Header headline="Slide Puzzle" alt={true}></Header>
 						<p className="description">Slide the tiles to restore the original image. Customize the puzzle by updating the setting levels and uploading your own image!</p>
 						<p className="description">This game has been adapted from The Coding Train - <a href="https://www.youtube.com/watch?v=uQZLzhrzEs4">Coding Challenge 165</a> tutorial video.</p>
-						<p className="description">Board: {puzzleBoard}</p>
 					</div>
 					<div className="puzzle-settings">
 						<div className="row">
