@@ -7,11 +7,15 @@ export default function SlidePuzzle() {
 	// Variables =================
 	const blankTile = 'tile-blank';
 
+	// Elements =================
+	const puzzleImageRef = useRef(null);
+
 	// States =================
 	const [solvedBoard, setSolvedBoard] = useState([]); // array of object tiles in solved board order
 	const [puzzleBoard, setPuzzleBoard] = useState([]); // array of object tiles for tracking the position of the tiles on the board
 	const [colsCount, setColsCount] = useState(4);
 	const [rowsCount, setRowsCount] = useState(4);
+	const [puzzleWidth, setPuzzleWidth] = useState(426);
 
 
 	// ============================
@@ -53,8 +57,6 @@ export default function SlidePuzzle() {
 				{
 					key: {idx},
 					name: tile,
-					width: `calc(400px / ${colsCount})`,
-					height: `calc(400px / ${rowsCount})`,
 					backgroundSize: `${colSize}% ${rowSize}%`,
 					backgroundPosition: `${horizPos}% ${vertPos}%`
 				}
@@ -69,8 +71,6 @@ export default function SlidePuzzle() {
 			return (
 				<button key={idx} className={`tile ${tile.name}`} id={idx}
 					style={{
-						width: tile.width,
-						height: tile.height,
 						backgroundSize: tile.backgroundSize,
 						backgroundPosition: tile.backgroundPosition
 					}}>
@@ -78,6 +78,13 @@ export default function SlidePuzzle() {
 			)
 		});
 		return tiles;
+	}
+
+	function setPuzzleContainerSize() {
+		const imageWidth = puzzleImageRef.current.offsetWidth;
+		const border = 20;
+		let puzzleWidth = imageWidth + border;
+		setPuzzleWidth(puzzleWidth);
 	}
 
 
@@ -96,6 +103,11 @@ export default function SlidePuzzle() {
 	// ============================
 	// Event Listeners
 	// ============================
+	// Initial page load
+	useEffect(() => {
+		setPuzzleContainerSize();
+	}, []);
+
 	// Custom settings updates
 	useEffect(() => {
 		updatePuzzleBoard();
@@ -136,8 +148,22 @@ export default function SlidePuzzle() {
 				</section>
 
 				<section className="slide-puzzle-container">
-					<div className="reference-image"></div>
-					<div className="puzzle-board" style={{gridTemplateColumns: `repeat(${colsCount}, 1fr)`}}>
+					<div className="reference-image">
+						<picture>
+							{/* <source srcSet="/slide-puzzle/narwhal-animated.gif" />
+							<img ref={imageRef} src="/slide-puzzle/narwhal-animated.gif" alt="puzzle art" /> */}
+							{/* <source srcSet="/slide-puzzle/narwhal-static.jpg" />
+							<img ref={puzzleImageRef} src="/slide-puzzle/narwhal-static.jpg" alt="puzzle art" /> */}
+							<source srcSet="/slide-puzzle/at-party.png" />
+							<img ref={puzzleImageRef} src="/slide-puzzle/at-party.png" alt="puzzle art" />
+						</picture>
+					</div>
+
+					<div className="puzzle-board"
+						style={{
+							gridTemplateColumns: `repeat(${colsCount}, 1fr)`,
+							maxWidth: `${puzzleWidth}px`
+						}}>
 						{displayTiles()}
 					</div>
 				</section>

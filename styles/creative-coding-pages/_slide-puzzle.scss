@@ -8,27 +8,32 @@
 	$puzzle-bg-color: #0a0a0a;
 
 	.slide-puzzle-container {
-		display: grid;
-		grid-template-columns: 410px 410px;
+		display: flex;
 		gap: 30px;
-		justify-content: center;
+		max-width: 1400px;
+		margin: 0 auto;
 		padding: 0 50px 50px;
 
 		.reference-image {
-			width: 100%;
-			height: 410px;
-			// background: url('/slide-puzzle/narwhal-animated.gif');
-			background: url('/slide-puzzle/narwhal-static.jpg');
-			background-position: 50%;
-			background-size: contain;
-			background-repeat: no-repeat;
+			width: 48%;
+			align-self: center;
 			border: 10px solid transparent;
+		}
+
+		picture {
+			display: inline-block;
+			width: 100%;
+			text-align: right;
+		}
+
+		img {
+			max-width: 100%;
 		}
 
 		.puzzle-board {
 			display: grid;
 			gap: 2px;
-			width: 426px;
+			width: 48%;
 			background-color: $puzzle-bg-color;
 			border: 10px solid transparent;
 		}
@@ -42,7 +47,8 @@
 		background-repeat: no-repeat;
 		border: none;
 		// background: url('/slide-puzzle/narwhal-animated.gif');
-		background: url('/slide-puzzle/narwhal-static.jpg');
+		// background: url('/slide-puzzle/narwhal-static.jpg');
+		background: url('/slide-puzzle/at-party.png');
 	}
 
 	.tile-blank {
