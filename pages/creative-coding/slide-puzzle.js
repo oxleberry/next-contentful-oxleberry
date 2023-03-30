@@ -15,6 +15,9 @@ export default function SlidePuzzle() {
 	const [puzzleBoard, setPuzzleBoard] = useState([]); // array of object tiles for tracking the position of the tiles on the board
 	const [colsCount, setColsCount] = useState(4);
 	const [rowsCount, setRowsCount] = useState(4);
+	// const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-animated.gif");
+	const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-static.jpg");
+	// const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/at-party.png");
 	const [puzzleWidth, setPuzzleWidth] = useState(426);
 
 
@@ -100,6 +103,27 @@ export default function SlidePuzzle() {
 	}
 
 
+	// Custom image uploads
+	function imageHandler(event) {
+		let imageFile;
+		let reader;
+		let newImage;
+		imageFile = event.target.files[0];
+		if(!imageFile.type.match('image.*')) {
+			alert("This file is not a unsupported image file");
+			return;
+		}
+		reader = new FileReader();
+		reader.addEventListener('load', (function() {
+			return function(event) {
+				newImage = event.target.result;
+				setPuzzleImage(newImage);
+			};
+		})(imageFile), false);
+		reader.readAsDataURL(imageFile);
+	}
+
+
 	// ============================
 	// Event Listeners
 	// ============================
@@ -142,7 +166,7 @@ export default function SlidePuzzle() {
 							<input onChange={rowHandler} type="number" min="2" max="8" id="rows-input" name="rows-input" className="rows-input" value={rowsCount}></input>
 						</div>
 						<div className="row">
-							<input id="custom-image" type="file" name="custom-image" accept=".png, .jpg, .jpeg, .gif, .webp"/>
+							<input id="custom-image" onChange={imageHandler} type="file" name="custom-image" accept=".png, .jpg, .jpeg, .gif, .webp"/>
 						</div>
 					</div>
 				</section>
@@ -151,11 +175,10 @@ export default function SlidePuzzle() {
 					<div className="reference-image">
 						<picture>
 							{/* <source srcSet="/slide-puzzle/narwhal-animated.gif" />
-							<img ref={imageRef} src="/slide-puzzle/narwhal-animated.gif" alt="puzzle art" /> */}
-							{/* <source srcSet="/slide-puzzle/narwhal-static.jpg" />
-							<img ref={puzzleImageRef} src="/slide-puzzle/narwhal-static.jpg" alt="puzzle art" /> */}
-							<source srcSet="/slide-puzzle/at-party.png" />
-							<img ref={puzzleImageRef} src="/slide-puzzle/at-party.png" alt="puzzle art" />
+							<img ref={puzzleImageRef} src="/slide-puzzle/narwhal-animated.gif" alt="puzzle art" /> */}
+							<img ref={puzzleImageRef} src={puzzleImage} alt="puzzle art" />
+							{/* <source srcSet="/slide-puzzle/at-party.png" />
+							<img ref={puzzleImageRef} src="/slide-puzzle/at-party.png" alt="puzzle art" /> */}
 						</picture>
 					</div>
 
