@@ -69,15 +69,21 @@ export default function SlidePuzzle() {
 	// returns: button elements to be displayed
 	function displayTiles() {
 		const tiles = puzzleBoard.map((tile, idx) => {
-			return (
-				<button key={idx} className={`tile ${tile.name}`} id={idx}
-					style={{
-						backgroundSize: tile.backgroundSize,
-						backgroundPosition: tile.backgroundPosition,
-						backgroundImage: `url(${puzzleImage})`
-					}}>
-				</button>
-			)
+			if (tile.name === 'tile-blank') {
+				return (
+					<button key={idx} className={`tile ${tile.name}`} id={idx}></button>
+				)
+			} else {
+				return (
+					<button key={idx} className={`tile ${tile.name}`} id={idx}
+						style={{
+							backgroundSize: tile.backgroundSize,
+							backgroundPosition: tile.backgroundPosition,
+							backgroundImage: `url(${puzzleImage})`
+						}}>
+					</button>
+				)
+			}
 		});
 		return tiles;
 	}
@@ -129,6 +135,7 @@ export default function SlidePuzzle() {
 	// Initial page load
 	useEffect(() => {
 		setPuzzleContainerSize();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// Custom settings updates
@@ -137,7 +144,6 @@ export default function SlidePuzzle() {
 		setPuzzleContainerSize();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [colsCount, rowsCount, puzzleImage]);
-
 
 
 	return (
