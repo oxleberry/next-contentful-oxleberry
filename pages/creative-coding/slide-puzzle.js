@@ -15,9 +15,7 @@ export default function SlidePuzzle() {
 	const [puzzleBoard, setPuzzleBoard] = useState([]); // array of object tiles for tracking the position of the tiles on the board
 	const [colsCount, setColsCount] = useState(4);
 	const [rowsCount, setRowsCount] = useState(4);
-	// const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-animated.gif");
 	const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-static.jpg");
-	// const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/at-party.png");
 	const [puzzleWidth, setPuzzleWidth] = useState(426);
 
 
@@ -75,7 +73,8 @@ export default function SlidePuzzle() {
 				<button key={idx} className={`tile ${tile.name}`} id={idx}
 					style={{
 						backgroundSize: tile.backgroundSize,
-						backgroundPosition: tile.backgroundPosition
+						backgroundPosition: tile.backgroundPosition,
+						backgroundImage: `url(${puzzleImage})`
 					}}>
 				</button>
 			)
@@ -86,7 +85,7 @@ export default function SlidePuzzle() {
 	function setPuzzleContainerSize() {
 		const imageWidth = puzzleImageRef.current.offsetWidth;
 		const border = 20;
-		let puzzleWidth = imageWidth + border;
+		const puzzleWidth = imageWidth + border;
 		setPuzzleWidth(puzzleWidth);
 	}
 
@@ -135,8 +134,10 @@ export default function SlidePuzzle() {
 	// Custom settings updates
 	useEffect(() => {
 		updatePuzzleBoard();
+		setPuzzleContainerSize();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [colsCount, rowsCount]);
+	}, [colsCount, rowsCount, puzzleImage]);
+
 
 
 	return (
@@ -174,18 +175,15 @@ export default function SlidePuzzle() {
 				<section className="slide-puzzle-container">
 					<div className="reference-image">
 						<picture>
-							{/* <source srcSet="/slide-puzzle/narwhal-animated.gif" />
-							<img ref={puzzleImageRef} src="/slide-puzzle/narwhal-animated.gif" alt="puzzle art" /> */}
+							<source srcSet={puzzleImage} />
 							<img ref={puzzleImageRef} src={puzzleImage} alt="puzzle art" />
-							{/* <source srcSet="/slide-puzzle/at-party.png" />
-							<img ref={puzzleImageRef} src="/slide-puzzle/at-party.png" alt="puzzle art" /> */}
 						</picture>
 					</div>
 
 					<div className="puzzle-board"
 						style={{
 							gridTemplateColumns: `repeat(${colsCount}, 1fr)`,
-							maxWidth: `${puzzleWidth}px`
+							width: `${puzzleWidth}px`
 						}}>
 						{displayTiles()}
 					</div>
