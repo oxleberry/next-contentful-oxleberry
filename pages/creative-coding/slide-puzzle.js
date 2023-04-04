@@ -133,9 +133,11 @@ export default function SlidePuzzle() {
 	// =================================================
 	// Game Play Functions & Tile Click Event Listener
 	// =================================================
-	function tileClickHandler() {
-		console.log('puzzleBoard', puzzleBoard[0], puzzleBoard[15]);
-		swap(0, 15);
+	function tileClickHandler(event) {
+		console.log('event.currentTarget', event.currentTarget);
+		console.log('event.currentTarget.id', event.currentTarget.id);
+		const tileId = event.currentTarget.id;
+		swap(tileId, 15);
 	}
 
 	// Swap two elements in board tracking array
