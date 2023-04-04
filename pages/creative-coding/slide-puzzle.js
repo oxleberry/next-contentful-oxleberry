@@ -71,11 +71,11 @@ export default function SlidePuzzle() {
 		const tiles = puzzleBoard.map((tile, idx) => {
 			if (tile.name === 'tile-blank') {
 				return (
-					<button key={idx} className={`tile ${tile.name}`} id={idx}></button>
+					<button key={idx} className={`tile ${tile.name}`} id={idx} name={tile.name}></button>
 				)
 			} else {
 				return (
-					<button key={idx} className={`tile ${tile.name}`} id={idx}
+					<button key={idx} className={`tile ${tile.name}`} id={idx} name={tile.name}
 						onClick={tileClickHandler}
 						style={{
 							backgroundSize: tile.backgroundSize,
@@ -134,10 +134,16 @@ export default function SlidePuzzle() {
 	// Game Play Functions & Tile Click Event Listener
 	// =================================================
 	function tileClickHandler(event) {
-		console.log('event.currentTarget', event.currentTarget);
-		console.log('event.currentTarget.id', event.currentTarget.id);
+		console.log(event.currentTarget.id);
 		const tileId = event.currentTarget.id;
-		swap(tileId, 15);
+		move(tileId);
+	}
+
+	// Finds black tile from board tracking array
+	// returns: number (index number of 'tile-blank' array)
+	function findBlankTile() {
+		const blankTileIdx = puzzleBoard.findIndex(tile => tile.name === blankTile);
+		return blankTileIdx;
 	}
 
 	// Swap two elements in board tracking array
@@ -150,6 +156,13 @@ export default function SlidePuzzle() {
 		updateBoard[idx2] = temp;
 		setPuzzleBoard(updateBoard);
 	}
+
+	// Move selected tile with blank tile
+	function move(tileId) {
+		const blankIdx = findBlankTile();
+		swap(tileId, blankIdx);
+	}
+
 
 	// ============================
 	// Event Listeners
