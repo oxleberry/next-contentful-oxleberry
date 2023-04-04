@@ -134,7 +134,6 @@ export default function SlidePuzzle() {
 	// Game Play Functions & Tile Click Event Listener
 	// =================================================
 	function tileClickHandler(event) {
-		console.log(event.currentTarget.id);
 		const tileId = event.currentTarget.id;
 		move(tileId);
 	}
@@ -144,6 +143,18 @@ export default function SlidePuzzle() {
 	function findBlankTile() {
 		const blankTileIdx = puzzleBoard.findIndex(tile => tile.name === blankTile);
 		return blankTileIdx;
+	}
+
+	// Converts (board tracking index) to (tile row & col position)
+	// parameters: number (tile id)
+	// returns: object (tilePosition.row, tilePosition.col)
+	function findTilePosition(id) {
+		const tileRowPosition = Math.floor(id / colsCount);
+		const tileColPosition = id % colsCount;
+		return {
+			row: tileRowPosition,
+			col: tileColPosition
+		};
 	}
 
 	// Swap two elements in board tracking array
@@ -160,8 +171,33 @@ export default function SlidePuzzle() {
 	// Move selected tile with blank tile
 	function move(tileId) {
 		const blankIdx = findBlankTile();
-		swap(tileId, blankIdx);
+		const isNeighbor = checkNeighbor(tileId, blankIdx);
+		if (isNeighbor) {
+			swap(tileId, blankIdx);
+		}
 	}
+
+	// Check if it is a valid piece to move
+	// parameters: tileId = number, blankIdx = number
+	// returns: boolean
+	function checkNeighbor(tileId, blankIdx) {
+		const tilePos = findTilePosition(tileId);
+		const tileRowPos = tilePos.row;
+		const tileColPos = tilePos.col;
+		const blankPos = findTilePosition(blankIdx);
+		const blankRowPos = blankPos.row;
+		const blankColPos = blankPos.col;
+		// checks if selected tile is not the same row or column as blank tile
+		if (tileRowPos !== blankRowPos && tileColPos!== blankColPos) {
+			return false;
+		}
+		// checks if selected tile is in a 1 row/col away (in either direction) from blank tile
+		if (Math.abs(tileRowPos - blankRowPos) == 1 || Math.abs(tileColPos - blankColPos) == 1) {
+			return true;
+		}
+		// skips if it's the same spot
+		return false;
+	};
 
 
 	// ============================
