@@ -76,6 +76,7 @@ export default function SlidePuzzle() {
 			} else {
 				return (
 					<button key={idx} className={`tile ${tile.name}`} id={idx}
+						onClick={tileClickHandler}
 						style={{
 							backgroundSize: tile.backgroundSize,
 							backgroundPosition: tile.backgroundPosition,
@@ -128,6 +129,25 @@ export default function SlidePuzzle() {
 		reader.readAsDataURL(imageFile);
 	}
 
+
+	// =================================================
+	// Game Play Functions & Tile Click Event Listener
+	// =================================================
+	function tileClickHandler() {
+		console.log('puzzleBoard', puzzleBoard[0], puzzleBoard[15]);
+		swap(0, 15);
+	}
+
+	// Swap two elements in board tracking array
+	// parameters: idx1: number,
+	// 						 idx2: number,
+	function swap(idx1, idx2) {
+		const updateBoard = [...puzzleBoard];
+		const temp = updateBoard[idx1];
+		updateBoard[idx1] = updateBoard[idx2];
+		updateBoard[idx2] = temp;
+		setPuzzleBoard(updateBoard);
+	}
 
 	// ============================
 	// Event Listeners
