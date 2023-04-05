@@ -181,6 +181,10 @@ export default function SlidePuzzle() {
 	// parameters: tileId = number, blankIdx = number
 	// returns: boolean
 	function checkNeighbor(tileId, blankIdx) {
+		// (for keyboard presses) checks if neightbor is outside of the board
+		if (tileId < 0 || tileId > puzzleBoard.length - 1) {
+			return false;
+		}
 		const tilePos = findTilePosition(tileId);
 		const tileRowPos = tilePos.row;
 		const tileColPos = tilePos.col;
@@ -201,6 +205,29 @@ export default function SlidePuzzle() {
 
 
 	// ============================
+	// Key Press Event Listeners
+	// ============================
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	function keyPressHander(event) {
+		if (event.defaultPrevented) {
+			return; // Do nothing if the event was already processed
+		}
+		const blankIdx = findBlankTile(puzzleBoard);
+		let nextTileIdx;
+		if (event.key === 's' || event.key === 'k') {
+			nextTileIdx = blankIdx - colsCount;
+		} else if (event.key === 'w' || event.key === 'i') {
+			nextTileIdx = blankIdx + colsCount;
+		} else if (event.key === 'd' || event.key === 'l') {
+			nextTileIdx = blankIdx - 1;
+		} else if (event.key === 'a' || event.key === 'j') {
+			nextTileIdx = blankIdx + 1;
+		}
+		move(nextTileIdx);
+	};
+
+
+	// ============================
 	// Event Listeners
 	// ============================
 	// Initial page load
@@ -216,6 +243,14 @@ export default function SlidePuzzle() {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [colsCount, rowsCount, puzzleImage]);
 
+	// Keyboard event listeners
+	useEffect(() => {
+		window.addEventListener('keydown', keyPressHander);
+		// clean up function, remove event listener
+		return () => {
+			window.removeEventListener('keydown', keyPressHander);
+		}
+	}, [keyPressHander]);
 
 	return (
 		<>
