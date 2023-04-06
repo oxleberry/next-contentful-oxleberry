@@ -18,6 +18,7 @@ export default function SlidePuzzle() {
 	const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-static.jpg");
 	const [puzzleWidth, setPuzzleWidth] = useState(426);
 
+	const [windowWidth, setWindowWidth] = useState(null); // temp
 
 	// ============================
 	// Setup Functions
@@ -205,8 +206,16 @@ export default function SlidePuzzle() {
 
 
 	// ============================
-	// Key Press Event Listeners
+	// MISC Functions
 	// ============================
+	const resizeListener = () => {
+		let newWidth = window.innerWidth;
+		setWindowWidth(newWidth);
+		console.log('RESIZE');
+		console.log('newWidth', newWidth);
+		setPuzzleContainerSize();
+	};
+
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	function keyPressHander(event) {
 		if (event.defaultPrevented) {
@@ -243,6 +252,16 @@ export default function SlidePuzzle() {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [colsCount, rowsCount, puzzleImage]);
 
+	// Window event listeners
+	useEffect(() => {
+		window.addEventListener('resize', resizeListener);
+		// clean up function, remove event listener
+		return () => {
+			window.removeEventListener('resize', resizeListener);
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	// Keyboard event listeners
 	useEffect(() => {
 		window.addEventListener('keydown', keyPressHander);
@@ -251,6 +270,7 @@ export default function SlidePuzzle() {
 			window.removeEventListener('keydown', keyPressHander);
 		}
 	}, [keyPressHander]);
+
 
 	return (
 		<>
