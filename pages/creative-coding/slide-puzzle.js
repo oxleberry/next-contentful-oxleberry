@@ -27,7 +27,8 @@ export default function SlidePuzzle() {
 		const tileNames = createEmptyTiles();
 		const tiles = createTilesData(tileNames);
 		setSolvedBoard(tiles);
-		setPuzzleBoard(tiles);
+		const shuffledTiles = shuffleTiles(tiles);
+		setPuzzleBoard(shuffledTiles);
 	}
 
 	// Create tiles to fill the board
@@ -97,6 +98,81 @@ export default function SlidePuzzle() {
 	}
 
 
+	// ============================
+	// Shuffle Function
+	// ============================
+	// parameters: board = array of tile objects
+	// returns: array of tile objects
+	function shuffleTiles(board) {
+		let updateBoard = randomMove(board);
+		console.log(board);
+		console.log(updateBoard);
+		return updateBoard;
+	}
+
+	// parameters: range = number (top range for random generator)
+	// returns: number (randomly generated number)
+	function randomGenerator(range) {
+		const randomNum = Math.floor(Math.random() * range);
+		return randomNum;
+	};
+
+	// Converts (tile row & col position) to (board index)
+	// parameters: number, number, number (tile row position, number of columns, tile col position)
+	// returns: number (index in board array)
+	function findTileIdx(tileRowPos, cols, tileColPos) {
+		return (tileRowPos * cols) + tileColPos;
+	}
+
+	// Randomly swap tiles based on blank tile's position, used for shuffling board
+	// parameters: tempBoard = array of tile objects
+	function randomMove(tempBoard) {
+		const blankIdx = findBlankTile(tempBoard);
+		const blankPos = findTilePosition(blankIdx);
+		console.log('blankIdx', blankIdx);
+		console.log('blankPos', blankPos);
+		const blankRowPos = blankPos.row;
+		const blankColPos = blankPos.col;
+		const lastRow = rowsCount - 1;
+		const lastCol = colsCount - 1;
+		let tileRowPos = blankRowPos; // defaults to blank tile
+		let tileColPos = blankColPos; // defaults to blank tile
+		const randomizer = Math.floor(randomGenerator(10));
+		// randomly move horizontally
+		if (randomizer % 2 === 0) {
+			tileRowPos = pickRandomTile(randomizer, blankRowPos, lastRow);
+		// randomly move vertically
+		} else {
+			tileColPos = pickRandomTile(randomizer, blankColPos, lastCol);
+		}
+		const randomTileIdx = findTileIdx(tileRowPos, colsCount, tileColPos);
+		let updateBoard = swap(tempBoard, blankIdx, randomTileIdx, false);
+		return updateBoard;
+	}
+
+	// Randomly chooses adjacent tile for swapping, used for shuffling board
+	// parameters: number, number, number (random number, tile (row/col) position, last row/col) position)
+	// returns: number (next tile position to swap tile with)
+	function pickRandomTile(randomVal, blankPos, lastEdgePos) {
+		let tilePos;
+		// if at ending edge, move up or left
+		if (blankPos === lastEdgePos) {
+			tilePos = blankPos - 1;
+			// if at beginning edge, move down or right
+		} else if (blankPos === 0) {
+			tilePos = blankPos + 1;
+		// inner pieces, move randomly
+		} else {
+			if (randomVal <= 4) {
+				tilePos = blankPos + 1;
+			} else {
+				tilePos = blankPos - 1;
+			}
+		}
+		return tilePos;
+	}
+
+
 	// =================================
 	// Custom Settings Event Listeners
 	// =================================
@@ -138,10 +214,11 @@ export default function SlidePuzzle() {
 		move(tileId);
 	}
 
-	// Finds black tile from board tracking array
+	// Finds blank tile from board tracking array
+	// parameters: board = array of tile objects
 	// returns: number (index number of 'tile-blank' array)
-	function findBlankTile() {
-		const blankTileIdx = puzzleBoard.findIndex(tile => tile.name === blankTile);
+	function findBlankTile(board) {
+		const blankTileIdx = board.findIndex(tile => tile.name === blankTile);
 		return blankTileIdx;
 	}
 
@@ -158,22 +235,28 @@ export default function SlidePuzzle() {
 	}
 
 	// Swap two elements in board tracking array
-	// parameters: idx1: number,
+	// parameters: board: array of tile objects,
+	// 						 idx1: number,
 	// 						 idx2: number,
-	function swap(idx1, idx2) {
-		const updateBoard = [...puzzleBoard];
+	//						 isPublic: boolean
+	// returns: updated array of tile objects
+	function swap(board, idx1, idx2, isPublic) {
+		const updateBoard = [...board];
 		const temp = updateBoard[idx1];
 		updateBoard[idx1] = updateBoard[idx2];
 		updateBoard[idx2] = temp;
-		setPuzzleBoard(updateBoard);
+		if (isPublic) {
+			setPuzzleBoard(updateBoard);
+		}
+		return updateBoard;
 	}
 
-	// Move selected tile with blank tile
+	// Move selected tile with blank tile if move is valid
 	function move(tileId) {
-		const blankIdx = findBlankTile();
+		const blankIdx = findBlankTile(puzzleBoard);
 		const isNeighbor = checkNeighbor(tileId, blankIdx);
 		if (isNeighbor) {
-			swap(tileId, blankIdx);
+			swap(puzzleBoard, tileId, blankIdx, true);
 		}
 	}
 
