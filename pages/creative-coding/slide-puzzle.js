@@ -6,6 +6,8 @@ import { useEffect, useState, useRef } from 'react'
 export default function SlidePuzzle() {
 	// Variables =================
 	const blankTile = 'tile-blank';
+	const easyShuffle = 10;
+	const hardShuffle = 500;
 
 	// Elements =================
 	const puzzleImageRef = useRef(null);
@@ -27,7 +29,7 @@ export default function SlidePuzzle() {
 		const tileNames = createEmptyTiles();
 		const tiles = createTilesData(tileNames);
 		setSolvedBoard(tiles);
-		const shuffledTiles = shuffleTiles(tiles);
+		const shuffledTiles = shuffleTiles(tiles, easyShuffle);
 		setPuzzleBoard(shuffledTiles);
 	}
 
@@ -99,14 +101,15 @@ export default function SlidePuzzle() {
 
 
 	// ============================
-	// Shuffle Function
+	// Shuffle Functions
 	// ============================
-	// parameters: board = array of tile objects
+	// parameters: board = array of tile objects, numOfTimes = number
 	// returns: array of tile objects
-	function shuffleTiles(board) {
-		let updateBoard = randomMove(board);
-		console.log(board);
-		console.log(updateBoard);
+	function shuffleTiles(board, numOfTimes) {
+		let updateBoard = board;
+		for (let i = 0; i < numOfTimes; i++) {
+			updateBoard = randomMove(updateBoard);
+		}
 		return updateBoard;
 	}
 
@@ -129,8 +132,6 @@ export default function SlidePuzzle() {
 	function randomMove(tempBoard) {
 		const blankIdx = findBlankTile(tempBoard);
 		const blankPos = findTilePosition(blankIdx);
-		console.log('blankIdx', blankIdx);
-		console.log('blankPos', blankPos);
 		const blankRowPos = blankPos.row;
 		const blankColPos = blankPos.col;
 		const lastRow = rowsCount - 1;
@@ -214,7 +215,6 @@ export default function SlidePuzzle() {
 		move(tileId);
 	}
 
-	// Finds blank tile from board tracking array
 	// parameters: board = array of tile objects
 	// returns: number (index number of 'tile-blank' array)
 	function findBlankTile(board) {
@@ -234,7 +234,7 @@ export default function SlidePuzzle() {
 		};
 	}
 
-	// Swap two elements in board tracking array
+	// Swap two elements in an array
 	// parameters: board: array of tile objects,
 	// 						 idx1: number,
 	// 						 idx2: number,
