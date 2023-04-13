@@ -47,11 +47,13 @@
 	.tile {
 		background-repeat: no-repeat;
 		border: none;
+		cursor: pointer;
 	}
 
 	.tile-blank {
 		background: none;
 		background-color: $puzzle-bg-color;
+		cursor: default;
 	}
 
 
@@ -86,18 +88,82 @@
 		}
 	}
 
+
 	// ===========================
 	// Custom Puzzle Settings
 	// ===========================
 	.puzzle-settings {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
 		border: 1px solid colors.$brown;
-		text-align: center;
-		padding: 20px;
+		padding: 16px 20px 10px;
+		position: relative;
+		font-size: 1.5rem;
+		margin-left: 20px;
 
 		.row {
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			margin-bottom: 5px;
+
+			&:first-child {
+				margin-bottom: 6px;
+			}
+		}
+
+		.row.custom-image-label {
+			justify-content: flex-start;
+		}
+
+		input[type='range'] {
+			appearance: none;
+			// -webkit-appearance: none;
+			height: 7px;
+			width: 86px;
+			background: colors.$brown;
+			border-radius: 5px;
+		}
+
+		input[type='range']::-webkit-slider-thumb {
+			appearance: none;
+			// -webkit-appearance: none;
+			height: 17px;
+			width: 17px;
+			border-radius: 50%;
+			background: colors.$lt-brown;
+			cursor: pointer;
+			box-shadow: 0 0 2px 0 colors.$brown;
+
+			&:hover {
+				transition: transform 200ms ease-in-out;
+				transform: scale(1.2);
+			}
+		}
+
+		input[type='number'] {
+			color: colors.$brown;
+		}
+
+		input::file-selector-button {
+			font-family: fonts.$sans-serif;
+			font-size: 1.3rem;
+			font-weight: bold;
+			color: colors.$brown;
+			cursor: pointer;
+		}
+
+		input[type='file'] {
+			width: 210px;
+			font-family: fonts.$sans-serif;
+			font-size: 1.4rem;
+		}
+
+		hr {
+			width: 100%;
+			color: colors.$lt-brown;
+			opacity: .4;
 		}
 
 		.shuffle-level {

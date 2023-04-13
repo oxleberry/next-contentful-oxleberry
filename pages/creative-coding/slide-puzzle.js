@@ -371,6 +371,10 @@ export default function SlidePuzzle() {
 							<label htmlFor="rows-input">Rows:&nbsp;&nbsp;</label>
 							<input onChange={rowHandler} type="number" min="2" max="8" id="rows-input" name="rows-input" className="rows-input" value={rowsCount}></input>
 						</div>
+						<hr />
+						<div className="row custom-image-label">
+							<label htmlFor="custom-image" className="label">Upload Image:</label>
+						</div>
 						<div className="row">
 							<input id="custom-image" onChange={imageHandler} type="file" name="custom-image" accept=".png, .jpg, .jpeg, .gif, .webp"/>
 						</div>
