@@ -6,8 +6,6 @@ import { useEffect, useState, useRef } from 'react'
 export default function SlidePuzzle() {
 	// Variables =================
 	const blankTile = 'tile-blank';
-	const easyShuffle = 10;
-	const hardShuffle = 500;
 
 	// Elements =================
 	const puzzleImageRef = useRef(null);
@@ -15,6 +13,7 @@ export default function SlidePuzzle() {
 	// States =================
 	const [solvedBoard, setSolvedBoard] = useState([]); // array of object tiles in solved board order
 	const [puzzleBoard, setPuzzleBoard] = useState([]); // array of object tiles for tracking the position of the tiles on the board
+	const [shuffleLevel, setShuffleLevel] = useState(20); // set at easiest level (number of shuffles)
 	const [colsCount, setColsCount] = useState(4);
 	const [rowsCount, setRowsCount] = useState(4);
 	const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-static.jpg");
@@ -29,7 +28,7 @@ export default function SlidePuzzle() {
 		const tileNames = createEmptyTiles();
 		const tiles = createTilesData(tileNames);
 		setSolvedBoard(tiles);
-		const shuffledTiles = shuffleTiles(tiles, easyShuffle);
+		const shuffledTiles = shuffleTiles(tiles, shuffleLevel);
 		setPuzzleBoard(shuffledTiles);
 	}
 
@@ -177,6 +176,14 @@ export default function SlidePuzzle() {
 	// =================================
 	// Custom Settings Event Listeners
 	// =================================
+	function shuffleHandler(event) {
+		setShuffleLevel(event.target.value);
+		const newBoard = [...solvedBoard];
+		const newShuffleLevel = event.target.value;
+		const shuffledTiles = shuffleTiles(newBoard, newShuffleLevel);
+		setPuzzleBoard(shuffledTiles);
+	}
+
 	function colHandler(event) {
 		setColsCount(event.target.value);
 	}
@@ -361,7 +368,7 @@ export default function SlidePuzzle() {
 					<div className="puzzle-settings">
 						<div className="row">
 							<label htmlFor="shuffle-level">Shuffle difficulty:&nbsp;</label>
-							<input type="range" id="shuffle-level" name="shuffle-level" className="shuffle-level" min="10" max="500" value="10"></input>
+							<input onChange={shuffleHandler} type="range" id="shuffle-level" name="shuffle-level" className="shuffle-level" min="10" max="500" value={shuffleLevel}></input>
 						</div>
 						<div className="row">
 							<label htmlFor="cols-input">Columns:&nbsp;&nbsp;</label>
