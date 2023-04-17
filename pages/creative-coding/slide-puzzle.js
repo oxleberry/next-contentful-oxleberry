@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Head from 'next/head'
 import Header from '../../components/Header'
 import { useEffect, useState, useRef } from 'react'
@@ -15,6 +16,7 @@ export default function SlidePuzzle() {
 	const [puzzleBoard, setPuzzleBoard] = useState([]); // array of object tiles for tracking the position of the tiles on the board
 	const [shuffleLevel, setShuffleLevel] = useState(20); // set at easiest level (number of shuffles)
 	const [colsCount, setColsCount] = useState(4);
+	const [displayCols, setdisplayCols] = useState(4); // used to avoid double updates from 'colsCount' in gridTemplateColumns
 	const [rowsCount, setRowsCount] = useState(4);
 	const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-static.jpg");
 	const [puzzleWidth, setPuzzleWidth] = useState(426);
@@ -297,7 +299,6 @@ export default function SlidePuzzle() {
 	// ============================
 	// Key Press Event Listeners
 	// ============================
-	// eslint-disable-next-line react-hooks/exhaustive-deps
 	function keyPressHander(event) {
 		if (event.defaultPrevented) {
 			return; // Do nothing if the event was already processed
@@ -323,15 +324,16 @@ export default function SlidePuzzle() {
 	// Initial page load
 	useEffect(() => {
 		setPuzzleContainerSize();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// Custom settings updates
 	useEffect(() => {
 		updatePuzzleBoard();
-		setPuzzleContainerSize();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [colsCount, rowsCount, puzzleImage]);
+		setdisplayCols(colsCount);
+	}, [colsCount]);
+	useEffect(() => updatePuzzleBoard(), [rowsCount]);
+	useEffect(() => setPuzzleContainerSize(), [puzzleImage]);
+
 
 	// Window event listeners
 	useEffect(() => {
@@ -398,7 +400,7 @@ export default function SlidePuzzle() {
 
 					<div className="puzzle-board"
 						style={{
-							gridTemplateColumns: `repeat(${colsCount}, 1fr)`,
+							gridTemplateColumns: `repeat(${displayCols}, 1fr)`,
 							width: `${puzzleWidth}px`
 						}}>
 						{displayTiles()}
