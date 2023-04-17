@@ -187,7 +187,9 @@ export default function SlidePuzzle() {
 	}
 
 	function colHandler(event) {
-		setColsCount(event.target.value);
+		let updateColCount = event.target.value;
+		updateColCount = parseInt(updateColCount);
+		setColsCount(updateColCount);
 	}
 
 	function rowHandler(event) {
@@ -351,7 +353,7 @@ export default function SlidePuzzle() {
 		return () => {
 			window.removeEventListener('keydown', keyPressHander);
 		}
-	}, [keyPressHander]);
+	}, [keyPressHander, colsCount]);
 
 
 	return (
@@ -370,7 +372,7 @@ export default function SlidePuzzle() {
 					<div className="puzzle-settings">
 						<div className="row">
 							<label htmlFor="shuffle-level">Shuffle difficulty:&nbsp;</label>
-							<input onChange={shuffleHandler} type="range" id="shuffle-level" name="shuffle-level" className="shuffle-level" min="10" max="500" value={shuffleLevel}></input>
+							<input onChange={shuffleHandler} type="range" min="10" max="500" id="shuffle-level" name="shuffle-level" className="shuffle-level" value={shuffleLevel}></input>
 						</div>
 						<div className="row">
 							<label htmlFor="cols-input">Columns:&nbsp;&nbsp;</label>
