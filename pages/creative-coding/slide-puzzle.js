@@ -299,6 +299,24 @@ export default function SlidePuzzle() {
 
 
 	// ============================
+	// Win Functions
+	// ============================
+	// check if two arrays match
+	function compareArrays(arr1, arr2) {
+		return arr1.every((element, idx) => element === arr2[idx]);
+	}
+
+	function checkSolved() {
+		if (puzzleBoard.length > 0) {
+			const isMatch = compareArrays(solvedBoard, puzzleBoard);
+			if (isMatch) {
+				console.log('SOLVED');
+			}
+		}
+	};
+
+
+	// ============================
 	// Key Press Event Listeners
 	// ============================
 	function keyPressHander(event) {
@@ -336,6 +354,8 @@ export default function SlidePuzzle() {
 	useEffect(() => updatePuzzleBoard(), [rowsCount]);
 	useEffect(() => setPuzzleContainerSize(), [puzzleImage]);
 
+	// Check if game is solved
+	useEffect(() => checkSolved(), [puzzleBoard]);
 
 	// Window event listeners
 	useEffect(() => {
