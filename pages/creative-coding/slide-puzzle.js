@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from 'next/head'
+import Script from 'next/script' // for adding JS library
 import Header from '../../components/Header'
 import { useEffect, useState, useRef } from 'react'
 
@@ -306,11 +307,23 @@ export default function SlidePuzzle() {
 		return arr1.every((element, idx) => element === arr2[idx]);
 	}
 
+	// Display confetti from JS Confetti library: https://github.com/loonywizard/js-confetti
+	function displayWin() {
+		const jsConfetti = new JSConfetti();
+		jsConfetti.addConfetti({
+			confettiColors: [
+				'#f94144', '#f3722c', '#ffbe0b', '#8ac926', '#027bce', '#662e9b', '#f26ca7'
+			],
+			confettiRadius: 4.5,
+			confettiNumber: 800,
+		});
+	};
+
 	function checkSolved() {
 		if (puzzleBoard.length > 0) {
 			const isMatch = compareArrays(solvedBoard, puzzleBoard);
 			if (isMatch) {
-				console.log('SOLVED');
+				displayWin();
 			}
 		}
 	};
@@ -382,6 +395,7 @@ export default function SlidePuzzle() {
 				<title>Oxleberry | Slide Puzzle</title>
 				<meta name="description" content="Oxleberry Slide Puzzle - A customizable slide puzzle game. Slide the tiles to match the original image." />
 			</Head>
+			<Script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js" />
 			<main className="full-backboard slide-puzzle-page">
 				<section className="intro">
 					<div className="text-block">
