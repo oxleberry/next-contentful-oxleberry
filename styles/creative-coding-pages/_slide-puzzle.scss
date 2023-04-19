@@ -6,6 +6,7 @@
 .slide-puzzle-page {
 	// Variables
 	$puzzle-bg-color: #0a0a0a;
+	$intro-container-height: 184px;
 
 	.slide-puzzle-container {
 		display: flex;
@@ -96,6 +97,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		min-height: $intro-container-height;
 		border: 1px solid colors.$brown;
 		padding: 16px 20px 10px;
 		position: relative;
@@ -168,6 +170,48 @@
 
 		.shuffle-level {
 			width: 86px;
+		}
+	}
+
+
+	// ===========================
+	// Keyboard Guide
+	// ===========================
+	.keyboard-guide {
+		min-height: $intro-container-height;
+		border: 1px solid colors.$brown;
+		padding: 15px 14px 10px;
+		position: relative;
+		margin-left: 20px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		.label {
+			font-size: 1.5rem;
+			text-align: center;
+			margin-top: 0;
+		}
+
+		.row {
+			display: flex;
+			justify-content: center;
+		}
+
+		.arrow {
+			color: colors.$lt-brown;
+			font-size: 1.8rem;
+			opacity: .6;
+		}
+
+		button {
+			margin: 2px;
+			color: colors.$brown;
+			font-size: 1.4rem;
+			font-weight: bold;
+			border-color: colors.$lt-brown;
+			border-width: 1px;
+			border-radius: 2px;
 		}
 	}
 }
