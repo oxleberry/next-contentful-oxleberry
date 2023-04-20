@@ -187,6 +187,12 @@ export default function SlidePuzzle() {
 		setPuzzleBoard(shuffledTiles);
 	}
 
+	function reshuffleHandler() {
+		const newBoard = [...solvedBoard];
+		const shuffledTiles = shuffleTiles(newBoard, shuffleLevel);
+		setPuzzleBoard(shuffledTiles);
+	}
+
 	function colHandler(event) {
 		let updateColCount = event.target.value;
 		updateColCount = parseInt(updateColCount);
@@ -405,10 +411,8 @@ export default function SlidePuzzle() {
 					</div>
 
 					<div className="puzzle-settings">
-						<div className="row">
-							<label htmlFor="shuffle-level">Shuffle difficulty:&nbsp;</label>
-							<input onChange={shuffleHandler} type="range" min="10" max="500" id="shuffle-level" name="shuffle-level" className="shuffle-level" value={shuffleLevel}></input>
-						</div>
+						<p className="label">Customize Puzzle</p>
+						<hr />
 						<div className="row">
 							<label htmlFor="cols-input">Columns:&nbsp;&nbsp;</label>
 							<input onChange={colHandler} type="number" min="2" max="8" id="cols-input" name="cols-input" className="cols-input" value={colsCount}></input>
@@ -417,9 +421,13 @@ export default function SlidePuzzle() {
 							<label htmlFor="rows-input">Rows:&nbsp;&nbsp;</label>
 							<input onChange={rowHandler} type="number" min="2" max="8" id="rows-input" name="rows-input" className="rows-input" value={rowsCount}></input>
 						</div>
+						<div className="row">
+							<label htmlFor="shuffle-level">Shuffle Difficulty:&nbsp;</label>
+							<input onChange={shuffleHandler} type="range" min="10" max="500" id="shuffle-level" name="shuffle-level" className="shuffle-level" value={shuffleLevel}></input>
+						</div>
 						<hr />
 						<div className="row custom-image-label">
-							<label htmlFor="custom-image" className="label">Upload Image:</label>
+							<label htmlFor="custom-image">Upload Image:</label>
 						</div>
 						<div className="row">
 							<input id="custom-image" onChange={imageHandler} type="file" name="custom-image" accept=".png, .jpg, .jpeg, .gif, .webp"/>
@@ -443,6 +451,10 @@ export default function SlidePuzzle() {
 						</div>
 						<div className="row">
 							<span className="arrow">&#8681;</span>
+						</div>
+						<hr />
+						<div className="row">
+							<button onClick={reshuffleHandler} name="reshuffle" className="reshuffle">reshuffle</button>
 						</div>
 					</div>
 				</section>
