@@ -21,6 +21,7 @@ export default function SlidePuzzle() {
 	const [rowsCount, setRowsCount] = useState(4);
 	const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-static.jpg");
 	const [puzzleWidth, setPuzzleWidth] = useState(426);
+	const [puzzleHeight, setPuzzleHeight] = useState(426);
 
 
 	// ============================
@@ -76,11 +77,11 @@ export default function SlidePuzzle() {
 		const tiles = puzzleBoard.map((tile, idx) => {
 			if (tile.name === 'tile-blank') {
 				return (
-					<button key={idx} className={`tile ${tile.name}`} id={idx} name={tile.name}></button>
+					<button key={idx} className={`tile ${tile.name}`} id={idx} name={tile.name} tabIndex="-1"></button>
 				)
 			} else {
 				return (
-					<button key={idx} className={`tile ${tile.name}`} id={idx} name={tile.name}
+					<button key={idx} className={`tile ${tile.name}`} id={idx} name={tile.name} tabIndex="-1"
 						onClick={tileClickHandler}
 						style={{
 							backgroundSize: tile.backgroundSize,
@@ -96,9 +97,12 @@ export default function SlidePuzzle() {
 
 	function setPuzzleContainerSize() {
 		const imageWidth = puzzleImageRef.current.offsetWidth;
+		const imageHeight = puzzleImageRef.current.offsetHeight;
 		const border = 20;
 		const puzzleWidth = imageWidth + border;
+		const puzzleHeight = imageHeight + border;
 		setPuzzleWidth(puzzleWidth);
+		setPuzzleHeight(puzzleHeight);
 	}
 
 
@@ -470,7 +474,8 @@ export default function SlidePuzzle() {
 					<div className="puzzle-board"
 						style={{
 							gridTemplateColumns: `repeat(${displayCols}, 1fr)`,
-							width: `${puzzleWidth}px`
+							width: `${puzzleWidth}px`,
+							height: `${puzzleHeight}px`
 						}}>
 						{displayTiles()}
 					</div>

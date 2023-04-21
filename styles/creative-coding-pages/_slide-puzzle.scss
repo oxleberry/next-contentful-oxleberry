@@ -8,17 +8,32 @@
 	$puzzle-bg-color: #0a0a0a;
 	$intro-container-height: 210px;
 
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
 	.slide-puzzle-container {
 		display: flex;
+		justify-content: center;
 		gap: 30px;
 		max-width: 1400px;
 		margin: 0 auto;
 		padding: 10px 50px 40px;
 
+		@include bp(l) {
+			padding: 20px 36px 40px;
+			max-width: 100%;
+			flex-direction: column-reverse;
+		}
+
 		.reference-image {
 			width: 48%;
 			align-self: center;
 			border: 10px solid transparent;
+
+			@include bp(l) {
+				width: 100%;
+			}
 		}
 
 		picture {
@@ -29,7 +44,6 @@
 
 		img {
 			max-width: 100%;
-			max-height: 400px;
 		}
 
 		.puzzle-board {
@@ -38,6 +52,10 @@
 			width: 48%;
 			background-color: $puzzle-bg-color;
 			border: 10px solid transparent;
+
+			@include bp(l) {
+				width: 100%;
+			}
 		}
 	}
 
@@ -46,6 +64,8 @@
 	// Tile
 	// ===========================
 	.tile {
+		width: 100%;
+		height: 100%;
 		background-repeat: no-repeat;
 		border: none;
 		cursor: pointer;
@@ -69,6 +89,11 @@
 		margin: 0 auto;
 		padding: 20px;
 
+		@include bp(l) {
+			flex-flow: wrap;
+			justify-content: center;
+		}
+
 		.text-block {
 			display: flex;
 			flex-direction: column;
@@ -86,6 +111,10 @@
 
 		p+p {
 			margin-top: 0;
+
+			@include bp(l) {
+				margin-bottom: 30px;
+			}
 		}
 
 		hr {
@@ -109,6 +138,10 @@
 		position: relative;
 		font-size: 1.5rem;
 		margin-left: 20px;
+
+		@include bp(l) {
+			margin-left: 0;
+		}
 
 		.label {
 			text-align: center;
@@ -189,6 +222,10 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+
+		@include bp(s) {
+			display: none;
+		}
 
 		.label {
 			font-size: 1.5rem;
