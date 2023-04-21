@@ -180,16 +180,16 @@ export default function SlidePuzzle() {
 	// Custom Settings Event Listeners
 	// =================================
 	function shuffleHandler(event) {
-		setShuffleLevel(event.target.value);
+		let shuffledTiles;
 		const newBoard = [...solvedBoard];
-		const newShuffleLevel = event.target.value;
-		const shuffledTiles = shuffleTiles(newBoard, newShuffleLevel);
-		setPuzzleBoard(shuffledTiles);
-	}
-
-	function reshuffleHandler() {
-		const newBoard = [...solvedBoard];
-		const shuffledTiles = shuffleTiles(newBoard, shuffleLevel);
+		const buttonId = event.target.id;
+		let updateShuffleLevel = shuffleLevel;
+		// update difficulty level from custom settings
+		if (buttonId === 'shuffle-level') {
+			const updateShuffleLevel = event.target.value;
+			setShuffleLevel(updateShuffleLevel);
+		}
+		shuffledTiles = shuffleTiles(newBoard, updateShuffleLevel);
 		setPuzzleBoard(shuffledTiles);
 	}
 
@@ -454,7 +454,7 @@ export default function SlidePuzzle() {
 						</div>
 						<hr />
 						<div className="row">
-							<button onClick={reshuffleHandler} name="reshuffle" className="reshuffle">reshuffle</button>
+							<button onClick={shuffleHandler} id="reshuffle" className="reshuffle">reshuffle</button>
 						</div>
 					</div>
 				</section>
