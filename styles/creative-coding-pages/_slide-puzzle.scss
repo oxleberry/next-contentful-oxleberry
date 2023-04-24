@@ -50,8 +50,6 @@
 			display: grid;
 			gap: 2px;
 			width: 48%;
-			background-color: $puzzle-bg-color;
-			border: 10px solid transparent;
 
 			@include bp(l) {
 				width: 100%;
@@ -69,6 +67,7 @@
 		background-repeat: no-repeat;
 		border: none;
 		cursor: pointer;
+		background-color: $puzzle-bg-color; // fallback until image has loaded for mobile
 	}
 
 	.tile-blank {

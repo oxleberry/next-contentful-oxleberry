@@ -11,6 +11,7 @@ export default function SlidePuzzle() {
 
 	// Elements =================
 	const puzzleImageRef = useRef(null);
+	const puzzleBgColorLoaded = '#0a0a0a';
 
 	// States =================
 	const [solvedBoard, setSolvedBoard] = useState([]); // array of object tiles in solved board order
@@ -22,6 +23,7 @@ export default function SlidePuzzle() {
 	const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-static.jpg");
 	const [puzzleWidth, setPuzzleWidth] = useState(426);
 	const [puzzleHeight, setPuzzleHeight] = useState(426);
+	const [puzzleBgColor, setPuzzleBgColor] = useState('transparent');
 
 
 	// ============================
@@ -366,7 +368,8 @@ export default function SlidePuzzle() {
 	// ============================
 	// Initial page load
 	useEffect(() => {
-		setPuzzleContainerSize();
+		// add puzzle background after image has been loaded
+		setPuzzleBgColor(puzzleBgColorLoaded);
 	}, []);
 
 	// Custom settings updates
@@ -475,7 +478,9 @@ export default function SlidePuzzle() {
 						style={{
 							gridTemplateColumns: `repeat(${displayCols}, 1fr)`,
 							width: `${puzzleWidth}px`,
-							height: `${puzzleHeight}px`
+							height: `${puzzleHeight}px`,
+							background: puzzleBgColor,
+							border: `10px solid ${puzzleBgColor}`
 						}}>
 						{displayTiles()}
 					</div>
