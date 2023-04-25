@@ -17,8 +17,10 @@ export default function SlidePuzzle() {
 	const [solvedBoard, setSolvedBoard] = useState([]); // array of object tiles in solved board order
 	const [puzzleBoard, setPuzzleBoard] = useState([]); // array of object tiles for tracking the position of the tiles on the board
 	const [shuffleLevel, setShuffleLevel] = useState(20); // set at easiest level (number of shuffles)
+	const [colsInput, setColsInput] = useState(4);
 	const [colsCount, setColsCount] = useState(4);
 	const [displayCols, setdisplayCols] = useState(4); // used to avoid double updates from 'colsCount' in gridTemplateColumns
+	const [rowsInput, setRowsInput] = useState(4);
 	const [rowsCount, setRowsCount] = useState(4);
 	const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-static.jpg");
 	const [puzzleWidth, setPuzzleWidth] = useState(426);
@@ -199,14 +201,30 @@ export default function SlidePuzzle() {
 		setPuzzleBoard(shuffledTiles);
 	}
 
-	function colHandler(event) {
-		let updateColCount = event.target.value;
-		updateColCount = parseInt(updateColCount);
-		setColsCount(updateColCount);
-	}
-
-	function rowHandler(event) {
-		setRowsCount(event.target.value);
+	function colRowHandler(event) {
+		let value = event.target.value;
+		let name = event.target.name;
+		if (value === '') {
+			if (name === 'cols-input') {
+				setColsInput(value);
+			} else if (name === 'rows-input') {
+				setRowsInput(value);
+			}
+		} else if (value < 2 || value > 8) {
+			// skip if outside the min & mix limit
+			return;
+		}
+		else {
+			// updates valid input
+			value = +value; // + converts a string to a number
+			if (name === 'cols-input') {
+				setColsInput(value);
+				setColsCount(value);
+			} else if (name === 'rows-input') {
+				setRowsInput(value);
+				setRowsCount(value);
+			}
+		}
 	}
 
 
@@ -422,11 +440,13 @@ export default function SlidePuzzle() {
 						<hr />
 						<div className="row">
 							<label htmlFor="cols-input">Columns:&nbsp;&nbsp;</label>
-							<input onChange={colHandler} type="number" min="2" max="8" id="cols-input" name="cols-input" className="cols-input" value={colsCount}></input>
+							<input onChange={colRowHandler} type="number" min="2" max="8" id="cols-input" name="cols-input" className="cols-input" value={colsInput}></input>
+							<small className="info">&nbsp;&nbsp;(2-8)</small>
 						</div>
 						<div className="row">
 							<label htmlFor="rows-input">Rows:&nbsp;&nbsp;</label>
-							<input onChange={rowHandler} type="number" min="2" max="8" id="rows-input" name="rows-input" className="rows-input" value={rowsCount}></input>
+							<input onChange={colRowHandler} type="number" min="2" max="8" id="rows-input" name="rows-input" className="rows-input" value={rowsInput}></input>
+							<small className="info">&nbsp;&nbsp;(2-8)</small>
 						</div>
 						<div className="row">
 							<label htmlFor="shuffle-level">Shuffle Difficulty:&nbsp;</label>
