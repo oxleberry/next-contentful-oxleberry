@@ -120,6 +120,15 @@ export default function SlidePuzzle() {
 		for (let i = 0; i < numOfTimes; i++) {
 			updateBoard = randomMove(updateBoard);
 		}
+		// if random generator creates a solved puzzleboard, then manually swap last two tiles
+		if (puzzleBoard.length > 0) {
+			const isMatch = compareArrays(board, updateBoard);
+			if (isMatch) {
+				const lastTile = board.length - 1;
+				const secondLastTile = board.length - 2;
+				updateBoard = swap(board, lastTile, secondLastTile, false);
+			}
+		}
 		return updateBoard;
 	}
 
@@ -332,7 +341,9 @@ export default function SlidePuzzle() {
 	// ============================
 	// Win Functions
 	// ============================
-	// check if two arrays match
+	// Check if two arrays match
+	// parameters: arr1 = array of objects, arr2 = array of objects
+	// returns: boolean
 	function compareArrays(arr1, arr2) {
 		return arr1.every((element, idx) => element === arr2[idx]);
 	}
