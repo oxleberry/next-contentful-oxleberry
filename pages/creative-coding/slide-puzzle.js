@@ -470,6 +470,10 @@ export default function SlidePuzzle() {
 						<div className="row">
 							<input id="custom-image" onChange={imageHandler} type="file" name="custom-image" accept=".png, .jpg, .jpeg, .gif, .webp"/>
 						</div>
+						<hr className="mobile-view" />
+						<div className="row mobile-view">
+							<button onClick={shuffleHandler} id="reshuffle-mobile" className="reshuffle">reshuffle</button>
+						</div>
 					</div>
 
 					<div className="keyboard-guide">

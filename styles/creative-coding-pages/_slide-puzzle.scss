@@ -116,10 +116,24 @@
 			}
 		}
 
+		// Shared Settings
 		hr {
 			width: 100%;
 			color: colors.$lt-brown;
 			opacity: .4;
+		}
+
+		.reshuffle {
+			margin-top: 4px;
+			background-color: colors.$ltest-brown;
+			font-family: fonts.$sans-serif;
+			font-size: 1.3rem;
+			font-weight: bold;
+			color: colors.$brown;
+			text-transform: capitalize;
+			border-radius: 4px;
+			padding: 3px 20px;
+			border: 1px solid colors.$brown;
 		}
 	}
 
@@ -212,6 +226,14 @@
 			opacity: .9;
 			cursor: default;
 		}
+
+		.mobile-view {
+			display: none;
+
+			@include bp(s) {
+				display: flex;
+			}
+		}
 	}
 
 
@@ -262,19 +284,6 @@
 
 		hr {
 			margin-bottom: 12px;
-		}
-
-		.reshuffle {
-			margin-top: 4px;
-			background-color: colors.$ltest-brown;
-			font-family: fonts.$sans-serif;
-			font-size: 1.3rem;
-			font-weight: bold;
-			color: colors.$brown;
-			text-transform: capitalize;
-			border-radius: 4px;
-			padding: 3px 20px;
-			border: 1px solid colors.$brown;
 		}
 	}
 }
