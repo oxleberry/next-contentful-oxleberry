@@ -103,6 +103,10 @@ export default function SlidePuzzle() {
 		const imageWidth = puzzleImageRef.current.offsetWidth;
 		const imageHeight = puzzleImageRef.current.offsetHeight;
 		const border = 20;
+		// if image hasn't loaded yet, initial page load
+		if (imageWidth === 0) {
+			return;
+		}
 		const puzzleWidth = imageWidth + border;
 		const puzzleHeight = imageHeight + border;
 		setPuzzleWidth(puzzleWidth);
