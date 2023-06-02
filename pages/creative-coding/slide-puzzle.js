@@ -3,9 +3,23 @@ import Head from 'next/head'
 import Script from 'next/script' // for adding JS library
 import Header from '../../components/Header'
 import { useEffect, useState, useRef } from 'react'
+import { createClient } from 'contentful'
 
 
-export default function SlidePuzzle() {
+// get CMS content =================
+export async function getStaticProps() {
+	const client = createClient({
+		space: process.env.CONTENTFUL_SPACE_ID,
+		accessToken: process.env.CONTENTFUL_ACCESS_KEY
+	});
+	const res = await client.getEntries({ content_type: 'slidePuzzle' });
+	return {
+		props: { slidePuzzle: res.items }
+	}
+}
+
+
+export default function SlidePuzzle({ slidePuzzle }) {
 	// Variables =================
 	const blankTile = 'tile-blank';
 
@@ -22,7 +36,7 @@ export default function SlidePuzzle() {
 	const [displayCols, setdisplayCols] = useState(4); // used to avoid double updates from 'colsCount' in gridTemplateColumns
 	const [rowsInput, setRowsInput] = useState(4);
 	const [rowsCount, setRowsCount] = useState(4);
-	const [puzzleImage, setPuzzleImage] = useState("/slide-puzzle/narwhal-static.jpg");
+	const [puzzleImage, setPuzzleImage] = useState(getImage('narwhal-static'));
 	const [puzzleWidth, setPuzzleWidth] = useState(426);
 	const [puzzleHeight, setPuzzleHeight] = useState(426);
 	const [puzzleBgColor, setPuzzleBgColor] = useState('transparent');
@@ -31,6 +45,18 @@ export default function SlidePuzzle() {
 	// ============================
 	// Setup Functions
 	// ============================
+	// find image by id from CMS
+	function getImage(id) {
+		let image;
+		slidePuzzle.forEach((item) => {
+			if (item.fields.id === id) {
+				image = item.fields.image.fields.file.url;
+			}
+		});
+		return image;
+	}
+
+
 	// Setup tiles based on amount of cols & rows
 	function updatePuzzleBoard() {
 		const tileNames = createEmptyTiles();
