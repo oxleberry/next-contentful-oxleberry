@@ -19,8 +19,10 @@ $backboard-bg: $white;
 
 /* Text Colors */
 $text: $brown;
-$link-hover: $brown;
-$link: $lt-brown;
+$link-icon: $lt-brown;
+$link-icon-hover: $brown;
+$link-text: $lt-brown;
+$link-text-hover: #db6b2f;
 
 
 /* Main Navbar Colors */
@@ -28,8 +30,3 @@ $navbar: $brown;
 $nav-link: rgba(255, 255, 255, 0.5);
 $nav-link-hover: rgba(255, 255, 255, 1);
 $nav-active: $white;
-
-
-/* Social Icons */
-$social-icon: rgba(143, 116, 93, .6);  // mid brown (transparent)
-$social-icon-hover: rgba(143, 116, 93, 1);  // mid brown

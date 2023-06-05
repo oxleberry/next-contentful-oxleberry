@@ -69,11 +69,19 @@ a {
 	font-family: fonts.$sans-serif;
 	font-size: 1.6rem;
 	// color: inherit;
-	color: colors.$link;
+	color: colors.$link-text;
 	text-decoration: none;
 
 	&:hover {
-		color: colors.$link-hover;
+		color: colors.$link-text-hover;
+	}
+
+	&.link-icon {
+		color: colors.$link-icon;
+
+		&:hover {
+			color: colors.$link-icon-hover;
+		}
 	}
 }
 
