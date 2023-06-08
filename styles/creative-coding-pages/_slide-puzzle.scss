@@ -6,7 +6,7 @@
 .slide-puzzle-page {
 	// Variables
 	$puzzle-bg-color: #0a0a0a;
-	$intro-container-height: 210px;
+	$intro-container-height: 214px;
 
 	display: flex;
 	flex-direction: column;
@@ -106,6 +106,10 @@
 
 		.description {
 			padding: 0 20px;
+		}
+
+		.link-hidden {
+			color: colors.$brown;
 		}
 
 		p+p {

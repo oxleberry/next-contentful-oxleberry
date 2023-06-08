@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Head from 'next/head'
 import Script from 'next/script' // for adding JS library
+import Link from 'next/link'
+import { useRouter } from 'next/router';
 import Header from '../../../components/Header'
 import { useEffect, useState, useRef } from 'react'
 import { createClient } from 'contentful'
@@ -42,8 +44,9 @@ export async function getStaticProps(context) {
 
 export default function SlidePuzzle({ slidePuzzle }) {
 	// Variables =================
-	const { image, imgWidth, imgHeight } = slidePuzzle.fields;  // data from CMS
+	const { image, variantPuzzleUrl, imgWidth, imgHeight } = slidePuzzle.fields;  // data from CMS
 	const blankTile = 'tile-blank';
+	const router = useRouter();
 
 	// Elements =================
 	const puzzleImageRef = useRef(null);
@@ -62,6 +65,7 @@ export default function SlidePuzzle({ slidePuzzle }) {
 	const [puzzleWidth, setPuzzleWidth] = useState(getPuzzleWidth());
 	const [puzzleHeight, setPuzzleHeight] = useState(getPuzzleHeight());
 	const [puzzleBgColor, setPuzzleBgColor] = useState('transparent');
+	const [pageHasChanged, setPageHasChanged] = useState(false);
 
 
 	// ============================
@@ -142,12 +146,17 @@ export default function SlidePuzzle({ slidePuzzle }) {
 	}
 
 	function setPuzzleContainerSize() {
+		let updatePuzzleWidth;
+		let updatePuzzleHeight;
 		const border = 20;
-		let	updatePuzzleWidth = puzzleImageRef.current.offsetWidth;
-		let	updatePuzzleHeight = puzzleImageRef.current.offsetHeight;
-		// if image hasn't loaded yet, initial page load
-		if (updatePuzzleWidth === 0) {
-			return;
+		// if coming from slide-puzzle variant page, then needs to reset width and height
+		if (pageHasChanged) {
+			updatePuzzleWidth = getPuzzleWidth();
+			updatePuzzleHeight = getPuzzleHeight();
+			setPageHasChanged(false);
+		} else {
+			updatePuzzleWidth = puzzleImageRef.current.offsetWidth;
+			updatePuzzleHeight = puzzleImageRef.current.offsetHeight;
 		}
 		updatePuzzleWidth += border;
 		updatePuzzleHeight += border;
@@ -438,6 +447,22 @@ export default function SlidePuzzle({ slidePuzzle }) {
 	};
 
 
+	// ======================================
+	// Slide Puzzle Variant Page Route Handlers
+	// ======================================
+	// Update image after route has change
+	// Any image update will trigger setPuzzleContainerSize to be updated
+	function routeChangeHandler() {
+		const updateImage = getImage();
+		setPuzzleImage(updateImage);
+	}
+
+	// Track if link within slide-puzzle sub-page has been clicked
+	function pageClickHandler() {
+		setPageHasChanged(true);
+	}
+
+
 	// ============================
 	// Event Listeners
 	// ============================
@@ -476,6 +501,15 @@ export default function SlidePuzzle({ slidePuzzle }) {
 		}
 	}, [keyPressHander, colsCount]);
 
+	// Resetting state after navigation within same parent route
+	// https://nextjs.org/docs/pages/api-reference/functions/use-router#resetting-state-after-navigation
+	useEffect(() => {
+		router.events.on('routeChangeComplete', routeChangeHandler)
+		return () => {
+			router.events.off('routeChangeComplete', routeChangeHandler)
+		};
+	}, [router.query.slug]);
+
 
 	return (
 		<>
@@ -493,7 +527,10 @@ export default function SlidePuzzle({ slidePuzzle }) {
 					</div>
 
 					<div className="puzzle-settings">
-						<p className="label">Customize Puzzle</p>
+						<p className="label">
+							<span>&#9734;  </span>Customize Puzzle
+							<span>  <Link href={variantPuzzleUrl}><a onClick={pageClickHandler} className="link-hidden">&#9734;</a></Link></span>
+						</p>
 						<hr />
 						<div className="row">
 							<label htmlFor="cols-input">Columns:&nbsp;&nbsp;</label>
