@@ -55,7 +55,7 @@ export default function SlidePuzzle({ slidePuzzle }) {
 	// States =================
 	const [solvedBoard, setSolvedBoard] = useState([]); // array of object tiles in solved board order
 	const [puzzleBoard, setPuzzleBoard] = useState([]); // array of object tiles for tracking the position of the tiles on the board
-	const [shuffleLevel, setShuffleLevel] = useState(20); // set at easiest level (number of shuffles)
+	const [shuffleLevel, setShuffleLevel] = useState(50); // set at easiest level (number of shuffles)
 	const [colsInput, setColsInput] = useState(4);
 	const [colsCount, setColsCount] = useState(4);
 	const [displayCols, setdisplayCols] = useState(4); // used to avoid double updates from 'colsCount' in gridTemplateColumns
