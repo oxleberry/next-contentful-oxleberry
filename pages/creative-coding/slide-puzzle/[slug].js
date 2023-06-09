@@ -307,6 +307,7 @@ export default function SlidePuzzle({ slidePuzzle }) {
 			return function(event) {
 				newImage = event.target.result;
 				setPuzzleImage(newImage);
+				updatePuzzleBoard();
 			};
 		})(imageFile), false);
 		reader.readAsDataURL(imageFile);
@@ -455,6 +456,7 @@ export default function SlidePuzzle({ slidePuzzle }) {
 	function routeChangeHandler() {
 		const updateImage = getImage();
 		setPuzzleImage(updateImage);
+		updatePuzzleBoard();
 	}
 
 	// Track if link within slide-puzzle sub-page has been clicked
