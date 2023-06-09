@@ -27,6 +27,8 @@
 		font-weight: 600;
 		text-align: center;
 		text-transform: uppercase;
+		padding-left: 20px;
+		padding-right: 20px;
 
 		@include bp(s) {
 			font-size: 3.2rem;
