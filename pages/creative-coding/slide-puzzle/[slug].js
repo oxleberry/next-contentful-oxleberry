@@ -597,6 +597,7 @@ export default function SlidePuzzle({ slidePuzzle }) {
 					<div className="puzzle-board"
 						style={{
 							gridTemplateColumns: `repeat(${displayCols}, 1fr)`,
+							maxWidth: `100%`,
 							width: `${puzzleWidth}px`,
 							height: `${puzzleHeight}px`,
 							background: puzzleBgColor,
