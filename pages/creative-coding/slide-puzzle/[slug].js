@@ -158,6 +158,10 @@ export default function SlidePuzzle({ slidePuzzle }) {
 			updatePuzzleWidth = puzzleImageRef.current.offsetWidth;
 			updatePuzzleHeight = puzzleImageRef.current.offsetHeight;
 		}
+		// if image hasn't loaded yet, initial page load
+		if (updatePuzzleWidth === 0) {
+			return;
+		}
 		updatePuzzleWidth += border;
 		updatePuzzleHeight += border;
 		setPuzzleWidth(updatePuzzleWidth);
