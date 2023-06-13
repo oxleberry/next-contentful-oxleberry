@@ -1,0 +1,15 @@
+// @use '../utilities/mixins' as *;
+// @use '../utilities/colors';
+// @use '../utilities/fonts';
+
+
+.nth-child-page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.alt-header h1 {
+		text-transform: inherit;
+		margin-top: 40px;
+	}
+}
