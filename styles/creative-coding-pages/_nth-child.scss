@@ -1,4 +1,4 @@
-// @use '../utilities/mixins' as *;
+@use '../utilities/mixins' as *;
 // @use '../utilities/colors';
 // @use '../utilities/fonts';
 
@@ -11,5 +11,68 @@
 	.alt-header h1 {
 		text-transform: inherit;
 		margin-top: 40px;
+	}
+
+
+	/* ==================== */
+	/* Grid */
+	/* ==================== */
+	.grid-container {
+		background-color: #222;
+		padding: 35px;
+		display: grid;
+		gap: 4px;
+		grid-template-columns: repeat(10, 1fr);
+		grid-template-rows: repeat(10, auto);
+		grid-auto-flow: column; // flows down, instead of left to right
+
+		.grid-item {
+			width: 30px;
+			height: 30px;
+		}
+	}
+
+
+	/* ==================== */
+	/* Colors */
+	/* ==================== */
+	.column-1 {
+		background-color: #ff595e;
+	}
+
+	.column-2 {
+		background-color: #ff924c;
+	}
+
+	.column-3 {
+		background-color: #ffca3a;
+	}
+
+	.column-4 {
+		background-color: #c5ca30;
+
+	}
+	.column-5 {
+		background-color: #8ac926;
+	}
+
+	.column-6 {
+		background-color: #36949d;
+	}
+
+	.column-7 {
+		background-color: #1982c4;
+	}
+
+	.column-8 {
+		background-color: #4267ac;
+	}
+
+	.column-9 {
+		background-color: #565aa0;
+
+	}
+	.column-10 {
+		background-color: #6a4c93;
 	}
 }
