@@ -18,17 +18,24 @@
 	/* Grid */
 	/* ==================== */
 	.grid-container {
+		// Grid Variables
+		--columns: 10;
+		--rows: 10;
+		--itemSize: 30px;
+		--gapSize: 4px;
+		--outer-padding: 35px;
+
 		background-color: #222;
-		padding: 35px;
+		padding: var(--outer-padding);
 		display: grid;
-		gap: 4px;
-		grid-template-columns: repeat(10, 1fr);
-		grid-template-rows: repeat(10, auto);
+		gap: var(--gapSize);
+		grid-template-columns: repeat(var(--columns), 1fr);
+		grid-template-rows: repeat(var(--rows), auto);
 		grid-auto-flow: column; // flows down, instead of left to right
 
 		.grid-item {
-			width: 30px;
-			height: 30px;
+			width: var(--itemSize);
+			height: var(--itemSize);
 		}
 	}
 
