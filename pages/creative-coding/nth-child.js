@@ -4,6 +4,7 @@ import Header from '../../components/Header'
 
 // const items = [0,1,2,3,4,5,6,7,8,9];
 const itemsPerColumn = Array.from({ length: 10 }, (value, index) => index);
+const columns = itemsPerColumn;
 
 
 const GridItem = (props) => {
@@ -22,6 +23,16 @@ const GridColumn = (props) => {
 	);
 }
 
+const Grid = () => {
+	return (
+		<div className={`grid-container`}>
+			{columns.map((item, idx) => (
+				<GridColumn key={idx} column={`column-${idx + 1}`} />
+			))}
+		</div>
+	);
+}
+
 
 export default function nthChild() {
 
@@ -33,14 +44,9 @@ export default function nthChild() {
 			</Head>
 			<main className="full-backboard nth-child-page">
 				<Header headline="nth-child Examples" alt={true}></Header>
-				<section className="example example-01">
-					<div className="grid-container">
-						<GridColumn column="column-1"/>
-						<GridColumn column="column-2"/>
-						<GridColumn column="column-3"/>
-						{/* <GridItem column='column-8' item='item-1'/> */}
-				</div>
-				</section>
+				<Grid example="all" />
+				{/* <GridColumn name="column-1"/> */}
+				{/* <GridItem group='group-8' item='item-1'/> */}
 			</main>
 		</>
 	);
