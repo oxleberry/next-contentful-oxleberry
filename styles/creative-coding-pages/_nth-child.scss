@@ -7,10 +7,44 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding-bottom: 30px;
 
 	.alt-header h1 {
 		text-transform: inherit;
 		margin-top: 40px;
+		margin-bottom: 0;
+	}
+
+	p:first-of-type {
+		margin-bottom: 0;
+	}
+
+	p+p {
+		margin-top: 0;
+	}
+
+	section {
+		margin-bottom: 20px;
+	}
+
+
+	/* ==================== */
+	/* Code */
+	/* ==================== */
+	pre {
+		background-color: #e8e8e8;
+		padding: 10px;
+	}
+
+	code {
+		text-align: left;
+		white-space: pre;
+		word-spacing: normal;
+		word-break: normal;
+		word-wrap: normal;
+		line-height: 1.5;
+		color: black;
+		font-size: 14px;
 	}
 
 
@@ -36,7 +70,23 @@
 		.grid-item {
 			width: var(--itemSize);
 			height: var(--itemSize);
+			opacity: .4;
 		}
+	}
+
+
+	/* ==================== */
+	/* nth-child Examples*/
+	/* ==================== */
+	// Adapted from tutorial:
+	// https://www.youtube.com/watch?v=fg7GEN7PbWs&t=46s
+	// n start at 0
+	// n loops = 0, 1, 2, 3, ...
+	// 2n = 2 * n
+
+	// select by grid-items
+	.all .grid-item:nth-child(n) {
+		opacity: 1;
 	}
 
 
