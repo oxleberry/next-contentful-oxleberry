@@ -85,7 +85,8 @@
 	// 2n = 2 * n
 
 	// select by grid-items
-	.all .grid-item:nth-child(n) {
+	.all .grid-item:nth-child(n),
+	.none .grid-item:nth-child(0) {
 		opacity: 1;
 	}
 

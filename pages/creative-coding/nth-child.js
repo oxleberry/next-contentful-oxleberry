@@ -34,14 +34,12 @@ const Grid = () => {
 }
 
 const Example = (props) => {
-	const code = `.grid-item:nth-child(${props.code}) {
-  opacity: 1;
-}`
 	return (
-		<section className={`example ${props.example}`}>
+		<section className={`example ${props.class}`}>
 			<hr />
-			<p>#1 - All</p>
-			<pre><code>{code}</code></pre>
+			<h2>{props.id} - {props.name}</h2>
+			<pre><code>{props.codeBrief}</code></pre>
+			{/* <pre><code>{props.code}</code></pre> */}
 			<Grid />
 		</section>
 	);
@@ -58,7 +56,23 @@ export default function nthChild() {
 			</Head>
 			<main className="full-backboard nth-child-page">
 				<Header headline="nth-child Examples" alt={true}></Header>
-				<Example example="all" code="n"/>
+
+				<Example
+					id="1"
+					name="All"
+					class="all"
+					codeBrief={`:nth-child(n)`}
+					code={`.grid-item:nth-child(n) {
+  opacity: 1;
+}`}/>
+				<Example
+					id="2"
+					name="None"
+					class="none"
+					codeBrief={`:nth-child(0)`}
+					code={`.grid-item:nth-child(0) {
+  opacity: 1;
+}`}/>
 				{/* <Grid example="all" /> */}
 				{/* <GridColumn name="group-1"/> */}
 				{/* <GridItem group='group-8' item='item-1'/> */}
