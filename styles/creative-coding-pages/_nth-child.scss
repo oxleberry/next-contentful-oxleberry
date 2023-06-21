@@ -86,7 +86,8 @@
 
 	// select by grid-items
 	.all .grid-item:nth-child(n),
-	.none .grid-item:nth-child(0) {
+	.none .grid-item:nth-child(0),
+	.first .grid-item:nth-child(1) {
 		opacity: 1;
 	}
 
