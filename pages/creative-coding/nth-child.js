@@ -32,6 +32,114 @@ const examplesData = [
 		code: `.grid-item:nth-child(1) {
   opacity: 1;
 }`
+	},
+	{
+		id: "4",
+		title: "Only fifth item",
+		class: "fifth",
+		codeBrief: `:nth-child(5)`,
+		code: `.grid-item:nth-child(5) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "5",
+		title: "Even",
+		class: "even",
+		codeBrief: `:nth-child(even)`,
+		code: `.grid-item:nth-child(even) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "6",
+		title: "Odd",
+		class: "odd",
+		codeBrief: `:nth-child(odd)`,
+		code: `.grid-item:nth-child(odd) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "7",
+		title: "Every third",
+		class: "thirds",
+		codeBrief: `:nth-child(3n)`,
+		code: `.grid-item:nth-child(3n) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "8",
+		title: "Every third, offset by 4",
+		class: "thirds-offset-4",
+		codeBrief: `:nth-child(3n + 4)`,
+		code: `.grid-item:nth-child(3n + 4) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "9",
+		title: "Every third, offset by 21",
+		class: "thirds-offset-21",
+		codeBrief: `:nth-child(3n + 21)`,
+		code: `.grid-item:nth-child(3n + 21) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "10",
+		title: "Every item 5 and above",
+		class: "five-above",
+		codeBrief: `:nth-child(n + 5)`,
+		code: `.grid-item:nth-child(n + 5) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "11",
+		title: "Every item 5 and below",
+		class: "five-below",
+		codeBrief: `:nth-child(-n + 5)`,
+		code: `.grid-item:nth-child(-n + 5) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "12",
+		title: "Range 4-7",
+		class: "range-4-7",
+		codeBrief: `:nth-child(n + 4):nth-child(-n + 7)`,
+		code: `.grid-item:nth-child(n + 4):nth-child(-n + 7) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "13",
+		title: "Range 53-58",
+		class: "range-53-58",
+		codeBrief: `:nth-child(n + 53):nth-child(-n + 58)`,
+		code: `.grid-item:nth-child(n + 53):nth-child(-n + 58) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "14",
+		title: "Fifth from the end",
+		class: "fifth-from-end",
+		codeBrief: `:nth-last-child(5)`,
+		code: `.grid-item:nth-last-child(5) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "15",
+		title: "Every third from the end",
+		class: "thirds-from-end",
+		codeBrief: `:nth-last-child(3n)`,
+		code: `.grid-item:nth-last-child(3n) {
+  opacity: 1;
+}`
 	}
 ];
 
@@ -69,7 +177,7 @@ const Example = (props) => {
 		<section className={`example ${props.class}`}>
 			<hr />
 			<h2>{props.id}. {props.title}</h2>
-			<pre><code>{props.code}</code></pre>
+			<pre><code>{props.codeBrief}</code></pre>
 			{/* <pre><code>{props.code}</code></pre> */}
 			<Grid />
 		</section>
@@ -106,26 +214,6 @@ export default function nthChild() {
 				<p>Based on <a href="https://www.youtube.com/watch?v=fg7GEN7PbWs&t=46s">Master the :nth-child</a> tutorial video.</p>
 				<p>Play around on <a href="https://codepen.io/oxleberry/pen/LYgRwgW">Codepen</a>.</p>
 					<ExampleList examplesData={examplesData} />
-
-				{/* <Example
-					id="1"
-					title="All are selected"
-					class="all"
-					codeBrief={`:nth-child(n)`}
-					code={`.grid-item:nth-child(n) {
-  opacity: 1;
-}`}/>
-				<Example
-					id="2"
-					title="None are selected"
-					class="none"
-					codeBrief={`:nth-child(0)`}
-					code={`.grid-item:nth-child(0) {
-  opacity: 1;
-}`}/> */}
-				{/* <Grid example="all" /> */}
-				{/* <GridColumn name="group-1"/> */}
-				{/* <GridItem group='group-8' item='item-1'/> */}
 			</main>
 		</>
 	);

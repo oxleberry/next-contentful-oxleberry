@@ -87,7 +87,19 @@
 	// select by grid-items
 	.all .grid-item:nth-child(n),
 	.none .grid-item:nth-child(0),
-	.first .grid-item:nth-child(1) {
+	.first .grid-item:nth-child(1),
+	.fifth .grid-item:nth-child(5),
+	.even .grid-item:nth-child(even),
+	.odd .grid-item:nth-child(odd),
+	.thirds .grid-item:nth-child(3n),
+	.thirds-offset-4 .grid-item:nth-child(3n + 4),
+	.thirds-offset-21 .grid-item:nth-child(3n + 21),
+	.five-above .grid-item:nth-child(n + 5),
+	.five-below .grid-item:nth-child(-n + 5),
+	.range-4-7 .grid-item:nth-child(n + 4):nth-child(-n + 7),
+	.range-53-58 .grid-item:nth-child(n + 53):nth-child(-n + 58),
+	.fifth-from-end .grid-item:nth-last-child(5),
+	.thirds-from-end .grid-item:nth-last-child(3n) {
 		opacity: 1;
 	}
 
