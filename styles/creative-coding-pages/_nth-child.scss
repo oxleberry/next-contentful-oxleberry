@@ -103,6 +103,43 @@
 		opacity: 1;
 	}
 
+	// select by columns
+	.even-columns .grid-item {
+		@for $i from 1 through 10 {
+			&:nth-child(20n + #{$i + 10}) {
+				opacity: 1;
+			}
+		}
+	}
+	.odd-columns .grid-item {
+		@for $i from 1 through 10 {
+			&:nth-child(20n + #{$i}) {
+				opacity: 1;
+			}
+		}
+	}
+	.first-column .grid-item {
+		@for $i from 1 through 10 {
+			&:nth-child(#{$i}) {
+				opacity: 1;
+			}
+		}
+	}
+	.middle-columns .grid-item {
+		@for $i from 1 through 20 {
+			&:nth-child(#{$i + 40}) {
+				opacity: 1;
+			}
+		}
+	}
+	.last-column .grid-item {
+		@for $i from 1 through 10 {
+			&:nth-last-child(#{$i}) {
+				opacity: 1;
+			}
+		}
+	}
+
 
 	/* ==================== */
 	/* Colors */

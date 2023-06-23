@@ -140,6 +140,91 @@ const examplesData = [
 		code: `.grid-item:nth-last-child(3n) {
   opacity: 1;
 }`
+	},
+	{
+		id: "16",
+		title: "Even columns",
+		class: "even-columns",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 10 {
+  &:nth-child(20n + #{$i + 10}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 10 {
+  &:nth-child(20n + #{$i + 10}) {
+    opacity: 1;
+  }
+}`
+	},
+	{
+		id: "17",
+		title: "Odd columns",
+		class: "odd-columns",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 10 {
+  &:nth-child(20n + #{$i}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 10 {
+  &:nth-child(20n + #{$i}) {
+    opacity: 1;
+  }
+}`
+	},
+	{
+		id: "18",
+		title: "First column",
+		class: "first-column",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 10 {
+  &:nth-child(#{$i}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 10 {
+  &:nth-child(#{$i}) {
+    opacity: 1;
+  }
+}`
+	},
+	{
+		id: "19",
+		title: "Middle columns",
+		class: "middle-columns",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 20 {
+  &:nth-child(#{$i + 40}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 20 {
+  &:nth-child(#{$i + 40}) {
+    opacity: 1;
+  }
+}`
+	},
+	{
+		id: "20",
+		title: "Last column",
+		class: "last-column",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 10 {
+  &:nth-last-child(#{$i}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 10 {
+  &:nth-last-child(#{$i}) {
+    opacity: 1;
+  }
+}`
 	}
 ];
 
