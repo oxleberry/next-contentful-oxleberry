@@ -140,6 +140,22 @@
 		}
 	}
 
+	// select half of the column
+	.first-half-columns .grid-item {
+		@for $i from 1 through 5 {
+			&:nth-child(10n + #{$i}) {
+				opacity: 1;
+			}
+		}
+	}
+	.second-half-columns .grid-item {
+		@for $i from 1 through 5 {
+			&:nth-child(10n + #{$i + 5}) {
+				opacity: 1;
+			}
+		}
+	}
+
 
 	/* ==================== */
 	/* Colors */

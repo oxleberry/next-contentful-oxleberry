@@ -225,6 +225,40 @@ const examplesData = [
     opacity: 1;
   }
 }`
+	},
+	{
+		id: "21",
+		title: "First half of columns",
+		class: "first-half-columns",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 5 {
+  &:nth-child(10n + #{$i}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 5 {
+  &:nth-child(10n + #{$i}) {
+    opacity: 1;
+  }
+}`
+	},
+	{
+		id: "22",
+		title: "Second half of columns",
+		class: "second-half-columns",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 5 {
+  &:nth-child(10n + #{$i + 5}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 5 {
+  &:nth-child(10n + #{$i + 5}) {
+    opacity: 1;
+  }
+}`
 	}
 ];
 
