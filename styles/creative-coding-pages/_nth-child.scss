@@ -156,6 +156,29 @@
 		}
 	}
 
+	// select by rows
+	.first-row .grid-item {
+		@for $i from 1 through 1 {
+			&:nth-child(10n + #{$i}) {
+				opacity: 1;
+			}
+		}
+	}
+	.middle-rows .grid-item {
+		@for $i from 1 through 2 {
+			&:nth-child(10n + #{$i + 4}) {
+				opacity: 1;
+			}
+		}
+	}
+	.last-row .grid-item {
+		@for $i from 1 through 1 {
+			&:nth-child(10n + #{$i + 9}) {
+				opacity: 1;
+			}
+		}
+	}
+
 
 	/* ==================== */
 	/* Colors */

@@ -259,6 +259,57 @@ const examplesData = [
     opacity: 1;
   }
 }`
+	},
+	{
+		id: "23",
+		title: "First row",
+		class: "first-row",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 1 {
+  &:nth-child(10n + #{$i}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 1 {
+  &:nth-child(10n + #{$i}) {
+    opacity: 1;
+  }
+}`
+	},
+	{
+		id: "24",
+		title: "Middle rows",
+		class: "middle-rows",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 2 {
+  &:nth-child(10n + #{$i + 4}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 2 {
+  &:nth-child(10n + #{$i + 4}) {
+    opacity: 1;
+  }
+}`
+	},
+	{
+		id: "25",
+		title: "Last row",
+		class: "last-row",
+		codeBrief: `SCSS preprocessor:
+@for $i from 1 through 1 {
+  &:nth-child(10n + #{$i + 9}) {
+    opacity: 1;
+  }
+}`,
+		code: `SCSS preprocessor:
+@for $i from 1 through 1 {
+  &:nth-child(10n + #{$i + 9}) {
+    opacity: 1;
+  }
+}`
 	}
 ];
 
