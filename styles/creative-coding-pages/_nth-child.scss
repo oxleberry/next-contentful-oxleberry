@@ -15,6 +15,12 @@
 		margin-bottom: 0;
 	}
 
+	h2 {
+		@include bp(s) {
+			font-size: 22px;
+		}
+	}
+
 	p:first-of-type {
 		margin-bottom: 0;
 	}
@@ -45,6 +51,10 @@
 		line-height: 1.5;
 		color: black;
 		font-size: 14px;
+
+		@include bp(s) {
+			font-size: 12px;
+		}
 	}
 
 
@@ -58,6 +68,12 @@
 		--itemSize: 30px;
 		--gapSize: 4px;
 		--outer-padding: 35px;
+
+		@include bp(s) {
+			--itemSize: 22px;
+			--gapSize: 3px;
+			--outer-padding: 25px;
+		}
 
 		background-color: #222;
 		padding: var(--outer-padding);
