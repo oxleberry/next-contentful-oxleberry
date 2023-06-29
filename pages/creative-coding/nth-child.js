@@ -125,6 +125,15 @@ const examplesData = [
 	},
 	{
 		id: "14",
+		title: "Last item",
+		class: "last",
+		codeBrief: `:nth-last-child(1)`,
+		code: `.grid-item:nth-last-child(1) {
+  opacity: 1;
+}`
+	},
+	{
+		id: "15",
 		title: "Fifth from the end",
 		class: "fifth-from-end",
 		codeBrief: `:nth-last-child(5)`,
@@ -133,7 +142,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "15",
+		id: "16",
 		title: "Every third from the end",
 		class: "thirds-from-end",
 		codeBrief: `:nth-last-child(3n)`,
@@ -142,7 +151,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "16",
+		id: "17",
 		title: "Even columns",
 		class: "even-columns",
 		codeBrief: `SCSS preprocessor:
@@ -159,7 +168,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "17",
+		id: "18",
 		title: "Odd columns",
 		class: "odd-columns",
 		codeBrief: `SCSS preprocessor:
@@ -176,7 +185,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "18",
+		id: "19",
 		title: "First column",
 		class: "first-column",
 		codeBrief: `SCSS preprocessor:
@@ -193,7 +202,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "19",
+		id: "20",
 		title: "Middle columns",
 		class: "middle-columns",
 		codeBrief: `SCSS preprocessor:
@@ -210,7 +219,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "20",
+		id: "21",
 		title: "Last column",
 		class: "last-column",
 		codeBrief: `SCSS preprocessor:
@@ -227,7 +236,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "21",
+		id: "22",
 		title: "First half of columns",
 		class: "first-half-columns",
 		codeBrief: `SCSS preprocessor:
@@ -244,7 +253,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "22",
+		id: "23",
 		title: "Second half of columns",
 		class: "second-half-columns",
 		codeBrief: `SCSS preprocessor:
@@ -261,7 +270,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "23",
+		id: "24",
 		title: "First row",
 		class: "first-row",
 		codeBrief: `SCSS preprocessor:
@@ -278,7 +287,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "24",
+		id: "25",
 		title: "Middle rows",
 		class: "middle-rows",
 		codeBrief: `SCSS preprocessor:
@@ -295,7 +304,7 @@ const examplesData = [
 }`
 	},
 	{
-		id: "25",
+		id: "26",
 		title: "Last row",
 		class: "last-row",
 		codeBrief: `SCSS preprocessor:
@@ -320,7 +329,6 @@ const GridItem = (props) => {
 	);
 }
 
-
 const GridColumn = (props) => {
 	return (
 		<>
@@ -330,7 +338,6 @@ const GridColumn = (props) => {
 		</>
 	);
 }
-
 
 const Grid = () => {
 	return (
