@@ -1,0 +1,11 @@
+@use '../utilities/mixins' as *;
+// @use '../utilities/colors';
+// @use '../utilities/fonts';
+
+.animated-stickers-page {
+	text-align: center;
+
+	h1 {
+		margin-top: 0;
+	}
+}
