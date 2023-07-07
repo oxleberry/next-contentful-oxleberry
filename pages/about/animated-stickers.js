@@ -11,10 +11,40 @@ export default function animatedSticker() {
 			</Head>
 			<main className="page-backboard animated-stickers-page">
 				<Header headline="Oxleberry Stickers" alt={true}></Header>
-				<picture>
-					<source srcSet="/animated-stickers/blue-monster-chomp-animation.gif" />
-					<img className="sticker-image" src="/animated-stickers/blue-monster-chomp-animation.gif" alt="animated sticker" />
-				</picture>
+				<div className="grid">
+					<picture>
+						<source srcSet="/animated-stickers/blue-monster-chomp-animation.gif" />
+						<img className="sticker-image" src="/animated-stickers/blue-monster-chomp-animation.gif" alt="animated sticker" />
+					</picture>
+					<picture>
+						<source srcSet="/animated-stickers/tree-monster-animation.gif" />
+						<img className="sticker-image" src="/animated-stickers/tree-monster-animation.gif" alt="animated sticker" />
+					</picture>
+					<picture>
+						<source srcSet="/animated-stickers/orange-monster-animation.gif" />
+						<img className="sticker-image" src="/animated-stickers/orange-monster-animation.gif" alt="animated sticker" />
+					</picture>
+					<picture>
+						<source srcSet="/animated-stickers/star-balloon-animation.gif" />
+						<img className="sticker-image" src="/animated-stickers/star-balloon-animation.gif" alt="animated sticker" />
+					</picture>
+					<picture>
+						<source srcSet="/animated-stickers/blue-monster-chomp-animation.gif" />
+						<img className="sticker-image" src="/animated-stickers/blue-monster-chomp-animation.gif" alt="animated sticker" />
+					</picture>
+					<picture>
+						<source srcSet="/animated-stickers/tree-monster-animation.gif" />
+						<img className="sticker-image" src="/animated-stickers/tree-monster-animation.gif" alt="animated sticker" />
+					</picture>
+					<picture>
+						<source srcSet="/animated-stickers/orange-monster-animation.gif" />
+						<img className="sticker-image" src="/animated-stickers/orange-monster-animation.gif" alt="animated sticker" />
+					</picture>
+					<picture>
+						<source srcSet="/animated-stickers/star-balloon-animation.gif" />
+						<img className="sticker-image" src="/animated-stickers/star-balloon-animation.gif" alt="animated sticker" />
+					</picture>
+				</div>
 			</main>
 		</>
 	);

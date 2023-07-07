@@ -9,7 +9,15 @@
 		margin-top: 0;
 	}
 
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(4, 150px);
+		gap: 18px 28px;
+		justify-content: center;
+	}
+
 	.sticker-image {
+		display: block;
 		width: 150px;
 	}
 }
