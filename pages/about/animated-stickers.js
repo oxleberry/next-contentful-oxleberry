@@ -20,7 +20,7 @@ export async function getStaticProps() {
 
 
 export default function animatedSticker({ animatedStickers }) {
-	const { title, stickerImages } = animatedStickers[0].fields;
+	const { title, stickerImages, appDescription, appImages } = animatedStickers[0].fields;
 
 	return (
 		<>
@@ -30,6 +30,7 @@ export default function animatedSticker({ animatedStickers }) {
 			</Head>
 			<main className="page-backboard animated-stickers-page">
 				<Header headline={title} alt={true}></Header>
+				{/* Sitckers Grid */}
 				<div className="grid">
 					{stickerImages.map((image, idx) => {
 						return (
@@ -44,6 +45,21 @@ export default function animatedSticker({ animatedStickers }) {
 						)
 					})}
 				</div>
+
+				<hr />
+				<p className="description">{appDescription}</p>
+				{appImages.map((image, idx) => {
+					return (
+						<picture key={idx} className={`img-${idx + 1}`}>
+							<source srcSet={image.fields.file.url} />
+							<img
+								className="app-image"
+								src={image.fields.file.url}
+								alt={image.fields.description}
+							/>
+						</picture>
+					)
+				})}
 			</main>
 		</>
 	);
