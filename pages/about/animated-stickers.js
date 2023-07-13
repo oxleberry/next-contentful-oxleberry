@@ -19,10 +19,30 @@ export async function getStaticProps() {
 }
 
 
-export default function animatedSticker({ animatedStickers }) {
-	// const { title, stickerImages, appDescription, appImages } = animatedStickers[0].fields;
+// Sticker components =================
+const StickerImage = ({ stickerImage }) => {
+	const { title, order, image, imageType, url } = stickerImage.fields;
+	return (
+		<picture id={order} className={image.fields.title}>
+			<source srcSet={image.fields.file.url} />
+			<img
+				className={imageType}
+				src={image.fields.file.url}
+				alt={image.fields.description}
+			/>
+		</picture>
+	);
+}
+
+
+export default function animatedStickers({ animatedStickers }) {
 	animatedStickers.sort((a, b) => a.fields.order - b.fields.order);
-	console.log(animatedStickers);
+	const stickerImages = animatedStickers.filter((images) => images.fields.imageType[0] === 'sticker-image');
+	const appImages = animatedStickers.filter((images) => images.fields.imageType[0] === 'app-image');
+
+	// console.log(animatedStickers);
+	// console.log(stickerImages);
+	// console.log(appImages);
 
 	return (
 		<>
@@ -32,36 +52,19 @@ export default function animatedSticker({ animatedStickers }) {
 			</Head>
 			<main className="page-backboard animated-stickers-page">
 				<Header headline="Oxleberry Stickers" alt={true}></Header>
-				{/* Sitckers Grid */}
+				{/* Grid for Sticker Images */}
 				<div className="grid">
-					{animatedStickers.map((image, idx) => {
-						return (
-							<picture key={idx} className={`img-${idx + 1}`}>
-								<source srcSet={image.fields.image.fields.file.url} />
-								<img
-									className="sticker-image"
-									src={image.fields.image.fields.file.url}
-									alt={image.fields.image.fields.description}
-								/>
-							</picture>
-						)
+					{stickerImages.map((stickerImage) => {
+						return <StickerImage key={stickerImage.sys.id} stickerImage={stickerImage}/>
 					})}
 				</div>
 
 				<hr />
 				<p className="description">A short run of iMessage animated stickers that was available for iPhones from 2020-2021.</p>
-				{/* {appImages.map((image, idx) => {
-					return (
-						<picture key={idx} className={`img-${idx + 1}`}>
-							<source srcSet={image.fields.file.url} />
-							<img
-								className="app-image"
-								src={image.fields.file.url}
-								alt={image.fields.description}
-							/>
-						</picture>
-					)
-				})} */}
+				{/* App Images */}
+				{appImages.map((appImage) => {
+					return <StickerImage key={appImage.sys.id} stickerImage={appImage}/>
+				})}
 			</main>
 		</>
 	);
