@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { createClient } from 'contentful'
 import Header from '../../components/Header'
 
@@ -21,8 +22,25 @@ export async function getStaticProps() {
 
 // Sticker components =================
 const StickerImage = ({ stickerImage }) => {
-	const { title, order, image, imageType, url } = stickerImage.fields;
+	const { order, image, imageType, url } = stickerImage.fields;
 	return (
+		// with a link
+		url ?
+		<Link href={`../${url}`}>
+			<a id={order} className={image.fields.title}>
+				<picture>
+					<source srcSet={image.fields.file.url} />
+					<img
+						className={imageType}
+						src={image.fields.file.url}
+						alt={image.fields.description}
+					/>
+				</picture>
+			</a>
+		</Link>
+		:
+
+		// without a link
 		<picture id={order} className={image.fields.title}>
 			<source srcSet={image.fields.file.url} />
 			<img
@@ -39,10 +57,6 @@ export default function animatedStickers({ animatedStickers }) {
 	animatedStickers.sort((a, b) => a.fields.order - b.fields.order);
 	const stickerImages = animatedStickers.filter((images) => images.fields.imageType[0] === 'sticker-image');
 	const appImages = animatedStickers.filter((images) => images.fields.imageType[0] === 'app-image');
-
-	// console.log(animatedStickers);
-	// console.log(stickerImages);
-	// console.log(appImages);
 
 	return (
 		<>
