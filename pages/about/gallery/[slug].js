@@ -57,7 +57,7 @@ export default function Gallery({ gallery }) {
 						)
 					})}
 				</div>
-				<p className="text">{description}</p>
+				<p className="description" dangerouslySetInnerHTML={{__html: description}}></p>
 			</main>
 		</>
 	);

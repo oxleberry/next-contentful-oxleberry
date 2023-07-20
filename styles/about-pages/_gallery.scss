@@ -1,5 +1,5 @@
 @use '../utilities/mixins' as *;
-// @use '../utilities/colors';
+@use '../utilities/colors';
 // @use '../utilities/fonts';
 
 .gallery-page {
@@ -36,7 +36,7 @@
 		margin: 0 auto;
 	}
 
-	.text {
+	.description {
 		margin: 0 auto;
 		max-width: 710px;
 		padding: 12px 30px 20px;
@@ -47,9 +47,9 @@
 	}
 
 
-// ==================================
-/* Cookie Stamp - Override Styles */
-// ==================================
+	// ==================================
+	/* Cookie Stamp - Override Styles */
+	// ==================================
 	&.cookie-stamps {
 		img {
 			@include bp(s) {
@@ -86,9 +86,9 @@
 	}
 
 
-// =====================================
-/* Cardboard Cutout - Override Styles */
-// =====================================
+	// =====================================
+	/* Cardboard Cutout - Override Styles */
+	// =====================================
 	&.cardboard-cutouts {
 		.gallery-container {
 			grid-template-columns: repeat(12, 1fr);
@@ -178,6 +178,77 @@
 					max-width: 350px;
 					justify-self: center;
 				}
+			}
+		}
+	}
+
+
+	// ======================================
+	/* Sumofish Stickers - Override Styles */
+	// ======================================
+	&.sumofish-stickers {
+		background-color: #151515;
+
+		h1,
+		.description {
+			color: colors.$white;
+		}
+
+		.gallery-container {
+			justify-content: center;
+			grid-template-columns: repeat(10, 1fr);
+
+			@include bp(l) {
+				grid-template-columns: repeat(8, 1fr);
+			}
+
+			@include bp(m) {
+				grid-template-columns: repeat(6, 1fr);
+			}
+
+			@include bp(s) {
+				grid-template-columns: 200px;
+				grid-template-rows: repeat(5, 200px);
+			}
+		}
+
+		// Shared image styles
+		@for $i from 1 through 5 {
+			.img-#{$i} {
+				grid-column-end: span 2;
+
+				@include bp(s) {
+					grid-column-end: span 1;
+				}
+			}
+		}
+
+		// Targeted image positioning
+		.img-1 {
+			grid-column-start: 3;
+
+			@include bp(l) {
+				grid-column-start: 2;
+			}
+
+			@include bp(m) {
+				grid-column-start: auto;
+			}
+		}
+
+		.img-4 {
+			grid-column-start: 4;
+
+			@include bp(l) {
+				grid-column-start: 3;
+			}
+
+			@include bp(m) {
+				grid-column-start: 2;
+			}
+
+			@include bp(s) {
+				grid-column-start: auto;
 			}
 		}
 	}
