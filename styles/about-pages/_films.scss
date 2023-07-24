@@ -34,16 +34,31 @@
 	.description {
 		margin: 50px auto 10px;
 		max-width: 420px;
-
-		// p:nth-last-child(1) {
-		// 	margin-bottom: 0;
-		// }
 	}
 
 	// hide <br> for mobile
 	@include bp(s) {
 		.text-break-large {
 			display: none;
+		}
+	}
+
+
+	// ==================================
+	/* Eurama -  - Override Styles */
+	// ==================================
+
+	&.eurama {
+		.films-container{
+			max-width: 660px;
+
+			&::before {
+				padding-top: 53.33%;
+			}
+		}
+
+		.description {
+			max-width: 280px;
 		}
 	}
 }
