@@ -1,15 +1,58 @@
 @use '../utilities/mixins' as *;
-// @use '../utilities/colors';
+@use '../utilities/colors';
 // @use '../utilities/fonts';
 
 .film-page {
 	text-align: center;
 
-	h1 {
-		margin-top: 0;
+	// ==================================
+	/* Header & Film CTA */
+	// ==================================
+	.header-film-nav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		margin-bottom: 40px;
+		padding: 0 60px;
+
+		@include bp(s) {
+			padding: 0;
+		}
 	}
 
+	header {
+		display: inline-block;
+	}
+
+	h1 {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	.cta-arrow {
+		--arrow-width: 12px;
+
+		display: inline-block;
+		opacity: .5;
+		width: 0;
+		height: 0;
+		border-top: var(--arrow-width) solid transparent;
+		border-bottom: var(--arrow-width) solid transparent;
+		border-left: calc((var(--arrow-width) + var(--arrow-width)) * 0.8660254) solid colors.$link-icon;  //  = EquilateralTriangle height
+
+		&:hover {
+			border-left: calc((var(--arrow-width) + var(--arrow-width)) * 0.8660254) solid colors.$link-icon-hover;  //  = EquilateralTriangle height
+		}
+	}
+
+	.cta-arrow-previous {
+		transform: rotate(180deg);
+	}
+
+
+	// ==================================
+	/* Video */
+	// ==================================
 	.films-container {
 		position: relative;
 		margin: 0 auto;
@@ -31,6 +74,10 @@
 		border: 0;
 	}
 
+
+	// ==================================
+	/* Description */
+	// ==================================
 	.description {
 		margin: 50px auto 10px;
 		max-width: 420px;
@@ -47,7 +94,6 @@
 	// ==================================
 	/* Eurama -  - Override Styles */
 	// ==================================
-
 	&.eurama {
 		.films-container{
 			max-width: 660px;

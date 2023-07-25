@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import { createClient } from 'contentful'
 import Header from '../../../components/Header'
 
@@ -37,7 +38,7 @@ export async function getStaticProps(context) {
 
 
 export default function Film({ film }) {
-	const { title, slug, metaDescription, videoUrl, description } = film.fields;
+	const { title, slug, metaDescription, videoUrl, description, ctaPrevious, ctaNext } = film.fields;
 
 	return (
 		<>
@@ -46,7 +47,11 @@ export default function Film({ film }) {
 				<meta name="description" content={metaDescription}/>
 			</Head>
 			<main className={`page-backboard film-page ${slug}`}>
-				<Header headline={title} alt={true}></Header>
+				<div className="header-film-nav">
+					<Link href={`${ctaPrevious}`}><a><div className="cta-arrow cta-arrow-previous"></div></a></Link>
+					<Header headline={title} alt={true}></Header>
+					<Link href={ctaNext}><a><div className="cta-arrow"></div></a></Link>
+				</div>
 				<div className="films-container">
 					<iframe
 						src={videoUrl}
