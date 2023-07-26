@@ -46,7 +46,7 @@ export default function Gallery({ gallery }) {
 				<meta name="description" content={metaDescription}/>
 			</Head>
 			<main className={`page-backboard gallery-page ${slug}`}>
-				<Header headline={headline} alt={true}></Header>
+				<Header headline={headline} isSubPage={true}></Header>
 				<div className="gallery-container">
 					{images.map((image, idx) => {
 						return (

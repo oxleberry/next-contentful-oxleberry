@@ -174,7 +174,7 @@ export default function MemoryGame({ memoryGameItems }) {
 				<meta name="description" content="Oxleberry Memory Game - art courtesy of Sumofish."/>
 			</Head>
 			<main className="full-backboard sumofish-memory-game-page">
-				<Header headline="Sumofish Memory Game" alt={true} ></Header>
+				<Header headline="Sumofish Memory Game" isSubPage={true} ></Header>
 				<p className="description">Find the matching pairs and uncover all the tiles! <br />
 					<Link href="https://www.sumofish.net/"><a target="_blank">Art courtesy of <strong>SUMOFISH<sup>&reg;</sup></strong></a></Link>
 				</p>

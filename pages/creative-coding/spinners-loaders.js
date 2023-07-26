@@ -38,7 +38,7 @@ export default function SpinnersLoaders({ spinnersLoaders }) {
 				<meta name="description" content="Oxleberry Spinners and Loaders using CSS animations." />
 			</Head>
 			<main className="full-backboard spinners-loaders-page">
-				<Header headline="Spinners and Loaders" alt={true}></Header>
+				<Header headline="Spinners and Loaders" isSubPage={true}></Header>
 				<div className="spinners-wrapper">
 					<h2> SPINNERS </h2>
 					<div className="spinner sp-spinner1">

@@ -51,7 +51,7 @@ export default function Comic({ comic }) {
 				<meta name="description" content={metaDescription}/>
 			</Head>
 			<main className={`page-backboard comic-page ${slug}`}>
-				<Header headline={title} alt={true}></Header>
+				<Header headline={title} isSubPage={true}></Header>
 				<div className="comic-container">
 						{images.map((image, idx) => {
 							return (

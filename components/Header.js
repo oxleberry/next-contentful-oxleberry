@@ -1,7 +1,10 @@
+/* Inputs:
+		headline = string
+		isSubPage = boolean (optional)
+*/
 
-// alt is optional prop for sub-pages
-const Header = ({ headline, alt }) => (
-	<header className={alt ? 'alt-header' : 'header'}>
+const Header = ({ headline, isSubPage }) => (
+	<header className={isSubPage ? 'sub-page-header' : 'header'}>
 		<h1>{headline}</h1>
 	</header>
 );

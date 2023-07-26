@@ -207,7 +207,7 @@ export default function AllStars({ allStarsItems }) {
 						<source srcSet={`https:${introStarImagePath.file.url}`}/>
 						<img className="star-small" src={`https:${introStarImagePath.file.url}`} alt={`${introStarImagePath.description}`}/>
 					</picture>
-					<Header className="title" headline="Oxleberry All-Stars" alt={true}></Header>
+					<Header className="title" headline="Oxleberry All-Stars" isSubPage={true}></Header>
 					<picture>
 						<source srcSet={`https:${introStarImagePath.file.url}`}/>
 						<img className="star-small" src={`https:${introStarImagePath.file.url}`} alt={`${introStarImagePath.description}`}/>

@@ -3,6 +3,9 @@
 @use '../utilities/fonts';
 
 
+// ==================================
+/* Header */
+// ==================================
 .header {
 	h1 {
 		font-family: fonts.$title;
@@ -20,7 +23,10 @@
 	}
 }
 
-.alt-header {
+// ==================================
+/* Sub Page Header */
+// ==================================
+.sub-page-header {
 	h1 {
 		font-family: fonts.$alt-title;
 		font-size: 3.8rem;

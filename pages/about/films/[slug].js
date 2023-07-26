@@ -49,7 +49,7 @@ export default function Film({ film }) {
 			<main className={`page-backboard film-page ${slug}`}>
 				<div className="header-film-nav">
 					<Link href={`${ctaPrevious}`}><a><div className="cta-arrow cta-arrow-previous"></div></a></Link>
-					<Header headline={title} alt={true}></Header>
+					<Header headline={title} isSubPage={true}></Header>
 					<Link href={ctaNext}><a><div className="cta-arrow"></div></a></Link>
 				</div>
 				<div className="films-container">

@@ -387,7 +387,7 @@ export default function nthChild() {
 				<meta name="description" content="Examples using the :nth-child pseudo-class." />
 			</Head>
 			<main className="full-backboard nth-child-page">
-				<Header headline="nth-child Examples" alt={true}></Header>
+				<Header headline="nth-child Examples" isSubPage={true}></Header>
 				<p>Based on <a href="https://www.youtube.com/watch?v=fg7GEN7PbWs&t=46s">Master the :nth-child</a> tutorial video.</p>
 				<p>Play around on <a href="https://codepen.io/oxleberry/pen/LYgRwgW">Codepen</a>.</p>
 					<ExampleList examplesData={examplesData} />

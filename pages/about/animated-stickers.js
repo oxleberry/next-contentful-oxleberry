@@ -65,7 +65,7 @@ export default function animatedStickers({ animatedStickers }) {
 				<meta name="description" content="Oxleberry Stickers - A short run of iMessage animated stickers that was available for iPhones from 2020-2021." />
 			</Head>
 			<main className="page-backboard animated-stickers-page">
-				<Header headline="Oxleberry Stickers" alt={true}></Header>
+				<Header headline="Oxleberry Stickers" isSubPage={true}></Header>
 				{/* Grid for Sticker Images */}
 				<div className="grid">
 					{stickerImages.map((stickerImage) => {

@@ -229,7 +229,7 @@ export default function ScreenprintBreakdown({ screenprints }) {
 			</Head>
 			<main className={`full-backboard screenprint-breakdown-page ${slug}`}>
 				<div className="screenprint-breakdown-container">
-				<Header headline={`${title} - Screenprint Breakdown`} alt={true}></Header>
+				<Header headline={`${title} - Screenprint Breakdown`} isSubPage={true}></Header>
 
 					{/* Intro */}
 					<section className="intro">

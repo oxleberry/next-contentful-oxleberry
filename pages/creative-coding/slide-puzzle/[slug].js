@@ -527,7 +527,7 @@ export default function SlidePuzzle({ slidePuzzle }) {
 			<main className="full-backboard slide-puzzle-page">
 				<section className="intro">
 					<div className="text-block">
-						<Header headline="Slide Puzzle" alt={true}></Header>
+						<Header headline="Slide Puzzle" isSubPage={true}></Header>
 						<p className="description">Slide the tiles to restore the original image. Customize the puzzle by updating the setting levels and uploading your own image!</p>
 						<p className="description">This game has been adapted from The Coding Train - <a href="https://www.youtube.com/watch?v=uQZLzhrzEs4">Coding Challenge 165</a> tutorial video.</p>
 					</div>
