@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import { createClient } from 'contentful'
 import Header from '../../../components/Header'
 
@@ -47,11 +46,7 @@ export default function Film({ film }) {
 				<meta name="description" content={metaDescription}/>
 			</Head>
 			<main className={`page-backboard film-page ${slug}`}>
-				<div className="header-film-nav">
-					<Link href={`${ctaPrevious}`}><a><div className="cta-arrow cta-arrow-previous"></div></a></Link>
-					<Header headline={title} isSubPage={true}></Header>
-					<Link href={ctaNext}><a><div className="cta-arrow"></div></a></Link>
-				</div>
+				<Header headline={title} isSubPage={true} hasSubNav={true} ctaPrevious={ctaPrevious} ctaNext={ctaNext}></Header>
 				<div className="films-container">
 					<iframe
 						src={videoUrl}

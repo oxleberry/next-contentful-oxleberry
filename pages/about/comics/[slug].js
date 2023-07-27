@@ -42,7 +42,7 @@ export async function getStaticProps(context) {
 
 
 export default function Comic({ comic }) {
-	const { title, slug, metaDescription, images } = comic.fields;
+	const { title, slug, metaDescription, images, ctaPrevious, ctaNext } = comic.fields;
 
 	return (
 		<>
@@ -51,7 +51,7 @@ export default function Comic({ comic }) {
 				<meta name="description" content={metaDescription}/>
 			</Head>
 			<main className={`page-backboard comic-page ${slug}`}>
-				<Header headline={title} isSubPage={true}></Header>
+				<Header headline={title} isSubPage={true} hasSubNav={true} ctaPrevious={ctaPrevious} ctaNext={ctaNext}></Header>
 				<div className="comic-container">
 						{images.map((image, idx) => {
 							return (
