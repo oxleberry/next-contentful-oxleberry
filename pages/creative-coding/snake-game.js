@@ -13,6 +13,10 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 export default function SnakeGame() {
 	const unitSize = 20
 	const canvasSize = 17 * unitSize;  // number needs to be divisible by the unit size
+	let snakeX = unitSize;
+	let snakeY = unitSize;
+	let xSpeed = 1;
+	let ySpeed = 0;
 	let foodX = unitSize * 8;
 	let foodY = unitSize * 8;
 
@@ -24,6 +28,25 @@ export default function SnakeGame() {
 		p5.fill(30); // soft black
 		p5.rect((unitSize - 2), (unitSize - 2), (p5.width - unitSize * 2) + 4, (p5.height - unitSize * 2) + 4);
 		// p5.noStroke();
+	}
+
+
+	// update snake movement
+	function updateSnake(p5) {
+		// SNAKES HEAD
+		// movement of head by 1 unit to the next position
+		snakeX = snakeX + xSpeed * unitSize;
+		snakeY = snakeY + ySpeed * unitSize;
+		// constrains the head position so the snake cannot go out of the game board
+		snakeX = p5.constrain(snakeX, 0 + unitSize, p5.width - unitSize * 2);
+		snakeY = p5.constrain(snakeY, 0 + unitSize, p5.height - unitSize * 2);
+	}
+
+	function drawSnake(p5) {
+		// draws the Snake Head
+		p5.stroke(152, 168, 102);
+		p5.fill(211, 229, 165);
+		p5.rect(snakeX, snakeY, unitSize, unitSize);
 	}
 
 	// draws the food
@@ -38,11 +61,15 @@ export default function SnakeGame() {
 	const setup = (p5, canvasParentRef) => {
 		p5.createCanvas(canvasSize, canvasSize).parent(canvasParentRef);
 		p5.frameRate(8);
+		drawGameBoard(p5);
+		drawSnake(p5);
 	}
 
 	const draw = p5 => {
 		drawGameBoard(p5);
 		foodLocation(p5);
+		updateSnake(p5);
+		drawSnake(p5);
 	}
 
 
