@@ -11,22 +11,38 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 
 
 export default function SnakeGame() {
-	const y = 50;
-	let direction = '^';
+	const unitSize = 20
+	const canvasSize = 17 * unitSize;  // number needs to be divisible by the unit size
+	let foodX = unitSize * 8;
+	let foodY = unitSize * 8;
+
+
+	function drawGameBoard(p5) {
+		p5.background(220); // lt grey
+		p5.stroke(144, 186, 204); // blue
+		p5.strokeWeight(4);
+		p5.fill(30); // soft black
+		p5.rect((unitSize - 2), (unitSize - 2), (p5.width - unitSize * 2) + 4, (p5.height - unitSize * 2) + 4);
+		// p5.noStroke();
+	}
+
+	// draws the food
+	function foodLocation(p5) {
+		p5.strokeWeight(2);
+		p5.stroke(163, 56, 37);
+		p5.fill(209, 82, 60);
+		p5.rect (foodX, foodY, unitSize, unitSize);
+	}
+
 
 	const setup = (p5, canvasParentRef) => {
-		p5.createCanvas(500, 400).parent(canvasParentRef)
+		p5.createCanvas(canvasSize, canvasSize).parent(canvasParentRef);
+		p5.frameRate(8);
 	}
 
 	const draw = p5 => {
-		p5.background(0);
-		p5.ellipse(p5.width / 2, y, 70, 70);
-		if (y > p5.height) direction = '';
-		if (y < 0) {
-			direction = '^';
-		}
-		if (direction === '^') y += 2;
-		else y -= 1;
+		drawGameBoard(p5);
+		foodLocation(p5);
 	}
 
 
