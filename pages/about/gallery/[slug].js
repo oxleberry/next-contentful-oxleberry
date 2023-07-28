@@ -37,7 +37,7 @@ export async function getStaticProps(context) {
 
 
 export default function Gallery({ gallery }) {
-	const { title, slug, metaDescription, headline, images, description, ctaPrevious, ctaNext } = gallery.fields;
+	const { title, slug, metaDescription, headline, images, description, hasSubNav, ctaPrevious, ctaNext } = gallery.fields;
 
 	return (
 		<>
@@ -46,7 +46,7 @@ export default function Gallery({ gallery }) {
 				<meta name="description" content={metaDescription}/>
 			</Head>
 			<main className={`page-backboard gallery-page ${slug}`}>
-				<Header headline={headline} isSubPage={true} hasSubNav={true} ctaPrevious={ctaPrevious} ctaNext={ctaNext}></Header>
+				<Header headline={headline} isSubPage={true} hasSubNav={hasSubNav} ctaPrevious={ctaPrevious} ctaNext={ctaNext}></Header>
 				<div className="gallery-container">
 					{images.map((image, idx) => {
 						return (
