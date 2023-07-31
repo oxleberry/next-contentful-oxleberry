@@ -18,8 +18,10 @@ export default function SnakeGame() {
 		x: unitSize,
 		y: unitSize,
 	};
-	let directionX = 1; // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
-	let directionY = 0; // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
+	let direction = {
+		x: 1, // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
+		y: 0, // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
+	};
 	let foodPos = {
 		x: unitSize * 8,
 		y: unitSize * 8
@@ -61,8 +63,8 @@ export default function SnakeGame() {
 	function updateSnake(p5) {
 		// SNAKES HEAD
 		// movement of head by 1 unit to the next position
-		let x = snakePos.x + directionX * unitSize;
-		let y = snakePos.y + directionY * unitSize;
+		let x = snakePos.x + direction.x * unitSize;
+		let y = snakePos.y + direction.y * unitSize;
 		// constrains the position so the snake cannot go out of the game board
 		x = p5.constrain(x, 0 + unitSize, p5.width - unitSize * 2);
 		y = p5.constrain(y, 0 + unitSize, p5.height - unitSize * 2);
@@ -84,21 +86,19 @@ export default function SnakeGame() {
 		p5.rect (foodPos.x, foodPos.y, unitSize, unitSize);
 	}
 
-	function updateDirection(x, y) {
-		directionX = x;
-		directionY = y;
-	}
 
 	// Keyboard eventlistener
 	function keyPressed(p5, event) {
+		// x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
+		// y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
 		if (p5.keyCode === 87 || p5.keyCode === 38 || p5.keyCode === 73) { // W or UP ARROW or I
-			updateDirection(0, -1);
+			direction = { x: 0, y: -1 };
 		} else if (p5.keyCode === 83 || p5.keyCode === 40 || p5.keyCode === 75) { // S or DOWN ARROW or K
-			updateDirection(0, 1);
+			direction = { x: 0, y: 1 };
 		} else if (p5.keyCode === 68 || p5.keyCode === 39 || p5.keyCode === 76) { // D or RIGHT ARROW or J
-			updateDirection(1, 0);
+			direction = { x: 1, y: 0 };
 		} else if (p5.keyCode === 65 || p5.keyCode === 37 || p5.keyCode === 74) { // A or LEFT ARROW or L
-			updateDirection(-1, 0);
+			direction = { x: -1, y: 0 };
 		}
 	}
 
