@@ -35,14 +35,22 @@ export default function SnakeGame() {
 		p5.strokeWeight(4);
 		p5.fill(30); // soft black
 		p5.rect((unitSize - 2), (unitSize - 2), (p5.width - unitSize * 2) + 4, (p5.height - unitSize * 2) + 4);
-		// p5.noStroke();
 	}
 
+	function drawSnake(p5) {
+		// draws the snake head
+		p5.stroke(152, 168, 102);
+		p5.fill(211, 229, 165);
+		p5.rect(snakePos.x, snakePos.y, unitSize, unitSize);
+	}
 
-	//  generates a random location on the game board
-	function randomLocation(p5) {
-		let x = p5.floor(p5.random((p5.width / unitSize) - 2)) * unitSize;
-		let y = p5.floor(p5.random((p5.height / unitSize) - 2)) * unitSize;
+	// update snake position
+	function updateSnake(p5) {
+		// SNAKES HEAD
+		// movement of head by 1 unit to the next position
+		let x = snakePos.x + direction.x * unitSize;
+		let y = snakePos.y + direction.y * unitSize;
+		// constrains the position so the snake cannot go out of the game board
 		x = p5.constrain(x, 0 + unitSize, p5.width - unitSize * 2);
 		y = p5.constrain(y, 0 + unitSize, p5.height - unitSize * 2);
 		return {x, y};
@@ -59,26 +67,6 @@ export default function SnakeGame() {
 		}
 	}
 
-	// update snake position
-	function updateSnake(p5) {
-		// SNAKES HEAD
-		// movement of head by 1 unit to the next position
-		let x = snakePos.x + direction.x * unitSize;
-		let y = snakePos.y + direction.y * unitSize;
-		// constrains the position so the snake cannot go out of the game board
-		x = p5.constrain(x, 0 + unitSize, p5.width - unitSize * 2);
-		y = p5.constrain(y, 0 + unitSize, p5.height - unitSize * 2);
-		return {x, y};
-	}
-
-	function drawSnake(p5) {
-		// draws the Snake head
-		p5.stroke(152, 168, 102);
-		p5.fill(211, 229, 165);
-		p5.rect(snakePos.x, snakePos.y, unitSize, unitSize);
-	}
-
-	// draws the food at location
 	function drawFood(p5) {
 		p5.strokeWeight(2);
 		p5.stroke(163, 56, 37);
@@ -86,8 +74,17 @@ export default function SnakeGame() {
 		p5.rect (foodPos.x, foodPos.y, unitSize, unitSize);
 	}
 
+	// generates a random location on the game board
+	function randomLocation(p5) {
+		let x = p5.floor(p5.random((p5.width / unitSize) - 2)) * unitSize;
+		let y = p5.floor(p5.random((p5.height / unitSize) - 2)) * unitSize;
+		x = p5.constrain(x, 0 + unitSize, p5.width - unitSize * 2);
+		y = p5.constrain(y, 0 + unitSize, p5.height - unitSize * 2);
+		return {x, y};
+	}
 
-	// Keyboard eventlistener
+
+	// Keyboard eventlistener =================
 	function keyPressed(p5, event) {
 		// x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
 		// y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
@@ -103,7 +100,7 @@ export default function SnakeGame() {
 	}
 
 
-	// p5 Functions
+	// p5 Functions =================
 	const setup = (p5, canvasParentRef) => {
 		p5.createCanvas(canvasSize, canvasSize).parent(canvasParentRef);
 		p5.frameRate(8);
