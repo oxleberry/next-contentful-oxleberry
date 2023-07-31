@@ -14,8 +14,10 @@ export default function SnakeGame() {
 	// Variables =================
 	const unitSize = 20
 	const canvasSize = 17 * unitSize;  // number needs to be divisible by the unit size
-	let snakeX = unitSize;
-	let snakeY = unitSize;
+	let snakePos = {
+		x: unitSize,
+		y: unitSize,
+	};
 	let directionX = 1; // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
 	let directionY = 0; // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
 	let foodPos = {
@@ -47,7 +49,7 @@ export default function SnakeGame() {
 	// checks if snake is at food location
 	function checkSnakeAtFoodLocation(p5) {
 		// dist: calcualates the distance between 2 points
-		let distance = p5.dist(snakeX, snakeY, foodPos.x, foodPos.y);
+		let distance = p5.dist(snakePos.x, snakePos.y, foodPos.x, foodPos.y);
 		if (distance < 10) {
 			return true;
 		} else {
@@ -59,18 +61,19 @@ export default function SnakeGame() {
 	function updateSnake(p5) {
 		// SNAKES HEAD
 		// movement of head by 1 unit to the next position
-		snakeX = snakeX + directionX * unitSize;
-		snakeY = snakeY + directionY * unitSize;
+		let x = snakePos.x + directionX * unitSize;
+		let y = snakePos.y + directionY * unitSize;
 		// constrains the position so the snake cannot go out of the game board
-		snakeX = p5.constrain(snakeX, 0 + unitSize, p5.width - unitSize * 2);
-		snakeY = p5.constrain(snakeY, 0 + unitSize, p5.height - unitSize * 2);
+		x = p5.constrain(x, 0 + unitSize, p5.width - unitSize * 2);
+		y = p5.constrain(y, 0 + unitSize, p5.height - unitSize * 2);
+		return {x, y};
 	}
 
 	function drawSnake(p5) {
 		// draws the Snake head
 		p5.stroke(152, 168, 102);
 		p5.fill(211, 229, 165);
-		p5.rect(snakeX, snakeY, unitSize, unitSize);
+		p5.rect(snakePos.x, snakePos.y, unitSize, unitSize);
 	}
 
 	// draws the food at location
@@ -115,9 +118,9 @@ export default function SnakeGame() {
 		if (eatFood) {
 			foodPos = randomLocation(p5);
 		}
-
 		drawFood(p5);
-		updateSnake(p5);
+
+		snakePos = updateSnake(p5);
 		drawSnake(p5);
 	}
 
