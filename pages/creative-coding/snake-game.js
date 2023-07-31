@@ -18,8 +18,10 @@ export default function SnakeGame() {
 	let snakeY = unitSize;
 	let directionX = 1; // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
 	let directionY = 0; // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
-	let foodX = unitSize * 8;
-	let foodY = unitSize * 8;
+	let foodPos = {
+		x: unitSize * 8,
+		y: unitSize * 8
+	};
 
 
 	// Game Functions =================
@@ -33,15 +35,23 @@ export default function SnakeGame() {
 	}
 
 
+	//  generates a random location on the game board
+	function randomLocation(p5) {
+		let x = p5.floor(p5.random((p5.width / unitSize) - 2)) * unitSize;
+		let y = p5.floor(p5.random((p5.height / unitSize) - 2)) * unitSize;
+		x = p5.constrain(x, 0 + unitSize, p5.width - unitSize * 2);
+		y = p5.constrain(y, 0 + unitSize, p5.height - unitSize * 2);
+		return {x, y};
+	}
+
 	// checks if snake is at food location
-	function eatFood(p5) {
-		// console.log('snakeX, snakeY', snakeX, snakeY);
+	function checkSnakeAtFoodLocation(p5) {
 		// dist: calcualates the distance between 2 points
-		let distance = p5.dist(snakeX, snakeY, foodX, foodY);
+		let distance = p5.dist(snakeX, snakeY, foodPos.x, foodPos.y);
 		if (distance < 10) {
-			console.log('EAT');
-		} else{
-			console.log('Not at apple position');
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -68,7 +78,7 @@ export default function SnakeGame() {
 		p5.strokeWeight(2);
 		p5.stroke(163, 56, 37);
 		p5.fill(209, 82, 60);
-		p5.rect (foodX, foodY, unitSize, unitSize);
+		p5.rect (foodPos.x, foodPos.y, unitSize, unitSize);
 	}
 
 	function updateDirection(x, y) {
@@ -100,7 +110,12 @@ export default function SnakeGame() {
 
 	const draw = p5 => {
 		drawGameBoard(p5);
-		eatFood(p5)
+
+		const eatFood = checkSnakeAtFoodLocation(p5);
+		if (eatFood) {
+			foodPos = randomLocation(p5);
+		}
+
 		drawFood(p5);
 		updateSnake(p5);
 		drawSnake(p5);
