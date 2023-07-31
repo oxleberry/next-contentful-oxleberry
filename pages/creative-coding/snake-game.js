@@ -15,8 +15,8 @@ export default function SnakeGame() {
 	const canvasSize = 17 * unitSize;  // number needs to be divisible by the unit size
 	let snakeX = unitSize;
 	let snakeY = unitSize;
-	let xSpeed = 1;
-	let ySpeed = 0;
+	let directionX = 1; // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
+	let directionY = 0; // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
 	let foodX = unitSize * 8;
 	let foodY = unitSize * 8;
 
@@ -35,15 +35,15 @@ export default function SnakeGame() {
 	function updateSnake(p5) {
 		// SNAKES HEAD
 		// movement of head by 1 unit to the next position
-		snakeX = snakeX + xSpeed * unitSize;
-		snakeY = snakeY + ySpeed * unitSize;
-		// constrains the head position so the snake cannot go out of the game board
+		snakeX = snakeX + directionX * unitSize;
+		snakeY = snakeY + directionY * unitSize;
+		// constrains the position so the snake cannot go out of the game board
 		snakeX = p5.constrain(snakeX, 0 + unitSize, p5.width - unitSize * 2);
 		snakeY = p5.constrain(snakeY, 0 + unitSize, p5.height - unitSize * 2);
 	}
 
 	function drawSnake(p5) {
-		// draws the Snake Head
+		// draws the Snake head
 		p5.stroke(152, 168, 102);
 		p5.fill(211, 229, 165);
 		p5.rect(snakeX, snakeY, unitSize, unitSize);
@@ -57,7 +57,26 @@ export default function SnakeGame() {
 		p5.rect (foodX, foodY, unitSize, unitSize);
 	}
 
+	function updateDirection(x, y) {
+		directionX = x;
+		directionY = y;
+	}
 
+	// Keyboard eventlistener
+	function keyPressed(p5, event) {
+		if (p5.keyCode === 87 || p5.keyCode === 38 || p5.keyCode === 73) { // W or UP ARROW or I
+			updateDirection(0, -1);
+		} else if (p5.keyCode === 83 || p5.keyCode === 40 || p5.keyCode === 75) { // S or DOWN ARROW or K
+			updateDirection(0, 1);
+		} else if (p5.keyCode === 68 || p5.keyCode === 39 || p5.keyCode === 76) { // D or RIGHT ARROW or J
+			updateDirection(1, 0);
+		} else if (p5.keyCode === 65 || p5.keyCode === 37 || p5.keyCode === 74) { // A or LEFT ARROW or L
+			updateDirection(-1, 0);
+		}
+	}
+
+
+	// p5 Functions
 	const setup = (p5, canvasParentRef) => {
 		p5.createCanvas(canvasSize, canvasSize).parent(canvasParentRef);
 		p5.frameRate(8);
@@ -84,7 +103,7 @@ export default function SnakeGame() {
 				<p>Eat the red apple, but don&apos;t hit the sides. <br />Use keyboard arrows to move the snake.</p>
 
 				{/* SNAKE GAME */}
-				<Sketch setup={setup} draw={draw} />
+				<Sketch setup={setup} draw={draw} keyPressed={keyPressed} />
 			</main>
 		</>
 	);
