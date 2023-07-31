@@ -11,6 +11,7 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 
 
 export default function SnakeGame() {
+	// Variables =================
 	const unitSize = 20
 	const canvasSize = 17 * unitSize;  // number needs to be divisible by the unit size
 	let snakeX = unitSize;
@@ -21,6 +22,7 @@ export default function SnakeGame() {
 	let foodY = unitSize * 8;
 
 
+	// Game Functions =================
 	function drawGameBoard(p5) {
 		p5.background(220); // lt grey
 		p5.stroke(144, 186, 204); // blue
@@ -31,7 +33,19 @@ export default function SnakeGame() {
 	}
 
 
-	// update snake movement
+	// checks if snake is at food location
+	function eatFood(p5) {
+		// console.log('snakeX, snakeY', snakeX, snakeY);
+		// dist: calcualates the distance between 2 points
+		let distance = p5.dist(snakeX, snakeY, foodX, foodY);
+		if (distance < 10) {
+			console.log('EAT');
+		} else{
+			console.log('Not at apple position');
+		}
+	}
+
+	// update snake position
 	function updateSnake(p5) {
 		// SNAKES HEAD
 		// movement of head by 1 unit to the next position
@@ -49,8 +63,8 @@ export default function SnakeGame() {
 		p5.rect(snakeX, snakeY, unitSize, unitSize);
 	}
 
-	// draws the food
-	function foodLocation(p5) {
+	// draws the food at location
+	function drawFood(p5) {
 		p5.strokeWeight(2);
 		p5.stroke(163, 56, 37);
 		p5.fill(209, 82, 60);
@@ -86,7 +100,8 @@ export default function SnakeGame() {
 
 	const draw = p5 => {
 		drawGameBoard(p5);
-		foodLocation(p5);
+		eatFood(p5)
+		drawFood(p5);
 		updateSnake(p5);
 		drawSnake(p5);
 	}
