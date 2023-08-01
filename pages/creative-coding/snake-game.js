@@ -54,9 +54,16 @@ export default function SnakeGame() {
 		p5.rect(snakePos.x, snakePos.y, unitSize, unitSize);
 	}
 
+	function drawFood(p5) {
+		p5.strokeWeight(2);
+		p5.stroke(163, 56, 37);
+		p5.fill(209, 82, 60);
+		p5.rect (foodPos.x, foodPos.y, unitSize, unitSize);
+	}
+
 	// update snake head position
 	// returns object = {x: 20, y: 20};
-	function updateSnakeHead(p5) {
+	function moveSnakeHead(p5) {
 		// movement of head by 1 unit to the next position
 		let x = snakePos.x + direction.x * unitSize;
 		let y = snakePos.y + direction.y * unitSize;
@@ -73,9 +80,9 @@ export default function SnakeGame() {
 		return snakeTail;
 	}
 
-	// update snake tail position array tracker
+	// update snake tail position in array tracker
 	// returns array of objects = [{x: 60, y: 20}, {x: 40, y: 20}, {x: 20, y: 20}]
-	function updateSnakeTail() {
+	function moveSnakeTail() {
 		let snakeTail = snakeTailPos;
 		snakeTail.unshift({ x: snakePos.x, y: snakePos.y }); // adds the latest {x, y} position to the front of the snake's tail array tracker
 		snakeTail.pop();  // removes the outdated position from the array
@@ -92,13 +99,6 @@ export default function SnakeGame() {
 		} else {
 			return false;
 		}
-	}
-
-	function drawFood(p5) {
-		p5.strokeWeight(2);
-		p5.stroke(163, 56, 37);
-		p5.fill(209, 82, 60);
-		p5.rect (foodPos.x, foodPos.y, unitSize, unitSize);
 	}
 
 	// generates a random location on the game board
@@ -134,6 +134,7 @@ export default function SnakeGame() {
 		p5.frameRate(8);
 		drawGameBoard(p5);
 		drawSnake(p5);
+		drawFood(p5);
 	}
 
 	const draw = p5 => {
@@ -146,8 +147,8 @@ export default function SnakeGame() {
 		}
 
 		drawFood(p5);
-		snakeTailPos = updateSnakeTail();
-		snakePos = updateSnakeHead(p5);
+		snakeTailPos = moveSnakeTail();
+		snakePos = moveSnakeHead(p5);
 		drawSnake(p5);
 	}
 
