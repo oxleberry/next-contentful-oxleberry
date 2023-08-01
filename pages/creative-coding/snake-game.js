@@ -18,6 +18,7 @@ export default function SnakeGame() {
 		x: unitSize,
 		y: unitSize,
 	};
+	let snakeTailPos = []; // tracks each tail segment with {x, y} position
 	let direction = {
 		x: 1, // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
 		y: 0, // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
@@ -38,15 +39,24 @@ export default function SnakeGame() {
 	}
 
 	function drawSnake(p5) {
+		// draws the snake tail
+		p5.fill(211, 229, 165);
+		for (let i = 0; i < snakeTailPos.length; i++) {
+			p5.strokeWeight(2);
+			p5.stroke(152, 168, 102);
+			let posX = snakeTailPos[i].x;
+			let posY = snakeTailPos[i].y;
+			p5.rect(posX, posY, unitSize, unitSize);
+		};
 		// draws the snake head
 		p5.stroke(152, 168, 102);
 		p5.fill(211, 229, 165);
 		p5.rect(snakePos.x, snakePos.y, unitSize, unitSize);
 	}
 
-	// update snake position
-	function updateSnake(p5) {
-		// SNAKES HEAD
+	// update snake head position
+	// returns object = {x: 20, y: 20};
+	function updateSnakeHead(p5) {
 		// movement of head by 1 unit to the next position
 		let x = snakePos.x + direction.x * unitSize;
 		let y = snakePos.y + direction.y * unitSize;
@@ -56,7 +66,24 @@ export default function SnakeGame() {
 		return {x, y};
 	}
 
+	// return array of objects = [{x: 40, y: 20}, {x: 20, y: 20}]
+	function increaseSnakeTail() {
+		let snakeTail = snakeTailPos;
+		snakeTail.push({ x: snakePos.x, y: snakePos.y });
+		return snakeTail;
+	}
+
+	// update snake tail position array tracker
+	// returns array of objects = [{x: 60, y: 20}, {x: 40, y: 20}, {x: 20, y: 20}]
+	function updateSnakeTail() {
+		let snakeTail = snakeTailPos;
+		snakeTail.unshift({ x: snakePos.x, y: snakePos.y }); // adds the latest {x, y} position to the front of the snake's tail array tracker
+		snakeTail.pop();  // removes the outdated position from the array
+		return snakeTail;
+	}
+
 	// checks if snake is at food location
+	// returns boolean
 	function checkSnakeAtFoodLocation(p5) {
 		// dist: calcualates the distance between 2 points
 		let distance = p5.dist(snakePos.x, snakePos.y, foodPos.x, foodPos.y);
@@ -75,6 +102,7 @@ export default function SnakeGame() {
 	}
 
 	// generates a random location on the game board
+	// returns object = {x: 100, y: 160};
 	function randomLocation(p5) {
 		let x = p5.floor(p5.random((p5.width / unitSize) - 2)) * unitSize;
 		let y = p5.floor(p5.random((p5.height / unitSize) - 2)) * unitSize;
@@ -113,11 +141,13 @@ export default function SnakeGame() {
 
 		const eatFood = checkSnakeAtFoodLocation(p5);
 		if (eatFood) {
+			increaseSnakeTail();
 			foodPos = randomLocation(p5);
 		}
-		drawFood(p5);
 
-		snakePos = updateSnake(p5);
+		drawFood(p5);
+		snakeTailPos = updateSnakeTail();
+		snakePos = updateSnakeHead(p5);
 		drawSnake(p5);
 	}
 
