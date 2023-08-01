@@ -85,7 +85,6 @@ export default function SnakeGame() {
 	function moveSnakeTail() {
 		let snakeTail = snakeTailPos;
 		snakeTail.unshift({ x: snakePos.x, y: snakePos.y }); // adds the latest {x, y} position to the front of the snake's tail array tracker
-		snakeTail.pop();  // removes the outdated position from the array
 		return snakeTail;
 	}
 
@@ -109,6 +108,23 @@ export default function SnakeGame() {
 		x = p5.constrain(x, 0 + unitSize, p5.width - unitSize * 2);
 		y = p5.constrain(y, 0 + unitSize, p5.height - unitSize * 2);
 		return {x, y};
+	}
+
+	// checks if snake has collided with itself or a wall
+	// returns boolean
+	function checkSnakeDies(p5) {
+		// loops through the tail segments to see if
+		// the head position matches any of tail segemnts
+		let headX = snakePos.x;
+		let headY = snakePos.y;
+		for (let i = 0; i < snakeTailPos.length; i++) {
+			let tailX = snakeTailPos[i].x;
+			let tailY = snakeTailPos[i].y;
+			if (headX === tailX && headY === tailY) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 
@@ -145,10 +161,17 @@ export default function SnakeGame() {
 			increaseSnakeTail();
 			foodPos = randomLocation(p5);
 		}
-
 		drawFood(p5);
+
 		snakeTailPos = moveSnakeTail();
 		snakePos = moveSnakeHead(p5);
+		const gameover = checkSnakeDies(p5);
+		if (gameover) {
+			snakeTailPos = [];
+		} else {
+			snakeTailPos.pop(); // removes the last segment from the snake tail
+		}
+
 		drawSnake(p5);
 	}
 
