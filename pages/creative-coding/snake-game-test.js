@@ -26,6 +26,8 @@ class SnakeGame extends React.Component {
 		this.state = {
 			score: 0,
 			highScore: 0,
+			audioScore: null,
+			audioLose: null
 		};
 
 		// Variables =================
@@ -173,12 +175,16 @@ class SnakeGame extends React.Component {
 		// y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
 		if (p5.keyCode === 87 || p5.keyCode === 38 || p5.keyCode === 73) { // W or UP ARROW or I
 			this.direction = { x: 0, y: -1 };
+			p5.loop(); 
 		} else if (p5.keyCode === 83 || p5.keyCode === 40 || p5.keyCode === 75) { // S or DOWN ARROW or K
 			this.direction = { x: 0, y: 1 };
+			p5.loop();
 		} else if (p5.keyCode === 68 || p5.keyCode === 39 || p5.keyCode === 76) { // D or RIGHT ARROW or J
 			this.direction = { x: 1, y: 0 };
+			p5.loop();
 		} else if (p5.keyCode === 65 || p5.keyCode === 37 || p5.keyCode === 74) { // A or LEFT ARROW or L
 			this.direction = { x: -1, y: 0 };
+			p5.loop();
 		}
 	}
 
@@ -199,6 +205,7 @@ class SnakeGame extends React.Component {
 			this.increaseSnakeTail();
 			this.foodPos = this.randomLocation(p5);
 			this.increaseScore();
+			this.state.audioScore.play();
 		}
 		this.drawFood(p5);
 
@@ -206,14 +213,28 @@ class SnakeGame extends React.Component {
 		this.snakePos = this.moveSnakeHead(p5);
 		const gameover = this.checkSnakeDies(p5);
 		if (gameover) {
+			console.log('GAME OVER');
 			this.updateScoreBoard();
 			this.snakeTailPos = [];
+			this.state.audioLose.play();
+			p5.noLoop(); // ends redraw cycle
 		} else {
 			this.snakeTailPos.pop(); // removes the last segment from the snake tail
 		}
 
 		this.drawSnake(p5);
 	};
+
+
+	// Initial Page Load =================
+	componentDidMount() {
+		// audio api can't be run on the server, this will only be called on client
+		this.setState(prevState => ({
+			...prevState,
+			audioScore: new Audio('https://www.kasandbox.org/programming-sounds/retro/laser2.mp3'),
+			audioLose: new Audio('https://www.kasandbox.org/programming-sounds/retro/rumble.mp3')
+		}));
+	}
 
 
 	render() {
@@ -238,6 +259,3 @@ class SnakeGame extends React.Component {
 }
 
 export default SnakeGame;
-
-
-
