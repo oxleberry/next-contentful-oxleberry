@@ -25,6 +25,7 @@ class SnakeGame extends React.Component {
 		super();
 		this.state = {
 			score: 0,
+			highScore: 0,
 		};
 
 		// Variables =================
@@ -146,11 +147,23 @@ class SnakeGame extends React.Component {
 	}
 
 	increaseScore() {
-		let score = this.state.score;
+		let curScore = this.state.score;
 		this.setState(prevState => ({
 			...prevState,
-			score: score + 100,
+			score: curScore + 100,
 		}));
+	}
+
+	updateScoreBoard() {
+		let curScore = this.state.score;
+		let curHighScore = this.state.highScore;
+		if (curScore > curHighScore) {
+			this.setState(prevState => ({
+				...prevState,
+				score: 0,
+				highScore: curScore,
+			}));
+		}
 	}
 
 
@@ -193,6 +206,7 @@ class SnakeGame extends React.Component {
 		this.snakePos = this.moveSnakeHead(p5);
 		const gameover = this.checkSnakeDies(p5);
 		if (gameover) {
+			this.updateScoreBoard();
 			this.snakeTailPos = [];
 		} else {
 			this.snakeTailPos.pop(); // removes the last segment from the snake tail
@@ -213,7 +227,7 @@ class SnakeGame extends React.Component {
 				<Header headline="Snake Game" isSubPage={true}></Header>
 				<p>Eat the red apple, but don&apos;t hit the sides. <br />Use keyboard arrows to move the snake.</p>
 				<Scoreboard id="score-board" text="Score" points={this.state.score}/>
-				<Scoreboard id="hi-Score" text="High" points={this.state.score}/>
+				<Scoreboard id="hi-Score" text="High" points={this.state.highScore}/>
 
 				{/* SNAKE GAME */}
 				<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} />
