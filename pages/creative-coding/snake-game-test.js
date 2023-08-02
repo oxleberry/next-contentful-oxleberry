@@ -1,0 +1,229 @@
+import React from 'react';
+import Head from 'next/head'
+import Header from '../../components/Header'
+
+// Will only import `react-p5` on client-side
+// This is useful if a component relies on browser APIs like window.
+// https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
+import dynamic from 'next/dynamic'
+const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
+	ssr: false,
+})
+
+
+// Scoreboard Component =================
+const Scoreboard = (props) => {
+	return (
+		<div className={`glassScore ${props.id}`} id={props.id}>{props.text}: {props.points} pts</div>
+	);
+}
+
+
+// Sanke Game Component =================
+class SnakeGame extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			score: 0,
+		};
+
+		// Variables =================
+		this.unitSize = 22;
+		this.canvasSize = 17 * this.unitSize; // number needs to be divisible by the unit size
+		this.snakePos = {
+			x: this.unitSize,
+			y: this.unitSize,
+		};
+		this.snakeTailPos = []; // tracks each tail segment with {x, y} position
+		this.direction = {
+			x: 1, // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
+			y: 0, // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
+		};
+		this.foodPos = {
+			x: this.unitSize * 8,
+			y: this.unitSize * 8
+		};
+	}
+
+
+	// Game Functions =================
+	drawGameBoard(p5) {
+		p5.background(220); // lt grey
+		p5.stroke(144, 186, 204); // blue
+		p5.strokeWeight(4);
+		p5.fill(30); // soft black
+		p5.rect((this.unitSize - 2), (this.unitSize - 2), (p5.width - this.unitSize * 2) + 4, (p5.height - this.unitSize * 2) + 4);
+	}
+
+	drawSnake(p5) {
+		// draws the snake tail
+		p5.fill(211, 229, 165);
+		for (let i = 0; i < this.snakeTailPos.length; i++) {
+			p5.strokeWeight(2);
+			p5.stroke(152, 168, 102);
+			let posX = this.snakeTailPos[i].x;
+			let posY = this.snakeTailPos[i].y;
+			p5.rect(posX, posY, this.unitSize, this.unitSize);
+		};
+		// draws the snake head
+		p5.stroke(152, 168, 102);
+		p5.fill(211, 229, 165);
+		p5.rect(this.snakePos.x, this.snakePos.y, this.unitSize, this.unitSize);
+	}
+
+
+	drawFood(p5) {
+		p5.strokeWeight(2);
+		p5.stroke(163, 56, 37);
+		p5.fill(209, 82, 60);
+		p5.rect (this.foodPos.x, this.foodPos.y, this.unitSize, this.unitSize);
+	}
+
+	// update snake head position
+	// returns object = {x: 20, y: 20};
+	moveSnakeHead(p5) {
+		// movement of head by 1 unit to the next position
+		let x = this.snakePos.x + this.direction.x * this.unitSize;
+		let y = this.snakePos.y + this.direction.y * this.unitSize;
+		// constrains the position so the snake cannot go out of the game board
+		x = p5.constrain(x, 0 + this.unitSize, p5.width - this.unitSize * 2);
+		y = p5.constrain(y, 0 + this.unitSize, p5.height - this.unitSize * 2);
+		return {x, y};
+	}
+
+	// return array of objects = [{x: 40, y: 20}, {x: 20, y: 20}]
+	increaseSnakeTail() {
+		let snakeTail = this.snakeTailPos;
+		snakeTail.push({ x: this.snakePos.x, y: this.snakePos.y });
+		return snakeTail;
+	}
+
+	// update snake tail position in array tracker
+	// returns array of objects = [{x: 60, y: 20}, {x: 40, y: 20}, {x: 20, y: 20}]
+	moveSnakeTail() {
+		let snakeTail = this.snakeTailPos;
+		snakeTail.unshift({ x: this.snakePos.x, y: this.snakePos.y }); // adds the latest {x, y} position to the front of the snake's tail array tracker
+		return snakeTail;
+	}
+
+	// checks if snake is at food location
+	// returns boolean
+	checkSnakeAtFoodLocation(p5) {
+		// dist: calcualates the distance between 2 points
+		let distance = p5.dist(this.snakePos.x, this.snakePos.y, this.foodPos.x, this.foodPos.y);
+		if (distance < 10) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// generates a random location on the game board
+	// returns object = {x: 100, y: 160};
+	randomLocation(p5) {
+		let x = p5.floor(p5.random((p5.width / this.unitSize) - 2)) * this.unitSize;
+		let y = p5.floor(p5.random((p5.height / this.unitSize) - 2)) * this.unitSize;
+		x = p5.constrain(x, 0 + this.unitSize, p5.width - this.unitSize * 2);
+		y = p5.constrain(y, 0 + this.unitSize, p5.height - this.unitSize * 2);
+		return {x, y};
+	}
+
+	// checks if snake has collided with itself or a wall
+	// returns boolean
+	checkSnakeDies(p5) {
+		// loops through the tail segments to see if
+		// the head position matches any of tail segemnts
+		let headX = this.snakePos.x;
+		let headY = this.snakePos.y;
+		for (let i = 0; i < this.snakeTailPos.length; i++) {
+			let tailX = this.snakeTailPos[i].x;
+			let tailY = this.snakeTailPos[i].y;
+			if (headX === tailX && headY === tailY) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	increaseScore() {
+		let score = this.state.score;
+		this.setState(prevState => ({
+			...prevState,
+			score: score + 100,
+		}));
+	}
+
+
+	// Keyboard event listener =================
+	keyPressed = (p5, event) => {
+		// x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
+		// y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
+		if (p5.keyCode === 87 || p5.keyCode === 38 || p5.keyCode === 73) { // W or UP ARROW or I
+			this.direction = { x: 0, y: -1 };
+		} else if (p5.keyCode === 83 || p5.keyCode === 40 || p5.keyCode === 75) { // S or DOWN ARROW or K
+			this.direction = { x: 0, y: 1 };
+		} else if (p5.keyCode === 68 || p5.keyCode === 39 || p5.keyCode === 76) { // D or RIGHT ARROW or J
+			this.direction = { x: 1, y: 0 };
+		} else if (p5.keyCode === 65 || p5.keyCode === 37 || p5.keyCode === 74) { // A or LEFT ARROW or L
+			this.direction = { x: -1, y: 0 };
+		}
+	}
+
+	// p5 Functions =================
+	setup = (p5, canvasParentRef) => {
+		p5.createCanvas(this.canvasSize, this.canvasSize).parent(canvasParentRef);
+		p5.frameRate(8);
+		this.drawGameBoard(p5);
+		this.drawSnake(p5);
+		this.drawFood(p5);
+	};
+
+	draw = p5 => {
+		this.drawGameBoard(p5);
+
+		const eatFood = this.checkSnakeAtFoodLocation(p5);
+		if (eatFood) {
+			this.increaseSnakeTail();
+			this.foodPos = this.randomLocation(p5);
+			this.increaseScore();
+		}
+		this.drawFood(p5);
+
+		this.snakeTailPos = this.moveSnakeTail();
+		this.snakePos = this.moveSnakeHead(p5);
+		const gameover = this.checkSnakeDies(p5);
+		if (gameover) {
+			this.snakeTailPos = [];
+		} else {
+			this.snakeTailPos.pop(); // removes the last segment from the snake tail
+		}
+
+		this.drawSnake(p5);
+	};
+
+
+	render() {
+		return (
+		<>
+			<Head>
+				<title>Oxleberry | Snake Game</title>
+				<meta name="description" content="Oxleberry Snake Game - The Classic Snake Game using p5.js" />
+			</Head>
+			<main className="full-backboard snake-game-page">
+				<Header headline="Snake Game" isSubPage={true}></Header>
+				<p>Eat the red apple, but don&apos;t hit the sides. <br />Use keyboard arrows to move the snake.</p>
+				<Scoreboard id="score-board" text="Score" points={this.state.score}/>
+				<Scoreboard id="hi-Score" text="High" points={this.state.score}/>
+
+				{/* SNAKE GAME */}
+				<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} />
+				</main>
+			</>
+		);
+	}
+}
+
+export default SnakeGame;
+
+
+

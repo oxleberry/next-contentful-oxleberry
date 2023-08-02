@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import { useEffect, useState, useRef } from 'react'
 import Header from '../../components/Header'
 
 // Will only import `react-p5` on client-side
@@ -11,8 +12,12 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 
 
 export default function SnakeGame() {
+	const [score, setScore] = useState(0);
+	
+	// const scoreRef = useRef(null);
+
 	// Variables =================
-	const unitSize = 20
+	const unitSize = 25;
 	const canvasSize = 17 * unitSize;  // number needs to be divisible by the unit size
 	let snakePos = {
 		x: unitSize,
@@ -27,6 +32,9 @@ export default function SnakeGame() {
 		x: unitSize * 8,
 		y: unitSize * 8
 	};
+	// let score = 0;
+	// let hiScore = 0;
+
 
 
 	// Game Functions =================
@@ -127,6 +135,10 @@ export default function SnakeGame() {
 		return false;
 	}
 
+	// function updateScore() {
+	// 	setScore(prev => prev + 100);
+	// }
+
 
 	// Keyboard eventlistener =================
 	function keyPressed(p5, event) {
@@ -160,6 +172,14 @@ export default function SnakeGame() {
 		if (eatFood) {
 			increaseSnakeTail();
 			foodPos = randomLocation(p5);
+			setScore(score += 100)
+			console.log('score', score);
+			
+			// setScore(prev => prev + 100);
+			// updateScore();
+
+			// scoreRef.inner = score;
+			// scoreRef.dangerouslySetInnerHTML = score;
 		}
 		drawFood(p5);
 
@@ -176,6 +196,22 @@ export default function SnakeGame() {
 	}
 
 
+	
+	// Initial Page Load =================
+	// useEffect(() => {
+	// 	new Sketch;
+	// // eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, []);
+
+
+
+	// Scoreboard Component =================
+	const Scoreboard = (props) => {
+		return (
+			<div className={`glassScore ${props.id}`} id={props.id}>{props.text}:  {props.points} pts</div>
+		);
+	}
+
 	return (
 		<>
 			<Head>
@@ -185,6 +221,9 @@ export default function SnakeGame() {
 			<main className="full-backboard snake-game-page">
 				<Header headline="Snake Game" isSubPage={true}></Header>
 				<p>Eat the red apple, but don&apos;t hit the sides. <br />Use keyboard arrows to move the snake.</p>
+				<p>{score}</p>
+				<Scoreboard id="score-board" text="Score" points={score}/>
+				<Scoreboard id="hi-Score" text="Hi" points="0"/>
 
 				{/* SNAKE GAME */}
 				<Sketch setup={setup} draw={draw} keyPressed={keyPressed} />
