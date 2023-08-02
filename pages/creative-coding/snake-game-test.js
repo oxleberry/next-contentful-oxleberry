@@ -162,10 +162,13 @@ class SnakeGame extends React.Component {
 		if (curScore > curHighScore) {
 			this.setState(prevState => ({
 				...prevState,
-				score: 0,
 				highScore: curScore,
 			}));
 		}
+		this.setState(prevState => ({
+			...prevState,
+			score: 0,
+		}));
 	}
 
 
