@@ -20,6 +20,24 @@ const Scoreboard = (props) => {
 	);
 }
 
+const ControlButton = (props) => {
+	return (
+		<div className="controls-container">
+			<button className={`glass-button control-button ${props.direction}-arrow`}>
+				<svg width="50" height="50" viewBox="-50 -20 300 150">
+					<polygon className="triangle"
+						fill="#fff"
+						stroke="#fff"
+						strokeWidth="40"
+						strokeLinejoin="round"
+						points="100,0 0,100 200,100"
+					/>
+				</svg>
+			</button>
+		</div>
+	);
+}
+
 
 // Sanke Game Component =================
 class SnakeGame extends React.Component {
@@ -259,19 +277,10 @@ class SnakeGame extends React.Component {
 				{/* SNAKE GAME */}
 				<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} />
 
-				<div className="controls-container">
-					<button className="glass-button control-button control-up">
-						<svg className="up-arrow" width="45" height="45" viewBox="-50 -10 300 100">
-							<polygon className="triangle"
-								fill="#fff"
-								stroke="#fff"
-								strokeWidth="40"
-								strokeLinejoin="round"
-								points="100,0 0,100 200,100"
-							/>
-						</svg>
-					</button>
-				</div>
+				<ControlButton direction="up" />
+				<ControlButton direction="left" />
+				<ControlButton direction="right" />
+				<ControlButton direction="down" />
 			</main>
 			</>
 		);
