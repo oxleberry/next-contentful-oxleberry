@@ -14,7 +14,9 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 // Scoreboard Component =================
 const Scoreboard = (props) => {
 	return (
-		<div className={`glassScore ${props.id}`} id={props.id}>{props.text}: {props.points} pts</div>
+		<div className={`glass-button score-board ${props.id}`} id={props.id}>
+			<p>{props.text}: {props.points} pts</p>
+		</div>
 	);
 }
 
@@ -178,7 +180,7 @@ class SnakeGame extends React.Component {
 		// y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
 		if (p5.keyCode === 87 || p5.keyCode === 38 || p5.keyCode === 73) { // W or UP ARROW or I
 			this.direction = { x: 0, y: -1 };
-			p5.loop(); 
+			p5.loop();
 		} else if (p5.keyCode === 83 || p5.keyCode === 40 || p5.keyCode === 75) { // S or DOWN ARROW or K
 			this.direction = { x: 0, y: 1 };
 			p5.loop();
@@ -191,7 +193,8 @@ class SnakeGame extends React.Component {
 		}
 	}
 
-	// p5 Functions =================
+
+	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
 		p5.createCanvas(this.canvasSize, this.canvasSize).parent(canvasParentRef);
 		p5.frameRate(8);
@@ -255,7 +258,21 @@ class SnakeGame extends React.Component {
 
 				{/* SNAKE GAME */}
 				<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} />
-				</main>
+
+				<div className="controls-container">
+					<button className="glass-button control-button control-up">
+						<svg className="up-arrow" width="45" height="45" viewBox="-50 -10 300 100">
+							<polygon className="triangle"
+								fill="#fff"
+								stroke="#fff"
+								strokeWidth="40"
+								strokeLinejoin="round"
+								points="100,0 0,100 200,100"
+							/>
+						</svg>
+					</button>
+				</div>
+			</main>
 			</>
 		);
 	}
