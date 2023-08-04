@@ -11,7 +11,7 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 })
 
 
-// Scoreboard Component =================
+// Other Component =================
 const Scoreboard = (props) => {
 	return (
 		<div className={`glass-button score-board ${props.id}`} id={props.id}>
@@ -20,21 +20,30 @@ const Scoreboard = (props) => {
 	);
 }
 
-const ControlButton = (props) => {
+const Controls = () => {
 	return (
 		<div className="controls-container">
-			<button className={`glass-button control-button ${props.direction}-arrow`}>
-				<svg width="50" height="50" viewBox="-50 -20 300 150">
-					<polygon className="triangle"
-						fill="#fff"
-						stroke="#fff"
-						strokeWidth="40"
-						strokeLinejoin="round"
-						points="100,0 0,100 200,100"
-					/>
-				</svg>
-			</button>
+			<ControlButton direction="up" />
+			<ControlButton direction="left" />
+			<ControlButton direction="right" />
+			<ControlButton direction="down" />
 		</div>
+	);
+}
+
+const ControlButton = (props) => {
+	return (
+		<button className={`glass-button control-button ${props.direction}-arrow`}>
+			<svg width="50" height="50" viewBox="-50 -20 300 150">
+				<polygon className="triangle"
+					fill="#fff"
+					stroke="#fff"
+					strokeWidth="40"
+					strokeLinejoin="round"
+					points="100,0 0,100 200,100"
+				/>
+			</svg>
+		</button>
 	);
 }
 
@@ -277,10 +286,7 @@ class SnakeGame extends React.Component {
 				{/* SNAKE GAME */}
 				<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} />
 
-				<ControlButton direction="up" />
-				<ControlButton direction="left" />
-				<ControlButton direction="right" />
-				<ControlButton direction="down" />
+				<Controls />
 			</main>
 			</>
 		);
