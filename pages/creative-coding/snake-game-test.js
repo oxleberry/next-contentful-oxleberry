@@ -23,10 +23,10 @@ const Scoreboard = (props) => {
 const Controls = (props) => {
 	return (
 		<div className="controls-container">
-			<ControlButton arrow="up" onControlsUpdate={props.onControlsUpdate} />
-			<ControlButton arrow="left" onControlsUpdate={props.onControlsUpdate} />
-			<ControlButton arrow="right" onControlsUpdate={props.onControlsUpdate} />
-			<ControlButton arrow="down" onControlsUpdate={props.onControlsUpdate} />
+			<ControlButton arrow="up" onControlsClick={props.onControlsClick} />
+			<ControlButton arrow="left" onControlsClick={props.onControlsClick} />
+			<ControlButton arrow="right" onControlsClick={props.onControlsClick} />
+			<ControlButton arrow="down" onControlsClick={props.onControlsClick} />
 		</div>
 	);
 }
@@ -36,7 +36,7 @@ const ControlButton = (props) => {
 		<button
 			className={`glass-button control-button ${props.arrow}-arrow`}
 			id={props.arrow}
-			onClick={props.onControlsUpdate}>
+			onClick={props.onControlsClick}>
 			<svg width="50" height="50" viewBox="-50 -20 300 150">
 				<polygon className="triangle"
 					fill="#fff"
@@ -208,49 +208,25 @@ class SnakeGame extends React.Component {
 		}));
 	}
 
-
-	// Keyboard event listener =================
-	keyPressed = (p5, event) => {
-		// x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
-		// y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
-		if (p5.keyCode === 87 || p5.keyCode === 38 || p5.keyCode === 73) { // W or UP ARROW or I
-			this.state.direction = { x: 0, y: -1 };
-			// p5.loop();
-		} else if (p5.keyCode === 83 || p5.keyCode === 40 || p5.keyCode === 75) { // S or DOWN ARROW or K
-			this.state.direction = { x: 0, y: 1 };
-			// p5.loop();
-		} else if (p5.keyCode === 68 || p5.keyCode === 39 || p5.keyCode === 76) { // D or RIGHT ARROW or J
-			this.state.direction = { x: 1, y: 0 };
-			// p5.loop();
-		} else if (p5.keyCode === 65 || p5.keyCode === 37 || p5.keyCode === 74) { // A or LEFT ARROW or L
-			this.state.direction = { x: -1, y: 0 };
-			// p5.loop();
-		}
-	}
-
-
-	controlsClickHandler = (event) => {
-		const id = event.target.id;
-		// console.log('event.target', event.target);
-		// console.log('event.target.id', id);
+	updateDirection = (event, dir) => {
+		const direction = event.target.id || dir;
 		let x;
 		let y;
-		if (id === "up") {
+		if (direction === "up") {
 			x = 0;
 			y = -1;
-		} else if (id === "down") {
+		} else if (direction === "down") {
 			x = 0;
 			y = 1;
-		} else if (id === "right") {
+		} else if (direction === "right") {
 			x = 1;
 			y = 0;
-		} else if (id === "left") {
+		} else if (direction === "left") {
 			x = -1;
 			y = 0;
 		} else {
 			return;
 		}
-
 		this.setState(prevState => ({
 			...prevState,
 			direction: {
@@ -258,6 +234,21 @@ class SnakeGame extends React.Component {
 				y: y
 			}
 		}));
+	}
+
+	// Keyboard event listener =================
+	keyPressed = (p5, event) => {
+		// x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
+		// y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
+		if (p5.keyCode === 87 || p5.keyCode === 38 || p5.keyCode === 73) { // W or UP ARROW or I
+			this.updateDirection(event, "up");
+		} else if (p5.keyCode === 83 || p5.keyCode === 40 || p5.keyCode === 75) { // S or DOWN ARROW or K
+			this.updateDirection(event, "down");
+		} else if (p5.keyCode === 68 || p5.keyCode === 39 || p5.keyCode === 76) { // D or RIGHT ARROW or J
+			this.updateDirection(event, "right");
+		} else if (p5.keyCode === 65 || p5.keyCode === 37 || p5.keyCode === 74) { // A or LEFT ARROW or L
+			this.updateDirection(event, "left");
+		}
 	}
 
 
@@ -286,11 +277,9 @@ class SnakeGame extends React.Component {
 		this.snakePos = this.moveSnakeHead(p5);
 		const gameover = this.checkSnakeDies(p5);
 		if (gameover) {
-			console.log('GAME OVER');
 			this.updateScoreBoard();
 			this.snakeTailPos = [];
 			this.state.audioLose.play();
-			// p5.noLoop(); // ends redraw cycle
 		} else {
 			this.snakeTailPos.pop(); // removes the last segment from the snake tail
 		}
@@ -326,7 +315,7 @@ class SnakeGame extends React.Component {
 				{/* SNAKE GAME */}
 				<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} />
 
-				<Controls direction={this.state.direction} onControlsUpdate={this.controlsClickHandler}/>
+				<Controls direction={this.state.direction} onControlsClick={this.updateDirection}/>
 			</main>
 			</>
 		);
