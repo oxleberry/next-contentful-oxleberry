@@ -20,20 +20,23 @@ const Scoreboard = (props) => {
 	);
 }
 
-const Controls = () => {
+const Controls = (props) => {
 	return (
 		<div className="controls-container">
-			<ControlButton direction="up" />
-			<ControlButton direction="left" />
-			<ControlButton direction="right" />
-			<ControlButton direction="down" />
+			<ControlButton arrow="up" onControlsUpdate={props.onControlsUpdate} />
+			<ControlButton arrow="left" onControlsUpdate={props.onControlsUpdate} />
+			<ControlButton arrow="right" onControlsUpdate={props.onControlsUpdate} />
+			<ControlButton arrow="down" onControlsUpdate={props.onControlsUpdate} />
 		</div>
 	);
 }
 
 const ControlButton = (props) => {
 	return (
-		<button className={`glass-button control-button ${props.direction}-arrow`}>
+		<button
+			className={`glass-button control-button ${props.arrow}-arrow`}
+			id={props.arrow}
+			onClick={props.onControlsUpdate}>
 			<svg width="50" height="50" viewBox="-50 -20 300 150">
 				<polygon className="triangle"
 					fill="#fff"
@@ -53,6 +56,10 @@ class SnakeGame extends React.Component {
 	constructor() {
 		super();
 		this.state = {
+			direction: {
+				x: 1, // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
+				y: 0, // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
+			},
 			score: 0,
 			highScore: 0,
 			audioScore: null,
@@ -67,10 +74,6 @@ class SnakeGame extends React.Component {
 			y: this.unitSize,
 		};
 		this.snakeTailPos = []; // tracks each tail segment with {x, y} position
-		this.direction = {
-			x: 1, // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
-			y: 0, // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
-		};
 		this.foodPos = {
 			x: this.unitSize * 8,
 			y: this.unitSize * 8
@@ -115,8 +118,8 @@ class SnakeGame extends React.Component {
 	// returns object = {x: 20, y: 20};
 	moveSnakeHead(p5) {
 		// movement of head by 1 unit to the next position
-		let x = this.snakePos.x + this.direction.x * this.unitSize;
-		let y = this.snakePos.y + this.direction.y * this.unitSize;
+		let x = this.snakePos.x + this.state.direction.x * this.unitSize;
+		let y = this.snakePos.y + this.state.direction.y * this.unitSize;
 		// constrains the position so the snake cannot go out of the game board
 		x = p5.constrain(x, 0 + this.unitSize, p5.width - this.unitSize * 2);
 		y = p5.constrain(y, 0 + this.unitSize, p5.height - this.unitSize * 2);
@@ -163,10 +166,15 @@ class SnakeGame extends React.Component {
 	// checks if snake has collided with itself or a wall
 	// returns boolean
 	checkSnakeDies(p5) {
-		// loops through the tail segments to see if
-		// the head position matches any of tail segemnts
+		// if snake is only one segment long, no need to check
+		if (this.snakeTailPos.length < 2) {
+			return false;
+		}
+
 		let headX = this.snakePos.x;
 		let headY = this.snakePos.y;
+		// loops through the tail segments to see if
+		// the head position matches any of tail segemnts
 		for (let i = 0; i < this.snakeTailPos.length; i++) {
 			let tailX = this.snakeTailPos[i].x;
 			let tailY = this.snakeTailPos[i].y;
@@ -206,18 +214,50 @@ class SnakeGame extends React.Component {
 		// x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
 		// y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
 		if (p5.keyCode === 87 || p5.keyCode === 38 || p5.keyCode === 73) { // W or UP ARROW or I
-			this.direction = { x: 0, y: -1 };
-			p5.loop();
+			this.state.direction = { x: 0, y: -1 };
+			// p5.loop();
 		} else if (p5.keyCode === 83 || p5.keyCode === 40 || p5.keyCode === 75) { // S or DOWN ARROW or K
-			this.direction = { x: 0, y: 1 };
-			p5.loop();
+			this.state.direction = { x: 0, y: 1 };
+			// p5.loop();
 		} else if (p5.keyCode === 68 || p5.keyCode === 39 || p5.keyCode === 76) { // D or RIGHT ARROW or J
-			this.direction = { x: 1, y: 0 };
-			p5.loop();
+			this.state.direction = { x: 1, y: 0 };
+			// p5.loop();
 		} else if (p5.keyCode === 65 || p5.keyCode === 37 || p5.keyCode === 74) { // A or LEFT ARROW or L
-			this.direction = { x: -1, y: 0 };
-			p5.loop();
+			this.state.direction = { x: -1, y: 0 };
+			// p5.loop();
 		}
+	}
+
+
+	controlsClickHandler = (event) => {
+		const id = event.target.id;
+		// console.log('event.target', event.target);
+		// console.log('event.target.id', id);
+		let x;
+		let y;
+		if (id === "up") {
+			x = 0;
+			y = -1;
+		} else if (id === "down") {
+			x = 0;
+			y = 1;
+		} else if (id === "right") {
+			x = 1;
+			y = 0;
+		} else if (id === "left") {
+			x = -1;
+			y = 0;
+		} else {
+			return;
+		}
+
+		this.setState(prevState => ({
+			...prevState,
+			direction: {
+				x: x,
+				y: y
+			}
+		}));
 	}
 
 
@@ -250,7 +290,7 @@ class SnakeGame extends React.Component {
 			this.updateScoreBoard();
 			this.snakeTailPos = [];
 			this.state.audioLose.play();
-			p5.noLoop(); // ends redraw cycle
+			// p5.noLoop(); // ends redraw cycle
 		} else {
 			this.snakeTailPos.pop(); // removes the last segment from the snake tail
 		}
@@ -286,7 +326,7 @@ class SnakeGame extends React.Component {
 				{/* SNAKE GAME */}
 				<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} />
 
-				<Controls />
+				<Controls direction={this.state.direction} onControlsUpdate={this.controlsClickHandler}/>
 			</main>
 			</>
 		);
