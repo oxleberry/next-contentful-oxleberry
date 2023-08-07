@@ -337,7 +337,9 @@ class SnakeGame extends React.Component {
 				<Scoreboard id="hi-Score" text="High" points={this.state.highScore}/>
 
 				{/* SNAKE GAME */}
-				<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} />
+				<div className="game-board-container">
+					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} />
+				</div>
 
 				<div className="controls-section">
 					<KeyboardGuide label="Left" upKey="W" downKey="S" leftKey="A" rightKey="D" />

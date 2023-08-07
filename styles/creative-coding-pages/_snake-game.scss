@@ -53,12 +53,16 @@
 
 
 	// =====================
-	// Score Board
+	// Various Sections
 	// =====================
 	.score-board {
 		width: 170px;
 		padding: 8px 10px;
 		margin: 20px 8px 20px;
+	}
+
+	.game-board-container {
+		min-height: 378px;
 	}
 
 	.controls-section {
@@ -80,6 +84,7 @@
 		grid-template-columns: repeat(3, 60px);
 		grid-template-rows: repeat(3, 1fr);
 		padding: 10px 30px;
+		margin: 0 auto;
 
 		.control-button {
 			display: flex;
