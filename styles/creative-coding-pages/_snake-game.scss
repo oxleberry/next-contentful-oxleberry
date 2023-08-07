@@ -1,9 +1,20 @@
 @use '../utilities/mixins' as *;
-// @use '../utilities/colors';
+@use '../utilities/colors';
 // @use '../utilities/fonts';
 
 
 .snake-game-page {
+	/* Variables */
+	--shadow-color: rgba(0, 83, 119, 1);
+	--button-fallback-color: #6bb1d0;
+	--button-dk-color: #2b8bb5;
+	--button-lt-color: #a6d7ed;
+	--button-lt-glass-color: rgba(255,255,255,0.7);
+	--button-dk-glass-color: rgba(255,255,255,0.2);
+	--button-dk-active-color: #014baa;
+	--button-lt-active-color: #02a8ef;
+
+
 	text-align: center;
 	padding-bottom: 30px;
 
@@ -12,17 +23,6 @@
 	// https://simplestepscode.com/css-glass-button-tutorial/
 	// =====================
 	.glass-button {
-		/* Variables */
-		--shadow-color: rgba(0, 83, 119, 1);
-		--button-fallback-color: #6bb1d0;
-		--button-dk-color: #2b8bb5;
-		--button-lt-color: #a6d7ed;
-		--button-lt-glass-color: rgba(255,255,255,0.7);
-		--button-dk-glass-color: rgba(255,255,255,0.2);
-		--button-dk-active-color: #014baa;
-		--button-lt-active-color: #02a8ef;
-
-
 		position: relative;
 		display: inline-block;
 		background-color: var(--button-fallback-color); /*for compatibility with older browsers*/
@@ -58,8 +58,16 @@
 	.score-board {
 		width: 170px;
 		padding: 8px 10px;
-		margin-bottom: 20px;
-		margin-right: 8px;
+		margin: 20px 8px 20px;
+	}
+
+	.controls-section {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		max-width: 780px;
+		margin: 0 auto;
 	}
 
 
@@ -164,6 +172,53 @@
 			&.control-button:active {
 				background: linear-gradient(90deg, var(--button-dk-active-color), var(--button-lt-active-color));
 			}
+		}
+	}
+
+
+	// ===========================
+	// Keyboard Guide
+	// ===========================
+	.keyboard-guide {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		max-width: 180px;
+		height: 186px;
+		padding: 14px;
+		border: 1px solid colors.$lt-brown;
+		opacity: .7;
+
+		@include bp(s) {
+			display: none;
+		}
+
+		.label {
+			font-size: 1.5rem;
+			text-align: center;
+			margin-top: 0;
+			margin-bottom: 8px;
+		}
+
+		.row {
+			display: flex;
+			justify-content: center;
+		}
+
+		.arrow {
+			color: colors.$brown;
+			font-size: 1.8rem;
+			opacity: .6;
+		}
+
+		button {
+			margin: 2px;
+			color: colors.$brown;
+			font-size: 1.4rem;
+			font-weight: bold;
+			border-color: colors.$lt-brown;
+			border-width: 1px;
+			border-radius: 2px;
 		}
 	}
 }
