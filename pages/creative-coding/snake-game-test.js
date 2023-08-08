@@ -11,7 +11,17 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 })
 
 
-// Other Component =================
+// Helper functions =================
+async function playAudio(audioElem) {
+	try {
+		await new Audio(audioElem).play();
+	} catch (err) {
+		// console.log('Audio Error', err);
+	}
+}
+
+
+// Other Components =================
 const Scoreboard = (props) => {
 	return (
 		<div className={`glass-button score-board ${props.id}`} id={props.id}>
@@ -75,7 +85,7 @@ const KeyboardGuide = (props) => {
 }
 
 
-// Sanke Game Component =================
+// Snake Game Component =================
 class SnakeGame extends React.Component {
 	constructor() {
 		super();
@@ -86,8 +96,8 @@ class SnakeGame extends React.Component {
 			},
 			score: 0,
 			highScore: 0,
-			audioScore: null,
-			audioLose: null
+			audioScore: 'https://www.kasandbox.org/programming-sounds/retro/laser2.mp3',
+			audioLose: 'https://www.kasandbox.org/programming-sounds/retro/rumble.mp3'
 		};
 
 		// Variables =================
@@ -293,7 +303,7 @@ class SnakeGame extends React.Component {
 			this.increaseSnakeTail();
 			this.foodPos = this.randomLocation(p5);
 			this.increaseScore();
-			this.state.audioScore.play();
+			playAudio(this.state.audioScore);
 		}
 		this.drawFood(p5);
 
@@ -303,24 +313,13 @@ class SnakeGame extends React.Component {
 		if (gameover) {
 			this.updateScoreBoard();
 			this.snakeTailPos = [];
-			this.state.audioLose.play();
+			playAudio(this.state.audioLose);
 		} else {
 			this.snakeTailPos.pop(); // removes the last segment from the snake tail
 		}
 
 		this.drawSnake(p5);
 	};
-
-
-	// Initial Page Load =================
-	componentDidMount() {
-		// audio api can't be run on the server, this will only be called on client
-		this.setState(prevState => ({
-			...prevState,
-			audioScore: new Audio('https://www.kasandbox.org/programming-sounds/retro/laser2.mp3'),
-			audioLose: new Audio('https://www.kasandbox.org/programming-sounds/retro/rumble.mp3')
-		}));
-	}
 
 
 	render() {
