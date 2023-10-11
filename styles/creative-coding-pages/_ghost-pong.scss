@@ -1,0 +1,11 @@
+@use '../utilities/mixins' as *;
+// @use '../utilities/colors';
+@use '../utilities/fonts';
+
+
+.ghost-pong-page {
+
+	h1 {
+		font-family: fonts.$alt-title-for-g;
+	}
+}
