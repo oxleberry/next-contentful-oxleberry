@@ -22,6 +22,7 @@ class GhostPong extends React.Component {
 		this.canvasSizeWidth = 800;
 		this.canvasSizeHeight = 480;
 		this.gameBoardStrokeSize = 6;
+		this.currentGhost;
 		// this.ghostSize = 35;
 		this.ghostSize = 50;
 		this.ghostXPos = this.canvasSizeWidth / 2;
@@ -45,8 +46,8 @@ class GhostPong extends React.Component {
 		}
 
 		drawGhost(p5) {
-			if (this.ghostRightUp) {
-				p5.image(this.ghostRightUp, this.ghostXPos, this.ghostYPos, this.ghostSize, this.ghostSize);
+			if (this.currentGhost) {
+				p5.image(this.currentGhost, this.ghostXPos, this.ghostYPos, this.ghostSize, this.ghostSize);
 			}
 		}
 
@@ -55,6 +56,41 @@ class GhostPong extends React.Component {
 			this.ghostYPos = this.ghostYPos + this.ySpeed;
 		}
 
+		checkEdges (p5) {
+			if (this.ghostYPos > p5.height - this.ghostSize/2 - this.gameBoardStrokeSize // at the bottom edge
+				&& this.xSpeed === 2){ // ghost moving from left to right
+				this.ySpeed *= -1;
+				this.currentGhost = this.ghostRightUp;
+			} else if (this.ghostYPos > p5.height - this.ghostSize/2 - this.gameBoardStrokeSize // at the bottom edge
+				&& this.xSpeed === -2){ // ghost moving from right to left
+				this.ySpeed *= -1;
+				this.currentGhost = this.ghostLeftUp;
+			} else if (this.ghostYPos < 0 + this.ghostSize/2 + this.gameBoardStrokeSize // at the top edge
+				&& this.xSpeed === 2){ // ghost moving from left to right
+				this.ySpeed *= -1;
+				this.currentGhost = this.ghostRightDown;
+			} else if (this.ghostYPos < 0 + this.ghostSize/2 + this.gameBoardStrokeSize// at the top edge
+				&& this.xSpeed === -2){ // ghost moving from right to left
+				this.ySpeed *= -1;
+				this.currentGhost = this.ghostLeftDown;
+			} else if (this.ghostXPos > p5.width - this.ghostSize/2 - this.gameBoardStrokeSize // at the right edge
+				&& this.ySpeed === 2){ // ghost moving from up to down
+				this.xSpeed = this.xSpeed * -1;
+				this.currentGhost = this.ghostLeftDown;
+			} else if (this.ghostXPos > p5.width - this.ghostSize/2 - this.gameBoardStrokeSize // at the right edge
+				&& this.ySpeed === -2){ // ghost moving from down to up
+				this.xSpeed = this.xSpeed * -1;
+				this.currentGhost = this.ghostLeftUp;
+			} else if (this.ghostXPos < 0 + this.ghostSize/2 + this.gameBoardStrokeSize // at the left edge
+				&& this.ySpeed === 2){ // ghost moving from up to down
+				this.xSpeed = this.xSpeed * -1;
+				this.currentGhost = this.ghostRightDown;
+			} else if (this.ghostXPos < 0 + this.ghostSize/2 + this.gameBoardStrokeSize // at the left edge
+				&& this.ySpeed === -2){ // ghost moving from down to up
+				this.xSpeed = this.xSpeed * -1;
+				this.currentGhost = this.ghostRightUp;
+			}
+		}
 
 		// p5 Drawing Library functions =================
 		setup = (p5, canvasParentRef) => {
@@ -64,10 +100,11 @@ class GhostPong extends React.Component {
 			p5.angleMode(p5.DEGREES);
 			p5.rectMode(p5.CENTER);
 			p5.imageMode(p5.CENTER);
-
+			// Images
 			p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_RU.png", img => {
 				this.ghostRightUp = img;
 				p5.redraw();
+				this.currentGhost = this.ghostRightUp; // starting ghost image
 			});
 			p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_RD.png", img => {
 				this.ghostRightDown = img;
@@ -85,7 +122,8 @@ class GhostPong extends React.Component {
 
 		draw = p5 => {
 			this.drawGameBoardBg(p5);
-			// this.moveGhost();
+			this.moveGhost();
+			this.checkEdges(p5);
 			this.drawGhost(p5);
 			this.drawGameBoardBorder(p5);
 		}
