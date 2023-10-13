@@ -17,9 +17,15 @@ class GhostPong extends React.Component {
 		super();
 
 		// Variables =================
-		this.canvasSizeWidth = 400;
-		this.canvasSizeHeight = 280;
+		// this.canvasSizeWidth = 400;
+		// this.canvasSizeHeight = 280;
+		this.canvasSizeWidth = 800;
+		this.canvasSizeHeight = 480;
 		this.gameBoardStrokeSize = 6;
+		// this.ghostSize = 35;
+		this.ghostSize = 50;
+		this.ghostXPos = this.canvasSizeWidth / 2;
+		this.ghostYPos = this.canvasSizeHeight / 2;
 	}
 
 		drawGameBoardBg(p5) {
@@ -36,6 +42,14 @@ class GhostPong extends React.Component {
 			p5.rect(p5.width/2, p5.height/2, this.canvasSizeWidth, this.canvasSizeHeight);
 		}
 
+		drawGhost(p5) {
+			if (this.ghostRightUp) {
+				p5.image(this.ghostRightUp, this.ghostXPos, this.ghostYPos, this.ghostSize, this.ghostSize);
+			}
+		}
+
+
+		// p5 Drawing Library functions =================
 		setup = (p5, canvasParentRef) => {
 			p5.createCanvas(this.canvasSizeWidth, this.canvasSizeHeight).parent(canvasParentRef);
 			p5.frameRate(30);
@@ -43,10 +57,28 @@ class GhostPong extends React.Component {
 			p5.angleMode(p5.DEGREES);
 			p5.rectMode(p5.CENTER);
 			p5.imageMode(p5.CENTER);
+
+			p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_RU.png", img => {
+				this.ghostRightUp = img;
+				p5.redraw();
+			});
+			p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_RD.png", img => {
+				this.ghostRightDown = img;
+				p5.redraw();
+			});
+			p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_LU.png", img => {
+				this.ghostLeftUp = img;
+				p5.redraw();
+			});
+			p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_LD.png", img => {
+				this.ghostLeftDown = img;
+				p5.redraw();
+			});
 		}
 
 		draw = p5 => {
 			this.drawGameBoardBg(p5);
+			this.drawGhost(p5);
 			this.drawGameBoardBorder(p5);
 		}
 
