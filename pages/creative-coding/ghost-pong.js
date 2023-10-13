@@ -26,6 +26,8 @@ class GhostPong extends React.Component {
 		this.ghostSize = 50;
 		this.ghostXPos = this.canvasSizeWidth / 2;
 		this.ghostYPos = this.canvasSizeHeight / 2;
+		this.xSpeed = 2;
+		this.ySpeed = 2;
 	}
 
 		drawGameBoardBg(p5) {
@@ -46,6 +48,11 @@ class GhostPong extends React.Component {
 			if (this.ghostRightUp) {
 				p5.image(this.ghostRightUp, this.ghostXPos, this.ghostYPos, this.ghostSize, this.ghostSize);
 			}
+		}
+
+		moveGhost() {
+			this.ghostXPos = this.ghostXPos + this.xSpeed;
+			this.ghostYPos = this.ghostYPos + this.ySpeed;
 		}
 
 
@@ -78,6 +85,7 @@ class GhostPong extends React.Component {
 
 		draw = p5 => {
 			this.drawGameBoardBg(p5);
+			// this.moveGhost();
 			this.drawGhost(p5);
 			this.drawGameBoardBorder(p5);
 		}
