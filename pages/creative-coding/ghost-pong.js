@@ -38,6 +38,8 @@ class GhostPong extends React.Component {
 			width: 18,
 			height: 100,
 			stripe: 4,
+			speed: 8,
+			currentSpeedY: 0
 		}
 	}
 
@@ -83,6 +85,8 @@ class GhostPong extends React.Component {
 		p5.rect(xPosStripe, this.paddle.y, this.paddle.stripe, this.paddle.height);
 	}
 
+
+	// GHOST functions
 	moveGhost() {
 		this.ghost.x = this.ghost.x + this.direction.x;
 		this.ghost.y = this.ghost.y + this.direction.y;
@@ -139,6 +143,47 @@ class GhostPong extends React.Component {
 	}
 
 
+	// PADDLE functions
+	movePaddle(p5) {
+		this.paddle.y += this.paddle.currentSpeedY;
+		let topBoundary = this.gameBoard.stroke / 2 + this.paddle.height / 2;
+		let bottomBoundary = this.gameBoard.height - this.gameBoard.stroke / 2 - this.paddle.height / 2;
+		// constrain = target, top, bottom
+		this.paddle.y = p5.constrain (this.paddle.y, topBoundary, bottomBoundary);
+	}
+
+	updatePaddleDirection() {
+
+	}
+
+
+	// Keyboard event listener =================
+	keyPressed = (p5, event) => {
+		// x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
+		// y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
+		if (p5.keyCode === 186) { // keycode = ;
+			console.log('up');
+			this.paddle.currentSpeedY = -8;
+			// this.movePaddle(p5);
+			// this.movePaddle();
+			// this.updateDirection(event, "up");
+		} else if (p5.keyCode === 190) { // keycode = .
+			this.paddle.currentSpeedY = 8;
+			// this.updateDirection(event, "down");
+		} else if (p5.keyCode === 68 || p5.keyCode === 39 || p5.keyCode === 76) { // D or RIGHT ARROW or J
+			// this.updateDirection(event, "right");
+		} else if (p5.keyCode === 65 || p5.keyCode === 37 || p5.keyCode === 74) { // A or LEFT ARROW or L
+			// this.updateDirection(event, "left");
+		}
+	}
+
+	keyReleased = (p5, event) => {
+		this.paddle.currentSpeedY = 0;
+		// left.move(0);
+		// right.move(0);
+	}
+
+
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
 		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
@@ -171,8 +216,12 @@ class GhostPong extends React.Component {
 	
 	draw = p5 => {
 		this.drawGameBoardBg(p5);
+		this.movePaddle(p5);
+		// this.checkPaddle();
 		this.drawPaddle(p5, 'left');
 		this.drawPaddle(p5, 'right');
+
+
 		this.moveGhost();
 		this.checkEdges(p5);
 		this.drawGhost(p5);
@@ -191,7 +240,7 @@ class GhostPong extends React.Component {
 					<Header headline="Ghost Pong Game" isSubPage={true}></Header>
 
 					{/* Ghost Pong Game */}
-					<Sketch setup={this.setup} draw={this.draw} />
+					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} keyReleased={this.keyReleased} />
 				</main>
 			</>
 		);
