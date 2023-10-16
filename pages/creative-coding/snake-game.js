@@ -71,6 +71,50 @@ class SnakeGame extends React.Component {
 		return {x, y};
 	}
 
+	updateDirection = (event, dir) => {
+		const direction = event.target.id || dir;
+		let x; // x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
+		let y; // y = positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
+		switch (direction) {
+			case 'up':
+				x = 0;
+				y = -1;
+				break;
+			case 'down':
+				x = 0;
+				y = 1;
+				break;
+			case 'left':
+				x = -1;
+				y = 0;
+				break;
+			case 'right':
+				x = 1;
+				y = 0;
+				break;
+		}
+		this.setState(prevState => ({
+			...prevState,
+			direction: {
+				x: x,
+				y: y
+			}
+		}));
+	}
+
+	// Keyboard event listener =================
+	keyPressed = (p5, event) => {
+		if (p5.keyCode === 87 || p5.keyCode === 38 || p5.keyCode === 73) { // W - UP ARROW - I
+			this.updateDirection(event, "up");
+		} else if (p5.keyCode === 83 || p5.keyCode === 40 || p5.keyCode === 75) { // S - DOWN ARROW - K
+			this.updateDirection(event, "down");
+		} else if (p5.keyCode === 65 || p5.keyCode === 37 || p5.keyCode === 74) { // A - LEFT ARROW - J
+			this.updateDirection(event, "left");
+		} else if (p5.keyCode === 68 || p5.keyCode === 39 || p5.keyCode === 76) { // D - RIGHT ARROW - L
+			this.updateDirection(event, "right");
+		}
+	}
+
 
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
@@ -101,7 +145,7 @@ class SnakeGame extends React.Component {
 					<p>Eat the red apple, but don&apos;t hit the sides. <br />Use keyboard arrows to move the snake.</p>
 
 					{/* SNAKE GAME */}
-					<Sketch setup={this.setup} draw={this.draw} />
+					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed}/>
 				</main>
 			</>
 		);
