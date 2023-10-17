@@ -12,7 +12,7 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 
 
 class Paddle extends React.Component {
-	constructor(x, y, stripePosX, currentSpeedY) {
+	constructor(x, y, stripePosX, directionY) {
 		super();
 		this.paddle = {
 			x: x,
@@ -22,7 +22,7 @@ class Paddle extends React.Component {
 			stripeWidth: 4,
 			stripePosX: stripePosX,
 			speed: 8,
-			currentSpeedY: currentSpeedY
+			directionY: directionY
 		}
 	}
 
@@ -37,7 +37,7 @@ class Paddle extends React.Component {
 	}
 
 	movePaddle(p5, gameBoardHeight, gameBoardStroke) {
-		this.paddle.y += this.paddle.currentSpeedY;
+		this.paddle.y += this.paddle.directionY;
 		let topBoundary = gameBoardStroke / 2 + this.paddle.height / 2;
 		let bottomBoundary = gameBoardHeight - gameBoardStroke / 2 - this.paddle.height / 2;
 		// constrain = target, top, bottom
@@ -45,7 +45,7 @@ class Paddle extends React.Component {
 	}
 
 	updatePaddleDirection(speed) {
-		this.paddle.currentSpeedY = speed;
+		this.paddle.directionY = speed;
 	}
 }
 
@@ -53,21 +53,18 @@ class Paddle extends React.Component {
 class GhostPong extends React.Component {
 	constructor() {
 		super();
-
 		// Variables =================
+		const ghostSize = 50;
 		this.gameBoard = {
-			width: 800,
-			height: 480,
+			width: (ghostSize * 17 - ghostSize / 2), // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
+			height: (ghostSize * 11 - ghostSize / 2), // theory - baord cannot be exact multiple of ghost size, else ghost can get stuck in sides
 			stroke: 6,
 		}
 		this.ghost = {
 			image: null,
-			size: 50,
+			size: ghostSize,
 			x: this.gameBoard.width / 2,
 			y: this.gameBoard.height / 2,
-			// x: 30,
-			// x: this.gameBoard.width - 31,
-			// y: this.gameBoard.height / 2
 			speed: 2,
 			directionX: 2,
 			directionY: 2,
@@ -79,6 +76,7 @@ class GhostPong extends React.Component {
 			startSpeed: 0
 		}
 	}
+
 
 	drawGameBoardBg(p5) {
 		p5.background(0); // black
