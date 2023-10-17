@@ -71,6 +71,18 @@ class SnakeGame extends React.Component {
 		return {x, y};
 	}
 
+	// checks if snake is at food location
+	// returns boolean
+	checkSnakeAtFoodLocation(p5) {
+		// dist: calcualates the distance between 2 points
+		let distance = p5.dist(this.snakePos.x, this.snakePos.y, this.foodPos.x, this.foodPos.y);
+		if (distance < 10) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	updateDirection = (event, dir) => {
 		const direction = event.target.id || dir;
 		let x; // x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
@@ -127,7 +139,13 @@ class SnakeGame extends React.Component {
 
 	draw = p5 => {
 		this.drawGameBoard(p5);
+		// when snake reaches food
+		const eatFood = this.checkSnakeAtFoodLocation(p5);
+		if (eatFood) {
+			console.log('EAT');
+		}
 		this.drawFood(p5);
+		// move snake
 		this.snakePos = this.moveSnakeHead(p5);
 		this.drawSnake(p5);
 	};
