@@ -75,7 +75,7 @@ class GhostPuck extends React.Component {
 }
 
 
-class GhostPong extends React.Component {
+class GhostPongGame extends React.Component {
 	constructor() {
 		super();
 
@@ -261,4 +261,4 @@ class GhostPong extends React.Component {
 	}
 }
 
-export default GhostPong;
+export default GhostPongGame;
