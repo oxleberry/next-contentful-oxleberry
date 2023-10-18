@@ -83,6 +83,16 @@ class SnakeGame extends React.Component {
 		}
 	}
 
+	// generates a random location on the game board
+	// returns object = {x: 100, y: 160};
+	randomLocation(p5) {
+		let x = p5.floor(p5.random((p5.width / this.unitSize) - 2)) * this.unitSize;
+		let y = p5.floor(p5.random((p5.height / this.unitSize) - 2)) * this.unitSize;
+		x = p5.constrain(x, 0 + this.unitSize, p5.width - this.unitSize * 2);
+		y = p5.constrain(y, 0 + this.unitSize, p5.height - this.unitSize * 2);
+		return {x, y};
+	}
+
 	updateDirection = (event, dir) => {
 		const direction = event.target.id || dir;
 		let x; // x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
@@ -142,7 +152,7 @@ class SnakeGame extends React.Component {
 		// when snake reaches food
 		const eatFood = this.checkSnakeAtFoodLocation(p5);
 		if (eatFood) {
-			console.log('EAT');
+			this.foodPos = this.randomLocation(p5);
 		}
 		this.drawFood(p5);
 		// move snake
