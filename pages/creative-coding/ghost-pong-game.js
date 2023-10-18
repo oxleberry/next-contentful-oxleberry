@@ -14,47 +14,65 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 class Paddle extends React.Component {
 	constructor(x, y, stripePosX, directionY) {
 		super();
-		this.paddle = {
-			x: x,
-			y: y,
-			width: 18,
-			height: 100,
-			stripeWidth: 4,
-			stripePosX: stripePosX,
-			speed: 8,
-			directionY: directionY
-		}
+			this.x = x,
+			this.y = y,
+			this.width = 18,
+			this.height = 100,
+			this.stripeWidth = 4,
+			this.stripePosX = stripePosX,
+			this.speed = 8,
+			this.directionY = directionY,
+			this.paddleHit = false
+		// this.paddle = {
+		// 	x: x,
+		// 	y: y,
+		// 	width: 18,
+		// 	height: 100,
+		// 	stripeWidth: 4,
+		// 	stripePosX: stripePosX,
+		// 	speed: 8,
+		// 	directionY: directionY,
+		// 	paddleHit: false
+		// }
 	}
 
 	drawPaddle(p5) {
 		// paddle
 		p5.noStroke();
 		p5.fill (255);
-		p5.rect(this.paddle.x, this.paddle.y, this.paddle.width, this.paddle.height);
+		p5.rect(this.x, this.y, this.width, this.height);
 		// paddle stripe
-		p5.fill(204, 49, 2); // red
-		p5.rect(this.paddle.stripePosX, this.paddle.y, this.paddle.stripeWidth, this.paddle.height);
+		if (this.paddleHit === true) {
+			p5.fill(255, 211, 198); // light red
+			this.stripeWidth = 6;
+			this.paddleHit = false;
+		} else {
+			p5.fill(204, 49, 2); // red
+			this.stripeWidth = 4;
+		}
+		p5.rect(this.stripePosX, this.y, this.stripeWidth, this.height);
 	}
 
 	movePaddle(p5, gameBoardHeight, gameBoardStroke) {
-		this.paddle.y += this.paddle.directionY;
-		let topBoundary = gameBoardStroke / 2 + this.paddle.height / 2;
-		let bottomBoundary = gameBoardHeight - gameBoardStroke / 2 - this.paddle.height / 2;
+		this.y += this.directionY;
+		let topBoundary = gameBoardStroke / 2 + this.height / 2;
+		let bottomBoundary = gameBoardHeight - gameBoardStroke / 2 - this.height / 2;
 		// constrain = target, top, bottom
-		this.paddle.y = p5.constrain (this.paddle.y, topBoundary, bottomBoundary);
+		this.y = p5.constrain (this.y, topBoundary, bottomBoundary);
 	}
 
-	updatePaddleDirection(speed) {
-		this.paddle.directionY = speed;
+	updatePaddleDirection(direction) {
+		this.directionY = direction;
 	}
 }
 
 
-class GhostPong extends React.Component {
+class GhostPongGame extends React.Component {
 	constructor() {
 		super();
 		// Variables =================
 		const ghostSize = 50;
+		const paddleFromEdgeDistance = 30;
 		this.gameBoard = {
 			width: (ghostSize * 17 - ghostSize / 2), // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
 			height: (ghostSize * 11 - ghostSize / 2), // theory - baord cannot be exact multiple of ghost size, else ghost can get stuck in sides
@@ -71,8 +89,8 @@ class GhostPong extends React.Component {
 		}
 		this.paddle = {
 			x: 30, // distance paddle is from edge of game board
-			width: new Paddle().paddle.width, // used for setting stripe placement
-			speed: new Paddle().paddle.speed, // used for changing directions
+			width: new Paddle().width, // used for setting stripe placement
+			speed: new Paddle().speed, // used for changing directions
 			startSpeed: 0
 		}
 	}
@@ -156,6 +174,38 @@ class GhostPong extends React.Component {
 	}
 
 
+	// Game play functions
+	checkPaddle(paddle) {
+		// console.log('===================================');
+
+		let ghostCenterX = this.ghost.x;
+		let ghostCenterY = this.ghost.y;
+		let paddleRightEdge = paddle.x + paddle.width / 2 + this.ghost.size / 3;
+		let paddleLeftEdge = paddle.x - paddle.width / 2 - this.ghost.size / 3;
+		let paddleTop = paddle.y - paddle.height / 2;
+		let paddleBottom = paddle.y + paddle.height / 2;
+		// when center of ghost hits edge of paddles (paddles factor in ghost size)
+		if (ghostCenterX >= paddleLeftEdge && // ghost is past left edge of paddle
+		ghostCenterX <= paddleRightEdge && // ghost is past right edge of paddle
+		ghostCenterY >= paddleTop && // ghost is below paddle top
+		ghostCenterY <= paddleBottom) { // ghost is above paddle bottom
+		
+			// console.log('paddle', paddle.x);
+			// console.log('paddleRightEdge', paddleRightEdge);
+			// console.log('paddleLeftEdge', paddleLeftEdge);
+			// console.log('ghostX', this.ghost.x);
+			// console.log('ghostY', this.ghost.y);
+			// console.log('paddleY', paddle.y);
+			// console.log('paddleTop', paddleTop);
+			// console.log('paddleBottom', paddleBottom);
+			// console.log('this.gameBoard.height', this.gameBoard.height);
+			// console.log('HIT');
+
+			paddle.paddleHit = true;
+		}
+	}
+
+
 	// Keyboard event listener =================
 	// move paddle up and down
 	keyPressed = (p5, event) => {
@@ -221,6 +271,9 @@ class GhostPong extends React.Component {
 
 	draw = p5 => {
 		this.drawGameBoardBg(p5);
+
+		this.checkPaddle(this.left);
+		this.checkPaddle(this.right);
 		this.left.drawPaddle(p5);
 		this.right.drawPaddle(p5);
 		this.left.movePaddle(p5, this.gameBoard.height, this.gameBoard.stroke);
@@ -230,6 +283,7 @@ class GhostPong extends React.Component {
 		this.checkEdges(p5);
 		this.drawGhost(p5);
 		this.drawGameBoardBorder(p5);
+		// p5.noLoop();
 	}
 
 
@@ -251,4 +305,4 @@ class GhostPong extends React.Component {
 	}
 }
 
-export default GhostPong;
+export default GhostPongGame;
