@@ -1,0 +1,200 @@
+import React from 'react';
+import Head from 'next/head'
+import Header from '../../components/Header'
+
+// Will only import `react-p5` on client-side
+// This is useful if a component relies on browser APIs like window.
+// https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
+import dynamic from 'next/dynamic'
+const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
+	ssr: false,
+})
+
+
+// GAME BOARD =====================
+class GameBoard {
+	constructor(width, height) {
+		this.width = width;
+		this.height = height;
+		this.stroke = 6;
+	}
+
+	drawGameBoardBg(p5) {
+		p5.background(0); // black
+		p5.stroke(30); // soft black
+		p5.strokeWeight (4);
+		p5.line (p5.width / 2, 0, p5.width / 2, p5.height);
+	}
+
+	drawGameBoardBorder(p5) {
+		p5.noFill (0);
+		p5.stroke (90); // grey
+		p5.strokeWeight (this.stroke * 2);
+		p5.rect(p5.width / 2, p5.height / 2, this.width, this.height);
+	}
+}
+
+
+// GHOST PUCK =====================
+class Ghost {
+	constructor (image, x, y) {
+		this.image = image;
+		this.size = 50;
+		this.x = x;
+		this.y = y;
+		this.incrementSpeed = 2;
+		this.speedX = 2; // positive value moves right, negative value moves left
+		this.speedY = 2; // positive value moves down, negative value moves up
+	}
+
+	drawGhost(p5) {
+		if (this.image) {
+			p5.image(this.image, this.x, this.y, this.size, this.size);
+		}
+	}
+
+	moveGhost() {
+		this.x = this.x + this.speedX;
+		this.y = this.y + this.speedY;
+	}
+
+	changeHorizontalDirection() {
+		this.speedX *= -1; // positive value moves down, negative value moves up
+	}
+
+	changeVerticalDirection() {
+		this.speedY *= -1; // positive value moves right, negative value moves left
+	}
+
+	increaseSpeed() {
+		if (this.speedX >= 0) {
+			this.speedX += this.incrementSpeed;
+		} else {
+			this.speedX -= this.incrementSpeed;
+		}
+	}
+
+	updateGhostImage(img) {
+		this.image = img;
+	}
+}
+
+
+// GAME PLAY =====================
+class FloatingGhost extends React.Component {
+	constructor() {
+		super();
+		// Global Variables =================
+		this.ghostSize = new Ghost().size;
+	}
+
+
+	// Game Play functions =================
+	// check and update if the ghost puck hits any sides of the gameboard
+	checkEdges (ghost, gameBoard) {
+		const bottomEdge = ghost.y > gameBoard.height - ghost.size/2 - gameBoard.stroke;
+		const topEdge = ghost.y < 0 + ghost.size/2 + gameBoard.stroke;
+		const rightEdge = ghost.x > gameBoard.width - ghost.size/2 - gameBoard.stroke;
+		const leftEdge = ghost.x < 0 + ghost.size/2 + gameBoard.stroke;
+		const movingLeftToRight = ghost.speedX > 0;
+		const movingRightToLeft = ghost.speedX < 0;
+		const movingUpToDowm = ghost.speedY > 0;
+		const movingDownToUp = ghost.speedY < 0;
+		if (bottomEdge && movingLeftToRight){
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostRightUp);
+		} else if (bottomEdge && movingRightToLeft){
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostLeftUp);
+		} else if (topEdge && movingLeftToRight){
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostRightDown);
+		} else if (topEdge && movingRightToLeft){
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostLeftDown);
+		} else if (rightEdge && movingUpToDowm){
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostLeftDown);
+		} else if (rightEdge && movingDownToUp){
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostLeftUp);
+		} else if (leftEdge && movingUpToDowm){
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostRightDown);
+		} else if (leftEdge && movingDownToUp){
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostRightUp);
+		}
+	}
+
+	// p5 Drawing Library functions =================
+	setup = (p5, canvasParentRef) => {
+		// Create GameBoard = width, height
+		// refactor settings
+		this.gameBoard = new GameBoard(
+			// (this.ghostSize * 14 - this.ghostSize / 2), // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
+			// this.ghostSize * 10 - this.ghostSize / 2 // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
+			this.ghostSize * 14, 
+			this.ghostSize * 10
+			);
+		// p5 CANVAS
+		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
+		p5.frameRate(30);
+		p5.background(0); // black
+		p5.angleMode(p5.DEGREES);
+		p5.rectMode(p5.CENTER);
+		p5.imageMode(p5.CENTER);
+		// Ghost Images
+		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_RU.png", img => {
+			this.ghostRightUp = img;
+			p5.redraw();
+			this.ghost.image = this.ghostRightUp; // starting ghost image
+		});
+		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_RD.png", img => {
+			this.ghostRightDown = img;
+			p5.redraw();
+		});
+		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_LU.png", img => {
+			this.ghostLeftUp = img;
+			p5.redraw();
+		});
+		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_LD.png", img => {
+			this.ghostLeftDown = img;
+			p5.redraw();
+		});
+		// Create Ghost = image, x, y
+		this.ghost = new Ghost(
+			this.ghostRightUp,
+			this.gameBoard.width / 2,
+			this.gameBoard.height / 2
+		);
+	}
+
+	draw = p5 => {
+		this.gameBoard.drawGameBoardBg(p5);
+		this.ghost.moveGhost();
+		this.checkEdges(this.ghost, this.gameBoard);
+		this.ghost.drawGhost(p5);
+		this.gameBoard.drawGameBoardBorder(p5);
+	}
+
+
+	render() {
+		return (
+			<>
+				<Head>
+					<title>Oxleberry | Ghost Pong</title>
+					<meta name="description" content="Oxleberry Floating Ghost" />
+				</Head>
+				<main className="full-backboard ghost-pong-page">
+					<Header headline="Floating Ghost" isSubPage={true}></Header>
+
+					{/* Floating Ghost */}
+					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} keyReleased={this.keyReleased} />
+				</main>
+			</>
+		);
+	}
+}
+
+export default FloatingGhost;
