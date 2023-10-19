@@ -29,6 +29,7 @@ class SnakeGame extends React.Component {
 			x: this.unitSize,
 			y: this.unitSize,
 		};
+		this.snakeTailPos = []; // tracks each tail segment with {x, y} position
 		this.foodPos = {
 			x: this.unitSize * 8,
 			y: this.unitSize * 8
@@ -46,6 +47,15 @@ class SnakeGame extends React.Component {
 	}
 
 	drawSnake(p5) {
+		// draws the snake tail
+		p5.fill(211, 229, 165);
+		for (let i = 0; i < this.snakeTailPos.length; i++) {
+			p5.strokeWeight(2);
+			p5.stroke(152, 168, 102);
+			let posX = this.snakeTailPos[i].x;
+			let posY = this.snakeTailPos[i].y;
+			p5.rect(posX, posY, this.unitSize, this.unitSize);
+		};
 		// draws the snake head
 		p5.stroke(152, 168, 102);
 		p5.fill(211, 229, 165);
@@ -69,6 +79,22 @@ class SnakeGame extends React.Component {
 		x = p5.constrain(x, 0 + this.unitSize, p5.width - this.unitSize * 2);
 		y = p5.constrain(y, 0 + this.unitSize, p5.height - this.unitSize * 2);
 		return {x, y};
+	}
+
+	// return array of objects = [{x: 40, y: 20}, {x: 20, y: 20}]
+	increaseSnakeTail() {
+		let snakeTail = this.snakeTailPos;
+		snakeTail.push({ x: this.snakePos.x, y: this.snakePos.y });
+		return snakeTail;
+	}
+
+	// update snake tail position in array tracker
+	// returns array of objects = [{x: 60, y: 20}, {x: 40, y: 20}, {x: 20, y: 20}]
+	moveSnakeTail() {
+		let snakeTail = this.snakeTailPos;
+		snakeTail.unshift({ x: this.snakePos.x, y: this.snakePos.y }); // adds the latest {x, y} position to the front of the snake's tail array tracker
+		snakeTail.pop();  // removes the outdated position from the array
+		return snakeTail;
 	}
 
 	// checks if snake is at food location
@@ -152,10 +178,12 @@ class SnakeGame extends React.Component {
 		// when snake reaches food
 		const eatFood = this.checkSnakeAtFoodLocation(p5);
 		if (eatFood) {
+			this.increaseSnakeTail();
 			this.foodPos = this.randomLocation(p5);
 		}
 		this.drawFood(p5);
 		// move snake
+		this.snakeTailPos = this.moveSnakeTail();
 		this.snakePos = this.moveSnakeHead(p5);
 		this.drawSnake(p5);
 	};
