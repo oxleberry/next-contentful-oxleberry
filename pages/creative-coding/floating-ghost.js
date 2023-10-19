@@ -92,38 +92,38 @@ class FloatingGhost extends React.Component {
 	// Game Play functions =================
 	// check and update if the ghost puck hits any sides of the gameboard
 	checkEdges (ghost, gameBoard) {
-		const bottomEdge = ghost.y > gameBoard.height - ghost.size/2 - gameBoard.stroke;
 		const topEdge = ghost.y < 0 + ghost.size/2 + gameBoard.stroke;
-		const rightEdge = ghost.x > gameBoard.width - ghost.size/2 - gameBoard.stroke;
+		const bottomEdge = ghost.y > gameBoard.height - ghost.size/2 - gameBoard.stroke;
 		const leftEdge = ghost.x < 0 + ghost.size/2 + gameBoard.stroke;
-		const movingLeftToRight = ghost.speedX > 0;
-		const movingRightToLeft = ghost.speedX < 0;
-		const movingUpToDowm = ghost.speedY > 0;
-		const movingDownToUp = ghost.speedY < 0;
-		if (bottomEdge && movingLeftToRight){
-			ghost.changeVerticalDirection();
-			ghost.updateGhostImage(this.ghostRightUp);
-		} else if (bottomEdge && movingRightToLeft){
-			ghost.changeVerticalDirection();
-			ghost.updateGhostImage(this.ghostLeftUp);
-		} else if (topEdge && movingLeftToRight){
-			ghost.changeVerticalDirection();
-			ghost.updateGhostImage(this.ghostRightDown);
-		} else if (topEdge && movingRightToLeft){
+		const rightEdge = ghost.x > gameBoard.width - ghost.size/2 - gameBoard.stroke;
+		const movingUp = ghost.speedY < 0;
+		const movingDown = ghost.speedY > 0;
+		const movingLeft = ghost.speedX < 0;
+		const movingRight = ghost.speedX > 0;
+		if (topEdge && movingLeft) {
 			ghost.changeVerticalDirection();
 			ghost.updateGhostImage(this.ghostLeftDown);
-		} else if (rightEdge && movingUpToDowm){
-			ghost.changeHorizontalDirection();
-			ghost.updateGhostImage(this.ghostLeftDown);
-		} else if (rightEdge && movingDownToUp){
-			ghost.changeHorizontalDirection();
-			ghost.updateGhostImage(this.ghostLeftUp);
-		} else if (leftEdge && movingUpToDowm){
-			ghost.changeHorizontalDirection();
+		} else if (topEdge && movingRight) {
+			ghost.changeVerticalDirection();
 			ghost.updateGhostImage(this.ghostRightDown);
-		} else if (leftEdge && movingDownToUp){
+		} else if (bottomEdge && movingLeft) {
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostLeftUp);
+		} else if (bottomEdge && movingRight) {
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostRightUp);
+		} else if (leftEdge && movingUp) {
 			ghost.changeHorizontalDirection();
 			ghost.updateGhostImage(this.ghostRightUp);
+		} else if (leftEdge && movingDown) {
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostRightDown);
+		} else if (rightEdge && movingUp) {
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostLeftUp);
+		} else if (rightEdge && movingDown) {
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostLeftDown);
 		}
 	}
 
@@ -148,11 +148,11 @@ class FloatingGhost extends React.Component {
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_RU.png", img => {
 			this.ghostRightUp = img;
 			p5.redraw();
-			this.ghost.image = this.ghostRightUp; // starting ghost image
 		});
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_RD.png", img => {
 			this.ghostRightDown = img;
 			p5.redraw();
+			this.ghost.image = this.ghostRightDown; // starting ghost image
 		});
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_LU.png", img => {
 			this.ghostLeftUp = img;
