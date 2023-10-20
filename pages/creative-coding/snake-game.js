@@ -93,7 +93,6 @@ class SnakeGame extends React.Component {
 	moveSnakeTail() {
 		let snakeTail = this.snakeTailPos;
 		snakeTail.unshift({ x: this.snakePos.x, y: this.snakePos.y }); // adds the latest {x, y} position to the front of the snake's tail array tracker
-		snakeTail.pop();  // removes the outdated position from the array
 		return snakeTail;
 	}
 
@@ -117,6 +116,23 @@ class SnakeGame extends React.Component {
 		x = p5.constrain(x, 0 + this.unitSize, p5.width - this.unitSize * 2);
 		y = p5.constrain(y, 0 + this.unitSize, p5.height - this.unitSize * 2);
 		return {x, y};
+	}
+
+	// checks if snake has collided with itself or a wall
+	// returns boolean
+	checkSnakeDies(p5) {
+		let headX = this.snakePos.x;
+		let headY = this.snakePos.y;
+		// loops through the tail segments to see if
+		// the head position matches any of tail segemnts
+		for (let i = 0; i < this.snakeTailPos.length; i++) {
+			let tailX = this.snakeTailPos[i].x;
+			let tailY = this.snakeTailPos[i].y;
+			if (headX === tailX && headY === tailY) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	updateDirection = (event, dir) => {
@@ -185,6 +201,14 @@ class SnakeGame extends React.Component {
 		// move snake
 		this.snakeTailPos = this.moveSnakeTail();
 		this.snakePos = this.moveSnakeHead(p5);
+		// when game is over
+		const gameover = this.checkSnakeDies(p5);
+		if (gameover) {
+			this.snakeTailPos = [];
+		} else {
+			this.snakeTailPos.pop(); // removes the last segment from the snake tail
+		}
+		// draw snake
 		this.drawSnake(p5);
 	};
 
