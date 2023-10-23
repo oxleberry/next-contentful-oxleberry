@@ -11,6 +11,17 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 })
 
 
+// Scoreboard Component =================
+const Scoreboard = (props) => {
+	return (
+		<div className={`glass-button score-board ${props.id}`} id={props.id}>
+			<p>{props.text}: {props.points} pts</p>
+		</div>
+	);
+}
+
+
+// Snake Game Component =================
 class SnakeGame extends React.Component {
 	constructor() {
 		super();
@@ -18,7 +29,8 @@ class SnakeGame extends React.Component {
 			direction: {
 				x: 1, // positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
 				y: 0, // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
-			}
+			},
+			score: 0,
 		};
 
 
@@ -135,6 +147,14 @@ class SnakeGame extends React.Component {
 		return false;
 	}
 
+	increaseScore() {
+		let curScore = this.state.score;
+		this.setState(prevState => ({
+			...prevState,
+			score: curScore + 100,
+		}));
+	}
+
 	updateDirection = (event, dir) => {
 		const direction = event.target.id || dir;
 		let x; // x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
@@ -196,6 +216,7 @@ class SnakeGame extends React.Component {
 		if (eatFood) {
 			this.increaseSnakeTail();
 			this.foodPos = this.randomLocation(p5);
+			this.increaseScore();
 		}
 		this.drawFood(p5);
 		// move snake
@@ -223,6 +244,7 @@ class SnakeGame extends React.Component {
 				<main className="full-backboard snake-game-page">
 					<Header headline="Snake Game" isSubPage={true}></Header>
 					<p>Eat the red apple, but don&apos;t hit the sides. <br />Use keyboard arrows to move the snake.</p>
+					<Scoreboard id="score-board" text="Score" points={this.state.score}/>
 
 					{/* SNAKE GAME */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed}/>
