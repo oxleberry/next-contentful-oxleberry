@@ -24,8 +24,6 @@ const Scoreboard = (props) => {
 // GAME BOARD =====================
 class GameBoard {
 	constructor(width, height) {
-		// this.width = width;
-		// this.height = height;
 		this.width = 600;
 		this.height = 400;
 		this.stroke = 6;
@@ -106,6 +104,7 @@ class GhostPuck {
 		this.y = y;
 		this.speedX = 2; // positive value moves right, negative value moves left
 		this.speedY = 2; // positive value moves down, negative value moves up
+		this.startSpeed = 2;
 		this.incrementSpeed = 2;
 	}
 
@@ -143,6 +142,13 @@ class GhostPuck {
 
 	updateGhostImage(img) {
 		this.image = img;
+	}
+
+	reset(gameBoard) {
+		this.x = gameBoard.width/2;
+		this.y = gameBoard.height/2;
+		this.speedX = this.startSpeed;
+		this.speedY = this.startSpeed;
 	}
 }
 
@@ -193,18 +199,12 @@ class GhostPongGame extends React.Component {
 			this.getGhostImage(ghost);
 		} else if (leftEdgeCheck) {
 			this.audioScore.play();
-			ghost.x = 200;
-			ghost.y = 200;
-			ghost.speedX = 0;
-			ghost.speedY = 0;
-			this.setState(prevState => ({ ...prevState, scoreLeftPlayer: this.state.scoreLeftPlayer + 1 }));
+			this.setState(prevState => ({ ...prevState, scoreRightPlayer: this.state.scoreRightPlayer + 1 }));
+			ghost.reset(this.gameBoard);
 		} else if (rightEdgeCheck) {
 			this.audioScore.play();
-			ghost.x = 200;
-			ghost.y = 200;
-			ghost.speedX = 0;
-			ghost.speedY = 0;
-			this.setState(prevState => ({ ...prevState, scoreRightPlayer: this.state.scoreRightPlayer + 1 }));
+			this.setState(prevState => ({ ...prevState, scoreLeftPlayer: this.state.scoreLeftPlayer + 1 }));
+			ghost.reset(this.gameBoard);
 		}
 	}
 
@@ -310,14 +310,6 @@ class GhostPongGame extends React.Component {
 
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
-		// Create GameBoard = width, height
-		// refactor settings
-		// this.gameBoard = new GameBoard(
-		// 	// (this.ghostSize * 14 - this.ghostSize / 2), // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
-		// 	// this.ghostSize * 10 - this.ghostSize / 2 // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
-		// 	this.ghostSize * 14, // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
-		// 	this.ghostSize * 10 // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
-		// 	);
 		this.gameBoard = new GameBoard();
 		// p5 CANVAS
 		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
