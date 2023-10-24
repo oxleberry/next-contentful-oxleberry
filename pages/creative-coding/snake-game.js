@@ -31,6 +31,7 @@ class SnakeGame extends React.Component {
 				y: 0, // positive (1) moves down, negative (-1) moves up, (0) does not move on y-axis
 			},
 			score: 0,
+			highScore: 0,
 		};
 
 
@@ -155,6 +156,17 @@ class SnakeGame extends React.Component {
 		}));
 	}
 
+	updateScoreBoard() {
+		let curScore = this.state.score;
+		let curHighScore = this.state.highScore;
+		if (curScore > curHighScore) {
+			this.setState(prevState => ({
+				...prevState,
+				highScore: curScore,
+			}));
+		}
+	}
+
 	updateDirection = (event, dir) => {
 		const direction = event.target.id || dir;
 		let x; // x = positive (1) moves right, negative (-1) moves left, (0) does not move on x-axis
@@ -225,6 +237,7 @@ class SnakeGame extends React.Component {
 		// when game is over
 		const gameover = this.checkSnakeDies(p5);
 		if (gameover) {
+			this.updateScoreBoard();
 			this.snakeTailPos = [];
 		} else {
 			this.snakeTailPos.pop(); // removes the last segment from the snake tail
@@ -245,6 +258,7 @@ class SnakeGame extends React.Component {
 					<Header headline="Snake Game" isSubPage={true}></Header>
 					<p>Eat the red apple, but don&apos;t hit the sides. <br />Use keyboard arrows to move the snake.</p>
 					<Scoreboard id="score-board" text="Score" points={this.state.score}/>
+					<Scoreboard id="hi-Score" text="High" points={this.state.highScore}/>
 
 					{/* SNAKE GAME */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed}/>
