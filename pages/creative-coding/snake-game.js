@@ -11,6 +11,16 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 })
 
 
+// Helper functions =================
+async function playAudio(audioElem) {
+	try {
+		await new Audio(audioElem).play();
+	} catch (err) {
+		// console.log('Audio Error', err);
+	}
+}
+
+
 // Scoreboard Component =================
 const Scoreboard = (props) => {
 	return (
@@ -32,8 +42,9 @@ class SnakeGame extends React.Component {
 			},
 			score: 0,
 			highScore: 0,
+			audioScore: 'https://www.kasandbox.org/programming-sounds/retro/laser2.mp3',
+			audioLose: 'https://www.kasandbox.org/programming-sounds/retro/rumble.mp3'
 		};
-
 
 		// Variables =================
 		this.unitSize = 22;
@@ -134,6 +145,10 @@ class SnakeGame extends React.Component {
 	// checks if snake has collided with itself or a wall
 	// returns boolean
 	checkSnakeDies(p5) {
+		// if snake is only one segment long, no need to check
+		if (this.snakeTailPos.length < 2) {
+			return false;
+		}
 		let headX = this.snakePos.x;
 		let headY = this.snakePos.y;
 		// loops through the tail segments to see if
@@ -229,6 +244,7 @@ class SnakeGame extends React.Component {
 			this.increaseSnakeTail();
 			this.foodPos = this.randomLocation(p5);
 			this.increaseScore();
+			playAudio(this.state.audioScore);
 		}
 		this.drawFood(p5);
 		// move snake
@@ -239,6 +255,7 @@ class SnakeGame extends React.Component {
 		if (gameover) {
 			this.updateScoreBoard();
 			this.snakeTailPos = [];
+			playAudio(this.state.audioLose);
 		} else {
 			this.snakeTailPos.pop(); // removes the last segment from the snake tail
 		}
