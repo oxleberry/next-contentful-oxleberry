@@ -180,6 +180,10 @@ class SnakeGame extends React.Component {
 				highScore: curScore,
 			}));
 		}
+		this.setState(prevState => ({
+			...prevState,
+			score: 0,
+		}));
 	}
 
 	updateDirection = (event, dir) => {
