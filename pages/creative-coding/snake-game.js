@@ -283,6 +283,20 @@ class SnakeGame extends React.Component {
 
 					{/* SNAKE GAME */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed}/>
+
+					<div className="controls-container">
+						<button className="glass-button control-button control-up">
+							<svg className="up-arrow" width="45" height="45" viewBox="-50 -10 300 100">
+								<polygon className="triangle"
+									fill="#fff"
+									stroke="#fff"
+									strokeWidth="40"
+									strokeLinejoin="round"
+									points="100,0 0,100 200,100"
+								/>
+							</svg>
+						</button>
+					</div>
 				</main>
 			</>
 		);

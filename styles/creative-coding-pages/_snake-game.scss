@@ -53,9 +53,40 @@
 		}
 	}
 
+
+	// =====================
+	// Score Board
+	// =====================
 	.score-board {
 		width: 170px;
 		padding: 8px 10px;
 		margin: 20px 8px 20px;
+	}
+
+
+	// =====================
+	// Controls
+	// =====================
+	.controls-container {
+		padding: 10px 30px;
+
+		.control-button {
+			width: 60px;
+			height: 50px;
+			padding: 10px 10px;
+			margin: 0px 30px;
+			border-color: rgba(0, 0, 0, .1);
+
+			& svg {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+
+		.up-arrow {
+			transform: rotate(0deg);
+		}
 	}
 }
