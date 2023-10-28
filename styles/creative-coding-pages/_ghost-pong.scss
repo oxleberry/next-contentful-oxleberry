@@ -1,40 +1,54 @@
 @use '../utilities/mixins' as *;
-// @use '../utilities/colors';
+@use '../utilities/colors';
 @use '../utilities/fonts';
 
 
 .ghost-pong-page {
+	/* Variables */
+	--button-lt-color: #bcbcbc;
+	--button-dk-color: #727272;
+	--button-hover-color: #656464;
+	--button-pause-lt-color: #e8734f;
+	--button-pause-dk-color: #cc3102;
+	--button-pause-hover-color: #b62c02;
+
 	text-align: center;
 
 	h1 {
 		font-family: fonts.$alt-title-for-g;
 	}
 
-	.scoreboard,
-	.settings-button {
-		position: relative;
+	.scoreboard {
 		display: inline-block;
 		width: 180px;
 		padding: 6px 10px;
-		background: grey; /* fallback */
-		background-image: linear-gradient(#bcbcbc, #727272);
 		border-radius: 3px;
-		box-shadow: 0px 1px 5px -1px #333;
+		border: 1px solid colors.$text;
+		box-shadow: 0px 1px 2px -1px colors.$text;
 		margin: 0 18px 20px;
 
 		p {
-			color: #fff;
 			text-transform: uppercase;
 			text-decoration: none;
 			font-size: 16px;
 			font-weight: bold;
-			text-shadow: 2px 2px #606060;
 			margin: 4px;
 		}
 	}
 
+	.settings-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 20px;
+	}
+
 	.settings-button {
 		width: 180px;
+		background-color: var(--button-dk-color); /* fallback */
+		background-image: linear-gradient(var(--button-lt-color), var(--button-dk-color));
+		border-radius: 3px;
+		box-shadow: 0px 1px 5px -1px #333;
 		padding: 8px 10px;
 		color: #fff;
 		text-transform: uppercase;
@@ -42,12 +56,21 @@
 		font-size: 16px;
 		font-weight: bold;
 		border-style: none;
-		margin-top: 20px;
-		margin-bottom: 7px;
+		margin: 7px;
+
+		&:hover:enabled {
+			background-color: var(--button-hover-color); /* fallback */
+			background: linear-gradient(var(--button-lt-color), var(--button-hover-color));
+		}
 	}
 
 	.is-paused {
-		background: #cc3102; /* fallback */
-		background: linear-gradient(#e8734f, #cc3102);		
+		background-color: var(--button-pause-dk-color); /* fallback */
+		background: linear-gradient(var(--button-pause-lt-color), var(--button-pause-dk-color));
+
+		&:hover:enabled {
+			background-color: var(--button-pause-hover-color); /* fallback */
+			background: linear-gradient(var(--button-pause-lt-color), var(--button-pause-hover-color));
+		}
 	}
 }
