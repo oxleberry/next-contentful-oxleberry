@@ -21,12 +21,42 @@ async function playAudio(audioElem) {
 }
 
 
-// Scoreboard Component =================
+// Other Components =================
 const Scoreboard = (props) => {
 	return (
 		<div className={`glass-button score-board ${props.id}`} id={props.id}>
 			<p>{props.text}: {props.points} pts</p>
 		</div>
+	);
+}
+
+const Controls = (props) => {
+	return (
+		<div className="controls-container">
+			<ControlButton arrow="up" />
+			<ControlButton arrow="left" />
+			<ControlButton arrow="right" />
+			<ControlButton arrow="down" />
+		</div>
+	);
+}
+
+const ControlButton = (props) => {
+	return (
+		<button
+			className={`glass-button control-button ${props.arrow}-arrow`}
+			id={props.arrow}
+			onClick={props.onControlsClick}>
+			<svg width="50" height="50" viewBox="-50 -20 300 150">
+				<polygon className="triangle"
+					fill="#fff"
+					stroke="#fff"
+					strokeWidth="40"
+					strokeLinejoin="round"
+					points="100,0 0,100 200,100"
+				/>
+			</svg>
+		</button>
 	);
 }
 
@@ -284,19 +314,7 @@ class SnakeGame extends React.Component {
 					{/* SNAKE GAME */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed}/>
 
-					<div className="controls-container">
-						<button className="glass-button control-button control-up">
-							<svg className="up-arrow" width="45" height="45" viewBox="-50 -10 300 100">
-								<polygon className="triangle"
-									fill="#fff"
-									stroke="#fff"
-									strokeWidth="40"
-									strokeLinejoin="round"
-									points="100,0 0,100 200,100"
-								/>
-							</svg>
-						</button>
-					</div>
+					<Controls />
 				</main>
 			</>
 		);
