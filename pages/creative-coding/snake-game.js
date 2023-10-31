@@ -33,10 +33,10 @@ const Scoreboard = (props) => {
 const Controls = (props) => {
 	return (
 		<div className="controls-container">
-			<ControlButton arrow="up" />
-			<ControlButton arrow="left" />
-			<ControlButton arrow="right" />
-			<ControlButton arrow="down" />
+			<ControlButton arrow="up" onControlsClick={props.onControlsClick} />
+			<ControlButton arrow="left" onControlsClick={props.onControlsClick} />
+			<ControlButton arrow="right" onControlsClick={props.onControlsClick} />
+			<ControlButton arrow="down" onControlsClick={props.onControlsClick} />
 		</div>
 	);
 }
@@ -314,7 +314,7 @@ class SnakeGame extends React.Component {
 					{/* SNAKE GAME */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed}/>
 
-					<Controls />
+					<Controls onControlsClick={this.updateDirection}/>
 				</main>
 			</>
 		);
