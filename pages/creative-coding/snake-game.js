@@ -60,6 +60,30 @@ const ControlButton = (props) => {
 	);
 }
 
+const KeyboardGuide = (props) => {
+	return (
+		<div className="keyboard-guide">
+			<p className="label">{props.label} <br />Keyboard&nbsp;Keys:</p>
+			<div className="row">
+				<span className="arrow">&#8679;</span>
+			</div>
+			<div className="row">
+				<button tabIndex="-1">{props.upKey}</button>
+			</div>
+			<div className="row">
+				<span className="arrow">&#8678;&nbsp;</span>
+				<button tabIndex="-1">{props.leftKey}</button>
+				<button tabIndex="-1">{props.downKey}</button>
+				<button tabIndex="-1">{props.rightKey}</button>
+				<span className="arrow">&nbsp;&#8680;</span>
+			</div>
+			<div className="row">
+				<span className="arrow">&#8681;</span>
+			</div>
+		</div>
+	);
+}
+
 
 // Snake Game Component =================
 class SnakeGame extends React.Component {
@@ -307,14 +331,18 @@ class SnakeGame extends React.Component {
 				</Head>
 				<main className="full-backboard snake-game-page">
 					<Header headline="Snake Game" isSubPage={true}></Header>
-					<p>Eat the red apple, but don&apos;t hit the sides. <br />Use keyboard arrows to move the snake.</p>
+					<p>Eat the red apple, but don&apos;t hit the sides.</p>
 					<Scoreboard id="score-board" text="Score" points={this.state.score}/>
 					<Scoreboard id="hi-Score" text="High" points={this.state.highScore}/>
 
 					{/* SNAKE GAME */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed}/>
 
-					<Controls onControlsClick={this.updateDirection}/>
+					<div className="controls-section">
+						<KeyboardGuide label="Left Handed" upKey="W" downKey="S" leftKey="A" rightKey="D" />
+						<Controls onControlsClick={this.updateDirection}/>
+						<KeyboardGuide label="Right Handed" upKey="I" downKey="K" leftKey="J" rightKey="L" />
+					</div>
 				</main>
 			</>
 		);
