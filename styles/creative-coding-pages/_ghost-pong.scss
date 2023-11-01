@@ -76,6 +76,10 @@
 			border-top-right-radius: 12px;
 			border-top-left-radius: 12px;
 			padding-bottom: 0;
+
+			&.is-pressed {
+				transform: translate(1px, 1px);
+			}
 		}
 
 		.control-down {
@@ -84,6 +88,10 @@
 			border-bottom-left-radius: 12px;
 			border-bottom-right-radius: 12px;
 			padding-top: 0;
+			
+			&.is-pressed {
+				transform: translate(1px, -1px);
+			}
 		}
 
 		.arrow {
