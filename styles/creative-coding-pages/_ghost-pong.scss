@@ -43,10 +43,18 @@
 	// ===========================
 	// Controls
 	// ===========================
-	.game-pad {
+	.game-pad-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		margin-top: 20px;
-		display: inline-block;
-		width: 60px;
+	}
+
+	.game-pad {
+		// display: inline-block;
+		// width: 60px;
+		display: flex;
+		flex-direction: column;
 
 		&.left-player-game-pad {
 			margin-right: 80px;
@@ -88,7 +96,7 @@
 			border-bottom-left-radius: 12px;
 			border-bottom-right-radius: 12px;
 			padding-top: 0;
-			
+
 			&.is-pressed {
 				transform: translate(1px, -1px);
 			}
@@ -108,6 +116,47 @@
 		.control-down:hover, .control-down:active {
 			background-color: #abafd8; /* fallback */
 			background: linear-gradient(#7a7ca0, #abafd8);
+		}
+	}
+
+
+	// ===========================
+	// Keyboard Guide
+	// ===========================
+	.key-guide-container {
+		display: grid;
+		gap: 4px;
+		margin: 15px;
+
+		.title {
+			display: flex;
+			align-items: center;
+		}
+
+		&.left-player-guide {
+			grid-template-columns: 118px 34px;
+
+			.title {
+				grid-row: span 2;
+			}
+		}
+
+		&.right-player-guide {
+			grid-template-columns: 34px 118px;
+
+			.title {
+				grid-column: 2;
+				grid-row: 1 / span 2;
+			}
+		}
+
+		.key-guide {
+			background-color: #e8e8e8;
+			color: #8e8c8c;
+			font-size: 16px;
+			font-weight: bold;
+			border-radius: 3px;
+			padding: 11px 8px;
 		}
 	}
 

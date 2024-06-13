@@ -37,8 +37,8 @@ class GameBoard {
 
 // GHOST PUCK =====================
 class Ghost {
-	constructor (image, x, y) {
-		this.image = image;
+	constructor (x, y) {
+		this.image = null
 		this.size = 50;
 		this.x = x;
 		this.y = y;
@@ -92,14 +92,14 @@ class FloatingGhost extends React.Component {
 	// Game Play functions =================
 	// check and update if the ghost puck hits any sides of the gameboard
 	checkEdges (ghost, gameBoard) {
-		const topEdge = ghost.y < 0 + ghost.size/2 + gameBoard.stroke;
-		const bottomEdge = ghost.y > gameBoard.height - ghost.size/2 - gameBoard.stroke;
-		const leftEdge = ghost.x < 0 + ghost.size/2 + gameBoard.stroke;
-		const rightEdge = ghost.x > gameBoard.width - ghost.size/2 - gameBoard.stroke;
+		const topEdge = ghost.y <= 0 + ghost.size/2 + gameBoard.stroke;
+		const bottomEdge = ghost.y >= gameBoard.height - ghost.size/2 - gameBoard.stroke;
+		const leftEdge = ghost.x <= 0 + ghost.size/2 + gameBoard.stroke;
+		const rightEdge = ghost.x >= gameBoard.width - ghost.size/2 - gameBoard.stroke;
 		const movingUp = ghost.speedY < 0;
-		const movingDown = ghost.speedY > 0;
+		const movingDown = ghost.speedY >= 0;
 		const movingLeft = ghost.speedX < 0;
-		const movingRight = ghost.speedX > 0;
+		const movingRight = ghost.speedX >= 0;
 		if (topEdge && movingLeft) {
 			ghost.changeVerticalDirection();
 			ghost.updateGhostImage(this.ghostLeftDown);
@@ -145,6 +145,14 @@ class FloatingGhost extends React.Component {
 		p5.rectMode(p5.CENTER);
 		p5.imageMode(p5.CENTER);
 		// Ghost Images
+		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_LU.png", img => {
+			this.ghostLeftUp = img;
+			p5.redraw();
+		});
+		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_LD.png", img => {
+			this.ghostLeftDown = img;
+			p5.redraw();
+		});		
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_RU.png", img => {
 			this.ghostRightUp = img;
 			p5.redraw();
@@ -154,17 +162,8 @@ class FloatingGhost extends React.Component {
 			p5.redraw();
 			this.ghost.image = this.ghostRightDown; // starting ghost image
 		});
-		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_LU.png", img => {
-			this.ghostLeftUp = img;
-			p5.redraw();
-		});
-		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost_LD.png", img => {
-			this.ghostLeftDown = img;
-			p5.redraw();
-		});
-		// Create Ghost = image, x, y
+		// Create Ghost = x, y
 		this.ghost = new Ghost(
-			this.ghostRightUp,
 			this.gameBoard.width / 2,
 			this.gameBoard.height / 2
 		);
