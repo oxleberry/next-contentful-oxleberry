@@ -4,7 +4,13 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
 	// States =================
+	const [colorInput, setColorInput] = useState('');
 	const [textInput, setTextInput] = useState('');
+
+	function colorInputHandler(event) {
+		let value = event.target.value;
+		setColorInput(value);
+	}
 
 	function textInputHandler(event) {
 		let value = event.target.value;
@@ -21,7 +27,7 @@ export default function ShareCard() {
 				<Header headline="Share Card" isSubPage={true}></Header>
 				<main>
 
-					<section className="share-content-container">
+					<section className="share-content-container" style={{background: `${colorInput}`}}>
 						<h2 className="hidden">Share Content</h2>
 						<div id="design-target">
 							{/* <img id="design-display" src="" /> */}
@@ -33,7 +39,15 @@ export default function ShareCard() {
 					<section className="options-container">
 						<h2 className="hidden">Options</h2>
 						<div className="option option-color">
-							<label className="option-label">Choose a color:</label>
+							<label htmlFor="custom-color" className="option-label">Pick a color:</label>
+							<input
+								id="custom-color"
+								className="custom-color"
+								name="custom-color"
+								type="color"
+								value={colorInput}
+								onChange={colorInputHandler}
+							/>
 						</div>
 						<div className="option option-custom-image">
 							<label className="option-label">Upload in image:</label>
