@@ -20,6 +20,7 @@
 	section {
 		border: 2px solid #ccc;
 		height: 67vh;
+		// background-color: #f0f2f5;
 	}
 
 	.hidden {
@@ -61,7 +62,8 @@
 		display: grid;
 		// grid-template-rows: 1fr 150px 1fr 1fr;
 		// grid-template-rows: repeat(3, 1fr);
-		grid-template-rows: 1fr 1.5fr 2fr;
+		// grid-template-rows: 1fr 1.5fr 2fr;
+		grid-template-rows: 1fr 1.5fr 2fr 1fr;
 
 		.option {
 			border-bottom: 4px solid var(--options-color);
@@ -126,6 +128,33 @@
 
 			.button-black {
 				background-color: black;
+			}
+		}
+
+		.option-share {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.share-card-button {
+			font-size: 18px;
+			text-transform: uppercase;
+			font-weight: 800;
+			color: var(--options-color);
+			padding: 10px 16px;
+
+			border-radius: 3px;
+			border: 2px solid #a8b6c5;
+			background-image: linear-gradient(#fff, #ebf0f5);
+
+			svg {
+				width: 22px;
+				margin-inline-start: 10px;
+			}
+
+			path {
+				fill: var(--options-color)
 			}
 		}
 	}
