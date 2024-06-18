@@ -4,8 +4,9 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
 	// States =================
-	const [colorInput, setColorInput] = useState('');
-	const [textInput, setTextInput] = useState('');
+	const [colorInput, setColorInput] = useState('black');
+	const [textInput, setTextInput] = useState('Welcome!');
+	const [galleryImage, setGalleryImage] = useState('');
 
 	function colorInputHandler(event) {
 		let value = event.target.value;
@@ -15,6 +16,11 @@ export default function ShareCard() {
 	function textInputHandler(event) {
 		let value = event.target.value;
 		setTextInput(value);
+	}
+
+	function galleryClickHandler(event) {
+		let imagePath = event.target.src;
+		setGalleryImage(imagePath);
 	}
 
 	return (
@@ -29,15 +35,14 @@ export default function ShareCard() {
 
 					<section className="share-content-container" style={{background: `${colorInput}`}}>
 						<h2 className="hidden">Share Content</h2>
-						<div id="design-target">
-							{/* <img id="design-display" src="" /> */}
-							<p id="text-display" className="custom-text-output">{textInput}</p>
-						</div>
+							<p className="text-display">{textInput}</p>
+							<div className="image-display" style={{backgroundImage: `url(${galleryImage})`}} />
 					</section>
 
 					{/* Option Section */}
 					<section className="options-container">
 						<h2 className="hidden">Options</h2>
+						{/* Option Pick a Color */}
 						<div className="option option-color">
 							<label htmlFor="custom-color" className="option-label">Pick a color:</label>
 							<input
@@ -49,23 +54,50 @@ export default function ShareCard() {
 								onChange={colorInputHandler}
 							/>
 						</div>
-						<div className="option option-custom-image">
+						{/* Option Upload an Image */}
+						{/* <div className="option option-custom-image">
 							<label className="option-label">Upload in image:</label>
-						</div>
+						</div> */}
+						{/* Option Custom Text */}
 						<div className="option option-text">
-							<label htmlFor="custom-text" className="option-label">Create text:</label>
+							<label htmlFor="custom-text" className="option-label">Customize text:</label>
 							<input
 								id="custom-text"
 								className="custom-text"
 								name="custom-text"
 								type="text"
+								maxlength="70"
 								placeholder="Add Your Text Here"
 								value={textInput}
 								onChange={textInputHandler}
 							/>
 						</div>
+						{/* Option Galley Image */}
 						<div className="option option-image">
-							<label className="option-label">Choose an image from the gallery:</label>
+							<label className="option-label">Choose a gallery image:</label>
+							<div className="gallery-container">
+								<button 
+									type="button" 
+									className="gallery-image-button button-black"
+									onClick={galleryClickHandler}
+								>
+									<img className="gallery-image" src="/creative-coding-pages/share-card/images/geo-flower.svg" />
+								</button>
+								<button 
+									type="button" 
+									className="gallery-image-button button-black"
+									onClick={galleryClickHandler}
+								>
+									<img className="gallery-image" src="/creative-coding-pages/share-card/images/sugar-skull.svg" />
+								</button>
+								<button 
+									type="button" 
+									className="gallery-image-button button-black"
+									onClick={galleryClickHandler}
+								>
+									<img className="gallery-image" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
+								</button>
+							</div>
 						</div>
 					</section>
 
