@@ -7,6 +7,7 @@ export default function ShareCard() {
 	const [colorInput, setColorInput] = useState('black');
 	const [textInput, setTextInput] = useState('Welcome!');
 	const [galleryImage, setGalleryImage] = useState('');
+	const [isCustomText, setIsCustomText] = useState(false);
 
 	function colorInputHandler(event) {
 		let value = event.target.value;
@@ -16,6 +17,13 @@ export default function ShareCard() {
 	function textInputHandler(event) {
 		let value = event.target.value;
 		setTextInput(value);
+	}
+
+	function textFocusHandler(event) {
+		if (!isCustomText) {
+			setTextInput('');
+			setIsCustomText(true);
+		}
 	}
 
 	function galleryClickHandler(event) {
@@ -70,6 +78,7 @@ export default function ShareCard() {
 								placeholder="Add Your Text Here"
 								value={textInput}
 								onChange={textInputHandler}
+								onFocus={textFocusHandler}
 							/>
 						</div>
 						{/* Option Galley Image */}
