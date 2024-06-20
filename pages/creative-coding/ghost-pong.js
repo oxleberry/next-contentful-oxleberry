@@ -11,21 +11,27 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 })
 
 
-// export default function GhostPong() {
 class GhostPong extends React.Component {
 	constructor() {
 		super();
 
 		// Variables =================
-		this.canvasSizeWidth = 800;
-		this.canvasSizeHeight = 480;
-		this.gameBoardStrokeSize = 6;
-		this.currentGhost;
-		this.ghostSize = 50;
-		this.ghostXPos = this.canvasSizeWidth / 2;
-		this.ghostYPos = this.canvasSizeHeight / 2;
-		this.xSpeed = 2;
-		this.ySpeed = 2;
+		this.gameBoard = {
+			width: 800,
+			height: 480,
+			stroke: 6
+		}
+		this.ghost = {
+			image: null,
+			size: 50,
+			x: this.gameBoard.width / 2,
+			y: this.gameBoard.height / 2
+		}
+		this.speed = 2;
+		this.direction = {
+			x: this.speed,
+			y: this.speed
+		}
 	}
 
 	drawGameBoardBg(p5) {
@@ -38,60 +44,60 @@ class GhostPong extends React.Component {
 	drawGameBoardBorder(p5) {
 		p5.noFill (0);
 		p5.stroke (90); // grey
-		p5.strokeWeight (this.gameBoardStrokeSize * 2);
-		p5.rect(p5.width/2, p5.height/2, this.canvasSizeWidth, this.canvasSizeHeight);
+		p5.strokeWeight (this.gameBoard.stroke * 2);
+		p5.rect(p5.width/2, p5.height/2, this.gameBoard.width, this.gameBoard.height);
 	}
 
 	drawGhost(p5) {
-		if (this.currentGhost) {
-			p5.image(this.currentGhost, this.ghostXPos, this.ghostYPos, this.ghostSize, this.ghostSize);
+		if (this.ghost.image) {
+			p5.image(this.ghost.image, this.ghost.x, this.ghost.y, this.ghost.size, this.ghost.size);
 		}
 	}
 
 	moveGhost() {
-		this.ghostXPos = this.ghostXPos + this.xSpeed;
-		this.ghostYPos = this.ghostYPos + this.ySpeed;
+		this.ghost.x = this.ghost.x + this.direction.x;
+		this.ghost.y = this.ghost.y + this.direction.y;
 	}
 
 	checkEdges (p5) {
-		if (this.ghostYPos > p5.height - this.ghostSize/2 - this.gameBoardStrokeSize // at the bottom edge
-			&& this.xSpeed === 2){ // ghost moving from left to right
-			this.ySpeed *= -1;
-			this.currentGhost = this.ghostRightUp;
-		} else if (this.ghostYPos > p5.height - this.ghostSize/2 - this.gameBoardStrokeSize // at the bottom edge
-			&& this.xSpeed === -2){ // ghost moving from right to left
-			this.ySpeed *= -1;
-			this.currentGhost = this.ghostLeftUp;
-		} else if (this.ghostYPos < 0 + this.ghostSize/2 + this.gameBoardStrokeSize // at the top edge
-			&& this.xSpeed === 2){ // ghost moving from left to right
-			this.ySpeed *= -1;
-			this.currentGhost = this.ghostRightDown;
-		} else if (this.ghostYPos < 0 + this.ghostSize/2 + this.gameBoardStrokeSize// at the top edge
-			&& this.xSpeed === -2){ // ghost moving from right to left
-			this.ySpeed *= -1;
-			this.currentGhost = this.ghostLeftDown;
-		} else if (this.ghostXPos > p5.width - this.ghostSize/2 - this.gameBoardStrokeSize // at the right edge
-			&& this.ySpeed === 2){ // ghost moving from up to down
-			this.xSpeed = this.xSpeed * -1;
-			this.currentGhost = this.ghostLeftDown;
-		} else if (this.ghostXPos > p5.width - this.ghostSize/2 - this.gameBoardStrokeSize // at the right edge
-			&& this.ySpeed === -2){ // ghost moving from down to up
-			this.xSpeed = this.xSpeed * -1;
-			this.currentGhost = this.ghostLeftUp;
-		} else if (this.ghostXPos < 0 + this.ghostSize/2 + this.gameBoardStrokeSize // at the left edge
-			&& this.ySpeed === 2){ // ghost moving from up to down
-			this.xSpeed = this.xSpeed * -1;
-			this.currentGhost = this.ghostRightDown;
-		} else if (this.ghostXPos < 0 + this.ghostSize/2 + this.gameBoardStrokeSize // at the left edge
-			&& this.ySpeed === -2){ // ghost moving from down to up
-			this.xSpeed = this.xSpeed * -1;
-			this.currentGhost = this.ghostRightUp;
+		if (this.ghost.y > p5.height - this.ghost.size/2 - this.gameBoard.stroke // at the bottom edge
+			&& this.direction.x === this.speed){ // ghost moving from left to right
+			this.direction.y *= -1;
+			this.ghost.image = this.ghostRightUp;
+		} else if (this.ghost.y > p5.height - this.ghost.size/2 - this.gameBoard.stroke // at the bottom edge
+			&& this.direction.x === (-1 * this.speed)){ // ghost moving from right to left
+			this.direction.y *= -1;
+			this.ghost.image = this.ghostLeftUp;
+		} else if (this.ghost.y < 0 + this.ghost.size/2 + this.gameBoard.stroke // at the top edge
+			&& this.direction.x === this.speed){ // ghost moving from left to right
+			this.direction.y *= -1;
+			this.ghost.image = this.ghostRightDown;
+		} else if (this.ghost.y < 0 + this.ghost.size/2 + this.gameBoard.stroke// at the top edge
+			&& this.direction.x === (-1 * this.speed)){ // ghost moving from right to left
+			this.direction.y *= -1;
+			this.ghost.image = this.ghostLeftDown;
+		} else if (this.ghost.x > p5.width - this.ghost.size/2 - this.gameBoard.stroke // at the right edge
+			&& this.direction.y === this.speed){ // ghost moving from up to down
+			this.direction.x = this.direction.x * -1;
+			this.ghost.image = this.ghostLeftDown;
+		} else if (this.ghost.x > p5.width - this.ghost.size/2 - this.gameBoard.stroke // at the right edge
+			&& this.direction.y === (-1 * this.speed)){ // ghost moving from down to up
+			this.direction.x = this.direction.x * -1;
+			this.ghost.image = this.ghostLeftUp;
+		} else if (this.ghost.x < 0 + this.ghost.size/2 + this.gameBoard.stroke // at the left edge
+			&& this.direction.y === this.speed){ // ghost moving from up to down
+			this.direction.x = this.direction.x * -1;
+			this.ghost.image = this.ghostRightDown;
+		} else if (this.ghost.x < 0 + this.ghost.size/2 + this.gameBoard.stroke // at the left edge
+			&& this.direction.y === (-1 * this.speed)){ // ghost moving from down to up
+			this.direction.x = this.direction.x * -1;
+			this.ghost.image = this.ghostRightUp;
 		}
 	}
 
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
-		p5.createCanvas(this.canvasSizeWidth, this.canvasSizeHeight).parent(canvasParentRef);
+		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
 		p5.frameRate(30);
 		p5.background(0); // black
 		p5.angleMode(p5.DEGREES);
@@ -100,7 +106,7 @@ class GhostPong extends React.Component {
 		// Images
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-right-up.png", img => {
 			this.ghostRightUp = img;
-			this.currentGhost = this.ghostRightUp; // starting ghost image
+			this.ghost.image = this.ghostRightUp; // starting ghost image
 		});
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-right-down.png", img => {
 			this.ghostRightDown = img;
