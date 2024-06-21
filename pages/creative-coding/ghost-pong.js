@@ -59,41 +59,56 @@ class GhostPong extends React.Component {
 		this.ghost.y = this.ghost.y + this.direction.y;
 	}
 
+	changeVerticalDirection() {
+		this.direction.y *= -1;
+	}
+
+	changeHorizontalDirection() {
+		this.direction.x *= -1;
+	}
+
+	updateGhostImage(img) {
+		this.ghost.image = img;
+	}
+
+	// check and update if the ghost puck hits any sides of the gameboard
 	checkEdges (p5) {
-		if (this.ghost.y > p5.height - this.ghost.size/2 - this.gameBoard.stroke // at the bottom edge
-			&& this.direction.x === this.speed){ // ghost moving from left to right
-			this.direction.y *= -1;
-			this.ghost.image = this.ghostRightUp;
-		} else if (this.ghost.y > p5.height - this.ghost.size/2 - this.gameBoard.stroke // at the bottom edge
-			&& this.direction.x === (-1 * this.speed)){ // ghost moving from right to left
-			this.direction.y *= -1;
-			this.ghost.image = this.ghostLeftUp;
-		} else if (this.ghost.y < 0 + this.ghost.size/2 + this.gameBoard.stroke // at the top edge
-			&& this.direction.x === this.speed){ // ghost moving from left to right
-			this.direction.y *= -1;
-			this.ghost.image = this.ghostRightDown;
-		} else if (this.ghost.y < 0 + this.ghost.size/2 + this.gameBoard.stroke// at the top edge
-			&& this.direction.x === (-1 * this.speed)){ // ghost moving from right to left
-			this.direction.y *= -1;
-			this.ghost.image = this.ghostLeftDown;
-		} else if (this.ghost.x > p5.width - this.ghost.size/2 - this.gameBoard.stroke // at the right edge
-			&& this.direction.y === this.speed){ // ghost moving from up to down
-			this.direction.x = this.direction.x * -1;
-			this.ghost.image = this.ghostLeftDown;
-		} else if (this.ghost.x > p5.width - this.ghost.size/2 - this.gameBoard.stroke // at the right edge
-			&& this.direction.y === (-1 * this.speed)){ // ghost moving from down to up
-			this.direction.x = this.direction.x * -1;
-			this.ghost.image = this.ghostLeftUp;
-		} else if (this.ghost.x < 0 + this.ghost.size/2 + this.gameBoard.stroke // at the left edge
-			&& this.direction.y === this.speed){ // ghost moving from up to down
-			this.direction.x = this.direction.x * -1;
-			this.ghost.image = this.ghostRightDown;
-		} else if (this.ghost.x < 0 + this.ghost.size/2 + this.gameBoard.stroke // at the left edge
-			&& this.direction.y === (-1 * this.speed)){ // ghost moving from down to up
-			this.direction.x = this.direction.x * -1;
-			this.ghost.image = this.ghostRightUp;
+		const bottomEdge = this.ghost.y > p5.height - this.ghost.size/2 - this.gameBoard.stroke;
+		const topEdge = this.ghost.y < 0 + this.ghost.size/2 + this.gameBoard.stroke;
+		const rightEdge = this.ghost.x > p5.width - this.ghost.size/2 - this.gameBoard.stroke;
+		const leftEdge = this.ghost.x < 0 + this.ghost.size/2 + this.gameBoard.stroke;
+		const movingLeftToRight = this.direction.x === this.speed;
+		const movingRightToLeft = this.direction.x === (-1 * this.speed);
+		const movingUpToDowm = this.direction.y === this.speed;
+		const movingDownToUp = this.direction.y === (-1 * this.speed);
+
+		if (bottomEdge && movingLeftToRight){
+			this.changeVerticalDirection();
+			this.updateGhostImage(this.ghostRightUp);
+		} else if (bottomEdge && movingRightToLeft){
+			this.changeVerticalDirection();
+			this.updateGhostImage(this.ghostLeftUp);
+		} else if (topEdge && movingLeftToRight){
+			this.changeVerticalDirection();
+			this.updateGhostImage(this.ghostRightDown);
+		} else if (topEdge && movingRightToLeft){
+			this.changeVerticalDirection();
+			this.updateGhostImage(this.ghostLeftDown);
+		} else if (rightEdge && movingUpToDowm){
+			this.changeHorizontalDirection();
+			this.updateGhostImage(this.ghostLeftDown);
+		} else if (rightEdge && movingDownToUp){
+			this.changeHorizontalDirection();
+			this.updateGhostImage(this.ghostLeftUp);
+		} else if (leftEdge && movingUpToDowm){
+			this.changeHorizontalDirection();
+			this.updateGhostImage(this.ghostRightDown);
+		} else if (leftEdge && movingDownToUp){
+			this.changeHorizontalDirection();
+			this.updateGhostImage(this.ghostRightUp);
 		}
 	}
+
 
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
@@ -126,6 +141,7 @@ class GhostPong extends React.Component {
 		this.drawGhost(p5);
 		this.drawGameBoardBorder(p5);
 	}
+
 
 	render() {
 		return (
