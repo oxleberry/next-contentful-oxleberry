@@ -32,6 +32,13 @@ class GhostPong extends React.Component {
 			x: this.speed,
 			y: this.speed
 		}
+		this.paddle = {
+			x: 30,
+			y: this.gameBoard.height / 2,
+			width: 18,
+			height: 100,
+			stripe: 4,
+		}
 	}
 
 	drawGameBoardBg(p5) {
@@ -52,6 +59,28 @@ class GhostPong extends React.Component {
 		if (this.ghost.image) {
 			p5.image(this.ghost.image, this.ghost.x, this.ghost.y, this.ghost.size, this.ghost.size);
 		}
+	}
+
+	drawPaddle(p5, paddleSide) {
+		let xPosPaddle;
+		let xPosStripe;
+		switch (paddleSide) {
+			case 'left':
+				xPosPaddle = this.paddle.x;
+				xPosStripe = this.paddle.x + this.paddle.width / 2;
+				break;
+			case 'right':
+				xPosPaddle = this.gameBoard.width - this.paddle.x;
+				xPosStripe = this.gameBoard.width - this.paddle.x - this.paddle.width / 2;
+				break;
+		}
+		// paddle
+		p5.noStroke();
+		p5.fill (255);
+		p5.rect(xPosPaddle, this.paddle.y, this.paddle.width, this.paddle.height);
+		// paddle stripe
+		p5.fill(204, 49, 2); // red
+		p5.rect(xPosStripe, this.paddle.y, this.paddle.stripe, this.paddle.height);
 	}
 
 	moveGhost() {
@@ -132,10 +161,14 @@ class GhostPong extends React.Component {
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-left-down.png", img => {
 			this.ghostLeftDown = img;
 		});
+		this.drawPaddle(p5, 'left');
+		this.drawPaddle(p5, 'right');
 	}
 
 	draw = p5 => {
 		this.drawGameBoardBg(p5);
+		this.drawPaddle(p5, 'left');
+		this.drawPaddle(p5, 'right');
 		this.moveGhost();
 		this.checkEdges(p5);
 		this.drawGhost(p5);
