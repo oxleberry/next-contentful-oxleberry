@@ -4,13 +4,54 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
 	// States =================
-	const [colorInput, setColorInput] = useState('black');
+	const [colorInput, setColorInput] = useState('#000000');
 	const [textInput, setTextInput] = useState('Welcome!');
 	const [galleryImage, setGalleryImage] = useState('');
 	const [isCustomText, setIsCustomText] = useState(false);
 
 	const shareFileRef = useRef(null);
 	const shareImageRef = useRef(null);
+
+	let svgTextColor = "#fff";
+
+	// svg text template
+	const svgString = `
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			class="share-svg"
+			x="0px"
+			y="0px"
+			viewBox="0 0 436 210"
+		>
+
+			<style>
+				.share-container {
+					transform: scale(1);
+				}
+
+				.share-svg-rect {
+					fill: transparent;
+				}
+
+				.share-svg-text {
+					fill: ${svgTextColor};
+					font-size: 42px;
+					font-family: sans-serif;
+				}
+			</style>
+
+			<g class="share-container">
+				<rect class="share-svg-rect" width="436" height="604"></rect>
+				<text
+				class="share-svg-text"
+				x="50%"
+				y="90%"
+				dominant-baseline="middle"
+				text-anchor="middle"
+				>${textInput}</text>
+			</g>
+		</svg>
+	`
 
 	function colorInputHandler(event) {
 		let value = event.target.value;
@@ -40,15 +81,23 @@ export default function ShareCard() {
 		canvas.width = 436;
 		canvas.height = 604;
 		const context = canvas.getContext('2d');
-		context.fillStyle = 'black';
+		context.fillStyle = '#000000';
 		context.fillRect(0, 0, 436, 604);
-		shareFileRef.current.appendChild(canvas);
+		shareFileRef.current.prepend(canvas);
 		// return canvas;
 
 		// draw share image to canvas
 		// shareImageRef.current.crossOrigin = 'anonymous';
-		context.drawImage(shareImageRef.current, 75, 250, 300, 230);
+		context.drawImage(shareImageRef.current, 75, 235, 300, 230);
 
+		// draw svg text to canvas
+		let url = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgString);
+		let img = new Image();
+		img.addEventListener('load', event => {
+			context.drawImage(event.target, 0, 0);
+			URL.revokeObjectURL(url);
+		});
+		img.src = url;
 	}
 
 	return (
@@ -154,25 +203,6 @@ export default function ShareCard() {
 							className="gallery-image"
 							src="/creative-coding-pages/share-card/images/food-art-owls.png" /> */}
 					</section>
-
-					{/* <section>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="share-svg"
-							x="0px"
-							y="0px"
-							viewBox="0 0 436 604"
-						>
-							<rect width="436" height="604"></rect>
-							<text
-								className="share-svg-text"
-								x="50%"
-								y="33%"
-								dominant-baseline="middle"
-								text-anchor="middle"
-							>{textInput}</text>
-						</svg>
-					</section> */}
 
 				</main>
 			</div>
