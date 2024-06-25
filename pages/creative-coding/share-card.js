@@ -10,6 +10,7 @@ export default function ShareCard() {
 	const [isCustomText, setIsCustomText] = useState(false);
 
 	const shareFileRef = useRef(null);
+	const shareImageRef = useRef(null);
 
 	function colorInputHandler(event) {
 		let value = event.target.value;
@@ -39,13 +40,14 @@ export default function ShareCard() {
 		canvas.width = 436;
 		canvas.height = 604;
 		const context = canvas.getContext('2d');
-		context.fillStyle = 'lightblue';
+		context.fillStyle = 'black';
 		context.fillRect(0, 0, 436, 604);
 		shareFileRef.current.appendChild(canvas);
 		// return canvas;
 
-		// create share SVG
-
+		// draw share image to canvas
+		// shareImageRef.current.crossOrigin = 'anonymous';
+		context.drawImage(shareImageRef.current, 75, 250, 300, 230);
 
 	}
 
@@ -122,7 +124,7 @@ export default function ShareCard() {
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}
 								>
-									<img className="gallery-image" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
+									<img ref={shareImageRef} className="gallery-image" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
 								</button>
 							</div>
 						</div>
@@ -140,20 +142,20 @@ export default function ShareCard() {
 						</div>
 					</section>
 
-					{/* <section
+					<section
 						id="canvas-container"
 						className="canvas-container"
 						ref={shareFileRef}
 					>
-						<img className="gallery-image" src="/creative-coding-pages/share-card/images/rice-cracker-flower.png" />
-						<img className="gallery-image" src="/creative-coding-pages/share-card/images/flower-stamp.png" />
-						<img
+						{/* <img className="gallery-image" src="/creative-coding-pages/share-card/images/rice-cracker-flower.png" />
+						<img className="gallery-image" src="/creative-coding-pages/share-card/images/flower-stamp.png" /> */}
+						{/* <img
 							ref={shareFileRef}
 							className="gallery-image"
-							src="/creative-coding-pages/share-card/images/food-art-owls.png" />
-					</section> */}
+							src="/creative-coding-pages/share-card/images/food-art-owls.png" /> */}
+					</section>
 
-					<section>
+					{/* <section>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							className="share-svg"
@@ -170,7 +172,7 @@ export default function ShareCard() {
 								text-anchor="middle"
 							>{textInput}</text>
 						</svg>
-					</section>
+					</section> */}
 
 				</main>
 			</div>
