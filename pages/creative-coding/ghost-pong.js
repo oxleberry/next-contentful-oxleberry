@@ -13,16 +13,16 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 
 // PADDLE =====================
 class Paddle {
-	constructor(x, y, stripePosX) {
+	constructor(x, y, stripePosX, currentSpeedY) {
 		this.paddle = {
 			x: x,
 			y: y,
 			width: 18,
 			height: 100,
-			stripe: 4,
+			stripeWidth: 4,
 			stripePosX: stripePosX,
 			speed: 8,
-			currentSpeedY: 0
+			currentSpeedY: currentSpeedY
 		}
 	}
 
@@ -33,7 +33,15 @@ class Paddle {
 		p5.rect(this.paddle.x, this.paddle.y, this.paddle.width, this.paddle.height);
 		// paddle stripe
 		p5.fill(204, 49, 2); // red
-		p5.rect(this.paddle.stripePosX, this.paddle.y, this.paddle.stripe, this.paddle.height);
+		p5.rect(this.paddle.stripePosX, this.paddle.y, this.paddle.stripeWidth, this.paddle.height);
+	}
+
+	movePaddle(p5, speed) {
+		this.paddle.y += this.paddle.currentSpeedY;
+	}
+
+	updatePaddleDirection(speed) {
+		this.paddle.currentSpeedY = speed;
 	}
 }
 
@@ -61,7 +69,9 @@ class GhostPong extends React.Component {
 		}
 		this.paddle = {
 			x: 30, // distance paddle is from edge of game board
-			width: new Paddle().paddle.width // used for setting stripe placement
+			width: new Paddle().paddle.width, // used for setting stripe placement
+			speed: new Paddle().paddle.speed, // used for changing directions
+			startSpeed: 0
 		}
 	}
 
@@ -142,6 +152,25 @@ class GhostPong extends React.Component {
 	}
 
 
+	// Keyboard event listener =================
+	keyPressed = (p5, event) => {
+		if (p5.keyCode === 186) { // keycode = ;
+			this.right.updatePaddleDirection( - this.paddle.speed);
+		} else if (p5.keyCode === 190) { // keycode = .
+			this.right.updatePaddleDirection(this.paddle.speed);
+		} else if (p5.keyCode === 83) { // keycode = s
+			this.left.updatePaddleDirection( - this.paddle.speed);
+		} else if (p5.keyCode === 88) { // keycode = x
+			this.left.updatePaddleDirection(this.paddle.speed);
+		}
+	}
+
+	keyReleased = (p5, event) => {
+		this.left.updatePaddleDirection(0);
+		this.right.updatePaddleDirection(0);
+	}
+
+
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
 		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
@@ -168,19 +197,23 @@ class GhostPong extends React.Component {
 		this.left = new Paddle(
 			this.paddle.x,
 			this.gameBoard.height / 2, 
-			this.paddle.x + this.paddle.width / 2);
+			this.paddle.x + this.paddle.width / 2,
+			this.paddle.startSpeed);
 		this.right = new Paddle(
 			this.gameBoard.width - this.paddle.x,
 			this.gameBoard.height / 2,
-			this.gameBoard.width - this.paddle.x - this.paddle.width / 2);
+			this.gameBoard.width - this.paddle.x - this.paddle.width / 2,
+			this.paddle.startSpeed);
 	}
 
 	draw = p5 => {
 		this.drawGameBoardBg(p5);
 		this.left.drawPaddle(p5);
 		this.right.drawPaddle(p5);
+		this.left.movePaddle(p5, this.paddle.startSpeed);
+		this.right.movePaddle(p5, this.paddle.startSpeed);
 
-		this.moveGhost();
+		// this.moveGhost();
 		this.checkEdges(p5);
 		this.drawGhost(p5);
 		this.drawGameBoardBorder(p5);
