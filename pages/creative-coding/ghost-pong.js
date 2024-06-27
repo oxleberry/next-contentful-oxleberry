@@ -36,8 +36,12 @@ class Paddle {
 		p5.rect(this.paddle.stripePosX, this.paddle.y, this.paddle.stripeWidth, this.paddle.height);
 	}
 
-	movePaddle(p5, speed) {
+	movePaddle(p5, gameBoardHeight, gameBoardStroke) {
 		this.paddle.y += this.paddle.currentSpeedY;
+		let topBoundary = gameBoardStroke / 2 + this.paddle.height / 2;
+		let bottomBoundary = gameBoardHeight - gameBoardStroke / 2 - this.paddle.height / 2;
+		// constrain = target, top, bottom
+		this.paddle.y = p5.constrain (this.paddle.y, topBoundary, bottomBoundary);
 	}
 
 	updatePaddleDirection(speed) {
@@ -153,6 +157,7 @@ class GhostPong extends React.Component {
 
 
 	// Keyboard event listener =================
+	// move paddle up and down
 	keyPressed = (p5, event) => {
 		if (p5.keyCode === 186) { // keycode = ;
 			this.right.updatePaddleDirection( - this.paddle.speed);
@@ -165,6 +170,7 @@ class GhostPong extends React.Component {
 		}
 	}
 
+	// stop paddles from moving
 	keyReleased = (p5, event) => {
 		this.left.updatePaddleDirection(0);
 		this.right.updatePaddleDirection(0);
@@ -210,10 +216,10 @@ class GhostPong extends React.Component {
 		this.drawGameBoardBg(p5);
 		this.left.drawPaddle(p5);
 		this.right.drawPaddle(p5);
-		this.left.movePaddle(p5, this.paddle.startSpeed);
-		this.right.movePaddle(p5, this.paddle.startSpeed);
+		this.left.movePaddle(p5, this.gameBoard.height, this.gameBoard.stroke);
+		this.right.movePaddle(p5, this.gameBoard.height, this.gameBoard.stroke);
 
-		// this.moveGhost();
+		this.moveGhost();
 		this.checkEdges(p5);
 		this.drawGhost(p5);
 		this.drawGameBoardBorder(p5);
