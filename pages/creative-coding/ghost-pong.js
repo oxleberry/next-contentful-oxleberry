@@ -172,8 +172,11 @@ class GhostPong extends React.Component {
 
 	// stop paddles from moving
 	keyReleased = (p5, event) => {
-		this.left.updatePaddleDirection(0);
-		this.right.updatePaddleDirection(0);
+		if (p5.keyCode === 186 || p5.keyCode === 190) { // keycode = ; or .
+			this.right.updatePaddleDirection(0);
+		} else if  (p5.keyCode === 83 || p5.keyCode === 88) { // keycode = s or x
+			this.left.updatePaddleDirection(0);
+		}
 	}
 
 
