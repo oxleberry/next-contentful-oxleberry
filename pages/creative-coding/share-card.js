@@ -23,7 +23,7 @@ export default function ShareCard() {
 			xmlns:xlink="http://www.w3.org/1999/xlink"
 			x="0px"
 			y="0px"
-			viewBox="0 0 436 210"
+			viewBox="0 0 400 100"
 		>
 
 			<style>
@@ -47,11 +47,11 @@ export default function ShareCard() {
 			</style>
 
 			<g class="share-container">
-				<rect class="share-svg-rect" width="436" height="604"></rect>
+				<rect class="share-svg-rect" width="400" height="400"></rect>
 				<text
 				class="share-svg-text"
 				x="50%"
-				y="90%"
+				y="80%"
 				dominant-baseline="middle"
 				text-anchor="middle"
 				>${textInput}</text>
@@ -103,18 +103,18 @@ export default function ShareCard() {
 	function shareClickHandler() {
 		// create canvas
 		const canvas = document.createElement('canvas');
-		canvas.width = 436;
-		canvas.height = 604;
+		canvas.width = 400;
+		canvas.height = 400;
 		const context = canvas.getContext('2d');
 		context.fillStyle = colorInput;
-		context.fillRect(0, 0, 436, 604);
+		context.fillRect(0, 0, 400, 400);
 		shareFileRef.current.prepend(canvas);
 		// return canvas;
 
 		// drawImageToCanvas
 		if (galleryImage) {
-			let	scale = parseFloat(300 / galleryImageWidth).toFixed(2);
-			context.drawImage(galleryImage, 68, 235, galleryImageWidth * scale, galleryImageHeight * scale);
+			let	scale = parseFloat(250 / galleryImageWidth).toFixed(2);
+			context.drawImage(galleryImage, 75, 128, galleryImageWidth * scale, galleryImageHeight * scale);
 		}
 
 		// drawSVGToCanvas - shows up on browser, but not showing up on share card...?
@@ -137,7 +137,7 @@ export default function ShareCard() {
 		context.font = "42px Lato";
 		context.fillStyle = textColor;
 		context.textAlign = "center";
-		context.fillText(textInput, 218, 200);
+		context.fillText(textInput, 200, 90);
 
 		// pngToCanvas
 		const dataUrl = canvas.toDataURL();
@@ -176,10 +176,12 @@ export default function ShareCard() {
 				<Header headline="Share Card" isSubPage={true}></Header>
 				<main>
 
-					<section className="share-content-container" style={{background: `${colorInput}`}}>
-						<h2 className="hidden">Share Content</h2>
+					<section className="share-content-section">
+						<div className="share-content-container" style={{background: `${colorInput}`}}>
+							<h2 className="hidden">Share Content</h2>
 							<p className="text-display">{textInput}</p>
 							<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
+						</div>
 					</section>
 
 					{/* Option Section */}
@@ -248,8 +250,8 @@ export default function ShareCard() {
 							<button
 								type="button"
 								className="share-card-button"
-								onClick={shareTextClickHandler}
-								// onClick={shareClickHandler}
+								// onClick={shareTextClickHandler}
+								onClick={shareClickHandler}
 							>Share Card
 								<svg className="share-icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 42 42">
 									<path d="M 35.478516 5.9804688 A 2.0002 2.0002 0 0 0 34.085938 9.4140625 L 35.179688 10.507812 C 23.476587 10.680668 14 20.256715 14 32 A 2.0002 2.0002 0 1 0 18 32 C 18 22.427546 25.627423 14.702715 35.154297 14.517578 L 34.085938 15.585938 A 2.0002 2.0002 0 1 0 36.914062 18.414062 L 41.236328 14.091797 A 2.0002 2.0002 0 0 0 41.228516 10.900391 L 36.914062 6.5859375 A 2.0002 2.0002 0 0 0 35.478516 5.9804688 z M 12.5 6 C 8.9338464 6 6 8.9338464 6 12.5 L 6 35.5 C 6 39.066154 8.9338464 42 12.5 42 L 35.5 42 C 39.066154 42 42 39.066154 42 35.5 L 42 28 A 2.0002 2.0002 0 1 0 38 28 L 38 35.5 C 38 36.903846 36.903846 38 35.5 38 L 12.5 38 C 11.096154 38 10 36.903846 10 35.5 L 10 12.5 C 10 11.096154 11.096154 10 12.5 10 L 20 10 A 2.0002 2.0002 0 1 0 20 6 L 12.5 6 z"></path>
