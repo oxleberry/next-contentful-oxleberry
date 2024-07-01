@@ -13,10 +13,10 @@ export default function ShareCard() {
 	const [galleryImageWidth, setGalleryImageWidth] = useState(0);
 	const [galleryImageHeight, setGalleryImageHeight] = useState(0);
 
+	// Elements
 	const shareFileRef = useRef(null);
-	const shareImageRef = useRef(null);
 
-	// svg text template - shows up on browser, but not showing up on share card...?
+	// NOTE: not currently working - shows up on browser, but not showing up on share card
 	const svgString = `
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -86,6 +86,7 @@ export default function ShareCard() {
 		setGalleryImageHeight(event.target.offsetHeight);
 	}
 
+	// text test, currently not using
 	function shareTextClickHandler() {
 		if (navigator.canShare) {
 			console.log("Can Share");
@@ -100,8 +101,7 @@ export default function ShareCard() {
 		}
 	}
 
-	function shareClickHandler() {
-		// create canvas
+	function createCanvas() {
 		const canvas = document.createElement('canvas');
 		canvas.width = 400;
 		canvas.height = 400;
@@ -109,61 +109,75 @@ export default function ShareCard() {
 		context.fillStyle = colorInput;
 		context.fillRect(0, 0, 400, 400);
 		shareFileRef.current.prepend(canvas);
-		// return canvas;
+		return canvas;
+	}
 
-		// drawImageToCanvas
+	function drawImageToCanvas(canvas) {
 		if (galleryImage) {
-			let	scale = parseFloat(250 / galleryImageWidth).toFixed(2);
+			const context = canvas.getContext('2d');
+			const	scale = parseFloat(250 / galleryImageWidth).toFixed(2);
 			context.drawImage(galleryImage, 75, 128, galleryImageWidth * scale, galleryImageHeight * scale);
 		}
+	}
 
-		// drawSVGToCanvas - shows up on browser, but not showing up on share card...?
+	function drawTextToCanvas(canvas) {
+		const context = canvas.getContext('2d');
+		context.font = "42px Lato";
+		context.fillStyle = textColor;
+		context.textAlign = "center";
+		context.fillText(textInput, 200, 90);
+	}
+
+	// NOTE: not currently working - shows up on browser, but not showing up on share card
+	function drawSVGToCanvas(canvas) {
 		// version 1
-		// const url = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgString);
-		// const img = new Image();
-		// img.onload = () => {
-		// 	URL.revokeObjectURL(url);
-		// 	context.drawImage(img, 0, 0);
-		// }
-		// img.src = url;
+		const context = canvas.getContext('2d');
+		const url = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgString);
+		const img = new Image();
+		img.onload = () => {
+			URL.revokeObjectURL(url);
+			context.drawImage(img, 0, 0);
+		}
+		img.src = url;
 		// version 2
 		// const blob = new Blob([svgString], {type: 'image/svg+xml'});
 		// const url = URL.createObjectURL(blob);
 		// const img = new Image();
 		// img.onload = () => context.drawImage(img, 0, 0);
 		// img.src = url;
+	}
 
-		// draw text
-		context.font = "42px Lato";
-		context.fillStyle = textColor;
-		context.textAlign = "center";
-		context.fillText(textInput, 200, 90);
-
-		// pngToCanvas
+	function shareFile(canvas) {
+		// canvasToPng
 		const dataUrl = canvas.toDataURL();
 		fetch(dataUrl)
 			.then(res => res.blob())
 			.then(blob => {
-				const file = new File([blob], `oxleberry-share-card.png`, {
+				const fileName = `oxleberry-share-card-${new Date().getTime()}.png`
+				const file = new File([blob], fileName, {
 					type: blob.type,
 					lastModified: new Date().getTime()
 				});
 				// shareFile
-				console.log(file);
 				const files = [file];
 				const data = { files };
 				if (navigator.canShare && navigator.canShare({ files })) {
 					return navigator.share(data);
+				} else {
+					console.warn('Sharing failed.');
 				}
 			})
 			.catch(() => {
-				console.warn('Sharing failed.');
+				console.warn('Canvas to Png failed.');
 			})
+	}
 
-		// navigator.share({
-		// 	text: "Oxleberry text",
-		// 	title: "Oxleberry title"
-		// });
+	function shareClickHandler() {
+		const canvas = createCanvas();
+		drawImageToCanvas(canvas);
+		drawTextToCanvas(canvas);
+		// drawSVGToCanvas(canvas); // NOTE: not currently working - shows up on browser, but not showing up on share card
+		shareFile(canvas);
 	}
 
 	return (
@@ -241,7 +255,7 @@ export default function ShareCard() {
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}
 								>
-									<img ref={shareImageRef} className="gallery-image" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
+									<img className="gallery-image" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
 								</button>
 							</div>
 						</div>
