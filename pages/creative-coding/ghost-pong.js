@@ -64,12 +64,10 @@ class GhostPong extends React.Component {
 			image: null,
 			size: 50,
 			x: this.gameBoard.width / 2,
-			y: this.gameBoard.height / 2
-		}
-		this.speed = 2;
-		this.direction = {
-			x: this.speed,
-			y: this.speed
+			y: this.gameBoard.height / 2,
+			speed: 2,
+			directionX: 2,
+			directionY: 2,
 		}
 		this.paddle = {
 			x: 30, // distance paddle is from edge of game board
@@ -99,18 +97,19 @@ class GhostPong extends React.Component {
 		}
 	}
 
+
 	// GHOST functions
 	moveGhost() {
-		this.ghost.x = this.ghost.x + this.direction.x;
-		this.ghost.y = this.ghost.y + this.direction.y;
+		this.ghost.x = this.ghost.x + this.ghost.directionX;
+		this.ghost.y = this.ghost.y + this.ghost.directionY;
 	}
 
 	changeVerticalDirection() {
-		this.direction.y *= -1;
+		this.ghost.directionY *= -1;
 	}
 
 	changeHorizontalDirection() {
-		this.direction.x *= -1;
+		this.ghost.directionX *= -1;
 	}
 
 	updateGhostImage(img) {
@@ -123,10 +122,10 @@ class GhostPong extends React.Component {
 		const topEdge = this.ghost.y < 0 + this.ghost.size/2 + this.gameBoard.stroke;
 		const rightEdge = this.ghost.x > p5.width - this.ghost.size/2 - this.gameBoard.stroke;
 		const leftEdge = this.ghost.x < 0 + this.ghost.size/2 + this.gameBoard.stroke;
-		const movingLeftToRight = this.direction.x === this.speed;
-		const movingRightToLeft = this.direction.x === (-1 * this.speed);
-		const movingUpToDowm = this.direction.y === this.speed;
-		const movingDownToUp = this.direction.y === (-1 * this.speed);
+		const movingLeftToRight = this.ghost.directionX === this.ghost.speed;
+		const movingRightToLeft = this.ghost.directionX === (-1 * this.ghost.speed);
+		const movingUpToDowm = this.ghost.directionY === this.ghost.speed;
+		const movingDownToUp = this.ghost.directionY === (-1 * this.ghost.speed);
 
 		if (bottomEdge && movingLeftToRight){
 			this.changeVerticalDirection();
