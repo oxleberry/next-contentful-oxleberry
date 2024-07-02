@@ -87,21 +87,6 @@ export default function ShareCard() {
 		setGalleryImageHeight(event.target.offsetHeight);
 	}
 
-	// text test, currently not using
-	function shareTextClickHandler() {
-		if (navigator.canShare) {
-			console.log("Can Share");
-			navigator.share({
-				text: 'Oxleberry share card text',
-				title: 'Oxleberry share card title',
-				url: 'http://oxleberry.com'
-			})
-		} else {
-			console.log("Copy to Clipboard");
-			navigator.clipboard.writeText('Oxleberry share card clipboard')
-		}
-	}
-
 	function createCanvas() {
 		const canvas = document.createElement('canvas');
 		canvas.width = 400;
@@ -197,13 +182,27 @@ export default function ShareCard() {
 			})
 	}
 
-	function shareClickHandler() {
+	function shareCardClickHandler() {
 		const canvas = createCanvas();
 		drawImageToCanvas(canvas);
 		drawTextToCanvas(canvas);
 		// drawSVGToCanvas(canvas); // NOTE: not currently working - shows up on browser, but not showing up on share card
 		shareFile(canvas);
 	}
+
+	function shareUrlClickHandler() {
+		const shareData = {
+			title: "Oxleberry Share Card",
+			url: "share-card",
+		};
+		if (navigator.canShare) {
+			return navigator.share(shareData);
+		} else {
+			const currentUrl = window.location.href;
+			navigator.clipboard.writeText(currentUrl);
+		}
+	}
+
 
 	return (
 		<>
@@ -288,13 +287,21 @@ export default function ShareCard() {
 						<div className="option option-share">
 							<button
 								type="button"
-								className="share-card-button"
-								// onClick={shareTextClickHandler}
-								onClick={shareClickHandler}
+								className="share-button"
+								onClick={shareCardClickHandler}
 							>Create Share Card
 								{/* <svg className="share-icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 42 42">
 									<path d="M 35.478516 5.9804688 A 2.0002 2.0002 0 0 0 34.085938 9.4140625 L 35.179688 10.507812 C 23.476587 10.680668 14 20.256715 14 32 A 2.0002 2.0002 0 1 0 18 32 C 18 22.427546 25.627423 14.702715 35.154297 14.517578 L 34.085938 15.585938 A 2.0002 2.0002 0 1 0 36.914062 18.414062 L 41.236328 14.091797 A 2.0002 2.0002 0 0 0 41.228516 10.900391 L 36.914062 6.5859375 A 2.0002 2.0002 0 0 0 35.478516 5.9804688 z M 12.5 6 C 8.9338464 6 6 8.9338464 6 12.5 L 6 35.5 C 6 39.066154 8.9338464 42 12.5 42 L 35.5 42 C 39.066154 42 42 39.066154 42 35.5 L 42 28 A 2.0002 2.0002 0 1 0 38 28 L 38 35.5 C 38 36.903846 36.903846 38 35.5 38 L 12.5 38 C 11.096154 38 10 36.903846 10 35.5 L 10 12.5 C 10 11.096154 11.096154 10 12.5 10 L 20 10 A 2.0002 2.0002 0 1 0 20 6 L 12.5 6 z"></path>
 								</svg> */}
+							</button>
+						</div>
+						{/* Share Url Button */}
+						<div className="option option-share">
+							<button
+								type="button"
+								className="share-button"
+								onClick={shareUrlClickHandler}
+							>Share Url
 							</button>
 						</div>
 					</section>

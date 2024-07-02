@@ -160,7 +160,10 @@
 			align-items: center;
 		}
 
-		.share-card-button {
+		// =====================
+		// Share Card Button
+		// =====================
+		.share-button {
 			font-size: 18px;
 			text-transform: uppercase;
 			font-weight: 800;
@@ -181,7 +184,6 @@
 					fill: var(--options-color)
 				}
 			}
-
 		}
 	}
 
