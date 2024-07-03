@@ -56,25 +56,53 @@ class Paddle {
 }
 
 
+// GHOST PUCK =====================
+class GhostPuck {
+	constructor (image, x, y) {
+		this.image = image;
+		this.size = 50;
+		this.x = x;
+		this.y = y;
+		this.speed = 2;
+		this.directionX = 2;
+		this.directionY = 2;
+	}
+
+	drawGhost(p5) {
+		if (this.image) {
+			p5.image(this.image, this.x, this.y, this.size, this.size);
+		}
+	}
+
+	moveGhost() {
+		this.x = this.x + this.directionX;
+		this.y = this.y + this.directionY;
+	}
+
+	changeVerticalDirection() {
+		this.directionY *= -1;
+	}
+
+	changeHorizontalDirection() {
+		this.directionX *= -1;
+	}
+
+	updateGhostImage(img) {
+		this.image = img;
+	}
+}
+
+
 class GhostPong extends React.Component {
 	constructor() {
 		super();
 
 		// Variables =================
-		const ghostSize = 50;
+		const ghostSize = new GhostPuck().size;
 		this.gameBoard = {
 			width: (ghostSize * 17 - ghostSize / 2), // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
 			height: (ghostSize * 11 - ghostSize / 2), // theory - baord cannot be exact multiple of ghost size, else ghost can get stuck in sides
 			stroke: 6,
-		}
-		this.ghost = {
-			image: null,
-			size: ghostSize,
-			x: this.gameBoard.width / 2,
-			y: this.gameBoard.height / 2,
-			speed: 2,
-			directionX: 2,
-			directionY: 2,
 		}
 		this.paddle = {
 			x: 30, // distance paddle is from edge of game board
@@ -99,78 +127,51 @@ class GhostPong extends React.Component {
 		p5.rect(p5.width/2, p5.height/2, this.gameBoard.width, this.gameBoard.height);
 	}
 
-	drawGhost(p5) {
-		if (this.ghost.image) {
-			p5.image(this.ghost.image, this.ghost.x, this.ghost.y, this.ghost.size, this.ghost.size);
-		}
-	}
-
-
-	// GHOST functions
-	moveGhost() {
-		this.ghost.x = this.ghost.x + this.ghost.directionX;
-		this.ghost.y = this.ghost.y + this.ghost.directionY;
-	}
-
-	changeVerticalDirection() {
-		this.ghost.directionY *= -1;
-	}
-
-	changeHorizontalDirection() {
-		this.ghost.directionX *= -1;
-	}
-
-	updateGhostImage(img) {
-		this.ghost.image = img;
-	}
-
+	// Game Play functions =================
 	// check and update if the ghost puck hits any sides of the gameboard
-	checkEdges (p5) {
-		const bottomEdge = this.ghost.y > p5.height - this.ghost.size/2 - this.gameBoard.stroke;
-		const topEdge = this.ghost.y < 0 + this.ghost.size/2 + this.gameBoard.stroke;
-		const rightEdge = this.ghost.x > p5.width - this.ghost.size/2 - this.gameBoard.stroke;
-		const leftEdge = this.ghost.x < 0 + this.ghost.size/2 + this.gameBoard.stroke;
-		const movingLeftToRight = this.ghost.directionX === this.ghost.speed;
-		const movingRightToLeft = this.ghost.directionX === (-1 * this.ghost.speed);
-		const movingUpToDowm = this.ghost.directionY === this.ghost.speed;
-		const movingDownToUp = this.ghost.directionY === (-1 * this.ghost.speed);
+	checkEdges (ghost) {
+		const bottomEdge = ghost.y > this.gameBoard.height - ghost.size/2 - this.gameBoard.stroke;
+		const topEdge = ghost.y < 0 + ghost.size/2 + this.gameBoard.stroke;
+		const rightEdge = ghost.x > this.gameBoard.width - ghost.size/2 - this.gameBoard.stroke;
+		const leftEdge = ghost.x < 0 + ghost.size/2 + this.gameBoard.stroke;
+		const movingLeftToRight = ghost.directionX === ghost.speed;
+		const movingRightToLeft = ghost.directionX === (-1 * ghost.speed);
+		const movingUpToDowm = ghost.directionY === ghost.speed;
+		const movingDownToUp = ghost.directionY === (-1 * ghost.speed);
 
 		if (bottomEdge && movingLeftToRight){
-			this.changeVerticalDirection();
-			this.updateGhostImage(this.ghostRightUp);
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostRightUp);
 		} else if (bottomEdge && movingRightToLeft){
-			this.changeVerticalDirection();
-			this.updateGhostImage(this.ghostLeftUp);
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostLeftUp);
 		} else if (topEdge && movingLeftToRight){
-			this.changeVerticalDirection();
-			this.updateGhostImage(this.ghostRightDown);
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostRightDown);
 		} else if (topEdge && movingRightToLeft){
-			this.changeVerticalDirection();
-			this.updateGhostImage(this.ghostLeftDown);
+			ghost.changeVerticalDirection();
+			ghost.updateGhostImage(this.ghostLeftDown);
 		} else if (rightEdge && movingUpToDowm){
-			this.changeHorizontalDirection();
-			this.updateGhostImage(this.ghostLeftDown);
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostLeftDown);
 		} else if (rightEdge && movingDownToUp){
-			this.changeHorizontalDirection();
-			this.updateGhostImage(this.ghostLeftUp);
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostLeftUp);
 		} else if (leftEdge && movingUpToDowm){
-			this.changeHorizontalDirection();
-			this.updateGhostImage(this.ghostRightDown);
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostRightDown);
 		} else if (leftEdge && movingDownToUp){
-			this.changeHorizontalDirection();
-			this.updateGhostImage(this.ghostRightUp);
+			ghost.changeHorizontalDirection();
+			ghost.updateGhostImage(this.ghostRightUp);
 		}
 	}
 
-
-	// Game play functions
-	checkPaddle(paddle) {
+	checkPaddle(paddle, ghost) {
 		// console.log('===================================');
-
-		let ghostCenterX = this.ghost.x;
-		let ghostCenterY = this.ghost.y;
-		let paddleRightEdge = paddle.x + paddle.width / 2 + this.ghost.size / 3;
-		let paddleLeftEdge = paddle.x - paddle.width / 2 - this.ghost.size / 3;
+		let ghostCenterX = ghost.x;
+		let ghostCenterY = ghost.y;
+		let paddleRightEdge = paddle.x + paddle.width / 2 + ghost.size / 3;
+		let paddleLeftEdge = paddle.x - paddle.width / 2 - ghost.size / 3;
 		let paddleTop = paddle.y - paddle.height / 2;
 		let paddleBottom = paddle.y + paddle.height / 2;
 		// when center of ghost hits edge of paddles (paddles factor in ghost size)
@@ -178,21 +179,26 @@ class GhostPong extends React.Component {
 		ghostCenterX <= paddleRightEdge && // ghost is past right edge of paddle
 		ghostCenterY >= paddleTop && // ghost is below paddle top
 		ghostCenterY <= paddleBottom) { // ghost is above paddle bottom
-		
 			// console.log('paddle', paddle.x);
 			// console.log('paddleRightEdge', paddleRightEdge);
 			// console.log('paddleLeftEdge', paddleLeftEdge);
-			// console.log('ghostX', this.ghost.x);
+			// console.log('ghostX', ghost.x);
 			// console.log('ghostY', this.ghost.y);
 			// console.log('paddleY', paddle.y);
 			// console.log('paddleTop', paddleTop);
 			// console.log('paddleBottom', paddleBottom);
 			// console.log('this.gameBoard.height', this.gameBoard.height);
 			// console.log('HIT');
-
 			paddle.paddleHit = true;
 		}
 	}
+
+test() {
+	console.log('===================================');
+	console.log('this.left', this.left);
+	console.log('this.right', this.right);
+	console.log('this.ghost', this.ghost);
+}
 
 
 	// Keyboard event listener =================
@@ -241,32 +247,42 @@ class GhostPong extends React.Component {
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-left-down.png", img => {
 			this.ghostLeftDown = img;
 		});
-		// Create Paddles = x, y, stripePosX
+		// Create Ghost = image, x, y
+		this.ghost = new GhostPuck(
+			this.ghostRightUp,
+			this.gameBoard.width / 2,
+			this.gameBoard.height / 2
+		);
+
+		// Create Paddles = x, y, stripePosX, directionY
 		this.left = new Paddle(
 			this.paddle.x,
 			this.gameBoard.height / 2, 
 			this.paddle.x + this.paddle.width / 2,
-			this.paddle.startSpeed);
+			this.paddle.startSpeed
+		);
 		this.right = new Paddle(
 			this.gameBoard.width - this.paddle.x,
 			this.gameBoard.height / 2,
 			this.gameBoard.width - this.paddle.x - this.paddle.width / 2,
-			this.paddle.startSpeed);
+			this.paddle.startSpeed
+		);
 	}
 
 	draw = p5 => {
 		this.drawGameBoardBg(p5);
 
-		this.checkPaddle(this.left);
-		this.checkPaddle(this.right);
+		this.checkPaddle(this.left, this.ghost);
+		this.checkPaddle(this.right, this.ghost);
 		this.left.drawPaddle(p5);
 		this.right.drawPaddle(p5);
 		this.left.movePaddle(p5, this.gameBoard.height, this.gameBoard.stroke);
 		this.right.movePaddle(p5, this.gameBoard.height, this.gameBoard.stroke);
 
-		this.moveGhost();
-		this.checkEdges(p5);
-		this.drawGhost(p5);
+		// this.test();
+		this.ghost.moveGhost();
+		this.checkEdges(this.ghost);
+		this.ghost.drawGhost(p5);
 		this.drawGameBoardBorder(p5);
 		// p5.noLoop();
 	}
