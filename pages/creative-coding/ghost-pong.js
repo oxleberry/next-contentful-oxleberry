@@ -11,18 +11,42 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 })
 
 
+// GAME BOARD =====================
+class GameBoard {
+	constructor(width, height) {
+		this.width = width;
+		this.height = height;
+		this.stroke = 6;
+	}
+
+	drawGameBoardBg(p5) {
+		p5.background(0); // black
+		p5.stroke(30); // soft black
+		p5.strokeWeight (4);
+		p5.line (p5.width / 2, 0, p5.width / 2, p5.height);
+	}
+
+	drawGameBoardBorder(p5) {
+		p5.noFill (0);
+		p5.stroke (90); // grey
+		p5.strokeWeight (this.stroke * 2);
+		p5.rect(p5.width / 2, p5.height / 2, this.width, this.height);
+	}
+}
+
+
 // PADDLE =====================
 class Paddle {
 	constructor(x, y, stripePosX, directionY) {
-			this.x = x,
-			this.y = y,
-			this.width = 18,
-			this.height = 100,
-			this.stripeWidth = 4,
-			this.stripePosX = stripePosX,
-			this.speed = 8,
-			this.directionY = directionY,
-			this.paddleHit = false
+		this.x = x;
+		this.y = y;
+		this.width = 18;
+		this.height = 100;
+		this.stripeWidth = 4;
+		this.stripePosX = stripePosX;
+		this.speed = 8;
+		this.directionY = directionY;
+		this.paddleHit = false;
 	}
 
 	drawPaddle(p5) {
@@ -93,19 +117,15 @@ class GhostPuck {
 }
 
 
+// GAME PLAY =====================
 class GhostPong extends React.Component {
 	constructor() {
 		super();
 
-		// Variables =================
-		const ghostSize = new GhostPuck().size;
-		this.gameBoard = {
-			width: (ghostSize * 17 - ghostSize / 2), // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
-			height: (ghostSize * 11 - ghostSize / 2), // theory - baord cannot be exact multiple of ghost size, else ghost can get stuck in sides
-			stroke: 6,
-		}
+		// Global Variables =================
+		this.ghostSize = new GhostPuck().size;
 		this.paddle = {
-			x: 30, // distance paddle is from edge of game board
+			distanceFromEdge: 30, // distance paddle is from edge of game board
 			width: new Paddle().width, // used for setting stripe placement
 			speed: new Paddle().speed, // used for changing directions
 			startSpeed: 0
@@ -113,27 +133,13 @@ class GhostPong extends React.Component {
 	}
 
 
-	drawGameBoardBg(p5) {
-		p5.background(0); // black
-		p5.stroke(30); // soft black
-		p5.strokeWeight (4);
-		p5.line (p5.width/2, 0, p5.width/2, p5.height);
-	}
-
-	drawGameBoardBorder(p5) {
-		p5.noFill (0);
-		p5.stroke (90); // grey
-		p5.strokeWeight (this.gameBoard.stroke * 2);
-		p5.rect(p5.width/2, p5.height/2, this.gameBoard.width, this.gameBoard.height);
-	}
-
 	// Game Play functions =================
 	// check and update if the ghost puck hits any sides of the gameboard
-	checkEdges (ghost) {
-		const bottomEdge = ghost.y > this.gameBoard.height - ghost.size/2 - this.gameBoard.stroke;
-		const topEdge = ghost.y < 0 + ghost.size/2 + this.gameBoard.stroke;
-		const rightEdge = ghost.x > this.gameBoard.width - ghost.size/2 - this.gameBoard.stroke;
-		const leftEdge = ghost.x < 0 + ghost.size/2 + this.gameBoard.stroke;
+	checkEdges (ghost, gameBoard) {
+		const bottomEdge = ghost.y > gameBoard.height - ghost.size/2 - gameBoard.stroke;
+		const topEdge = ghost.y < 0 + ghost.size/2 + gameBoard.stroke;
+		const rightEdge = ghost.x > gameBoard.width - ghost.size/2 - gameBoard.stroke;
+		const leftEdge = ghost.x < 0 + ghost.size/2 + gameBoard.stroke;
 		const movingLeftToRight = ghost.directionX === ghost.speed;
 		const movingRightToLeft = ghost.directionX === (-1 * ghost.speed);
 		const movingUpToDowm = ghost.directionY === ghost.speed;
@@ -193,12 +199,13 @@ class GhostPong extends React.Component {
 		}
 	}
 
-test() {
-	console.log('===================================');
-	console.log('this.left', this.left);
-	console.log('this.right', this.right);
-	console.log('this.ghost', this.ghost);
-}
+	test() {
+		console.log('===================================');
+		console.log('this.gameBoard', this.gameBoard);
+		console.log('this.left', this.left);
+		console.log('this.right', this.right);
+		console.log('this.ghost', this.ghost);
+	}
 
 
 	// Keyboard event listener =================
@@ -227,6 +234,13 @@ test() {
 
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
+		// Create GameBoard = width, height
+		// refactor settings
+		this.gameBoard = new GameBoard(
+			(this.ghostSize * 17 - this.ghostSize / 2), // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
+			this.ghostSize * 11 - this.ghostSize / 2 // theory - board cannot be exact multiple of ghost size, else ghost can get stuck in sides
+		);
+		// p5 CANVAS
 		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
 		p5.frameRate(30);
 		p5.background(0); // black
@@ -253,24 +267,23 @@ test() {
 			this.gameBoard.width / 2,
 			this.gameBoard.height / 2
 		);
-
 		// Create Paddles = x, y, stripePosX, directionY
 		this.left = new Paddle(
-			this.paddle.x,
+			this.paddle.distanceFromEdge,
 			this.gameBoard.height / 2, 
-			this.paddle.x + this.paddle.width / 2,
+			this.paddle.distanceFromEdge + this.paddle.width / 2,
 			this.paddle.startSpeed
 		);
 		this.right = new Paddle(
-			this.gameBoard.width - this.paddle.x,
+			this.gameBoard.width - this.paddle.distanceFromEdge,
 			this.gameBoard.height / 2,
-			this.gameBoard.width - this.paddle.x - this.paddle.width / 2,
+			this.gameBoard.width - this.paddle.distanceFromEdge - this.paddle.width / 2,
 			this.paddle.startSpeed
 		);
 	}
 
 	draw = p5 => {
-		this.drawGameBoardBg(p5);
+		this.gameBoard.drawGameBoardBg(p5);
 
 		this.checkPaddle(this.left, this.ghost);
 		this.checkPaddle(this.right, this.ghost);
@@ -281,9 +294,9 @@ test() {
 
 		// this.test();
 		this.ghost.moveGhost();
-		this.checkEdges(this.ghost);
+		this.checkEdges(this.ghost, this.gameBoard);
 		this.ghost.drawGhost(p5);
-		this.drawGameBoardBorder(p5);
+		this.gameBoard.drawGameBoardBorder(p5);
 		// p5.noLoop();
 	}
 
