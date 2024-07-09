@@ -4,9 +4,9 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
 	// States =================
-	const [colorInput, setColorInput] = useState('#000000');
+	const [backgroundColor, setBackgroundColor] = useState('#000000');
 	const [textInput, setTextInput] = useState('Welcome!');
-	const [textColor, setTextColor] = useState('#ffffff');
+	const [textColor, setTextColor] = useState('#eeddb9');
 	const [isCustomText, setIsCustomText] = useState(false);
 	const [galleryImagePath, setGalleryImagePath] = useState('');
 	const [galleryImage, setGalleryImage] = useState(null);
@@ -61,9 +61,14 @@ export default function ShareCard() {
 		</svg>
 	`
 
-	function colorInputHandler(event) {
+	function backgroundColorHandler(event) {
 		let value = event.target.value;
-		setColorInput(value);
+		setBackgroundColor(value);
+	}
+
+	function textColorHandler(event) {
+		let value = event.target.value;
+		setTextColor(value);
 	}
 
 	function textInputHandler(event) {
@@ -97,7 +102,7 @@ export default function ShareCard() {
 		if (roundedCorners) {
 			drawRoundedCorners(canvas);
 		}
-		context.fillStyle = colorInput;
+		context.fillStyle = backgroundColor;
 		context.fillRect(0, 0, 400, 400);
 		context.restore(); // Restore to the state saved by the most recent call to save()
 		shareFileRef.current.prepend(canvas);
@@ -112,7 +117,7 @@ export default function ShareCard() {
 		const cornerRadius = 40;
 		const context = canvas.getContext('2d');
 		context.beginPath();
-		context.fillStyle = colorInput;
+		context.fillStyle = backgroundColor;
 		context.moveTo(cornerRadius, 0);
 		context.arcTo(width, top, width, height, cornerRadius);
 		context.arcTo(width, height, left, height, cornerRadius);
@@ -215,9 +220,9 @@ export default function ShareCard() {
 				<main>
 
 					<section className="share-content-section">
-						<div className="share-content-container" style={{background: `${colorInput}`}}>
+						<div className="share-content-container" style={{background: `${backgroundColor}`}}>
 							<h2 className="hidden">Share Content</h2>
-							<p className="text-display">{textInput}</p>
+							<p className="text-display" style={{color: `${textColor}`}}>{textInput}</p>
 							<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
 						</div>
 					</section>
@@ -227,14 +232,14 @@ export default function ShareCard() {
 						<h2 className="hidden">Options</h2>
 						{/* Option Pick a Color */}
 						<div className="option option-color">
-							<label htmlFor="custom-color" className="option-label">Pick a color:</label>
+							<label htmlFor="custom-color" className="option-label">Pick a background color:</label>
 							<input
 								id="custom-color"
 								className="custom-color"
 								name="custom-color"
 								type="color"
-								value={colorInput}
-								onChange={colorInputHandler}
+								value={backgroundColor}
+								onChange={backgroundColorHandler}
 							/>
 						</div>
 						{/* Option Upload an Image */}
@@ -243,7 +248,17 @@ export default function ShareCard() {
 						</div> */}
 						{/* Option Custom Text */}
 						<div className="option option-text">
-							<label htmlFor="custom-text" className="option-label">Customize text:</label>
+							<div className="row">
+								<label htmlFor="custom-text" className="option-label">Customize text:</label>
+								<input
+									id="custom-text-color"
+									className="custom-text-color"
+									name="custom-text-color"
+									type="color"
+									value={textColor}
+									onChange={textColorHandler}
+								/>
+							</div>
 							<input
 								id="custom-text"
 								className="custom-text"
