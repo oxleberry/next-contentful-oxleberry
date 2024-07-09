@@ -131,7 +131,7 @@ export default function ShareCard() {
 		if (galleryImage) {
 			const context = canvas.getContext('2d');
 			const	scale = parseFloat(250 / galleryImageWidth).toFixed(2);
-			context.drawImage(galleryImage, 75, 128, galleryImageWidth * scale, galleryImageHeight * scale);
+			context.drawImage(galleryImage, 75, 140, galleryImageWidth * scale, galleryImageHeight * scale);
 		}
 	}
 
@@ -140,20 +140,42 @@ export default function ShareCard() {
 		context.font = "42px Lato";
 		context.fillStyle = textColor;
 		context.textAlign = "center";
-		context.fillText(textInput, 200, 90);
+		const x = 200;
+		let y = 90;
+		const lineheight = 46;
+		const lineWidthMax = 20;
+		if (textInput.length > lineWidthMax) {
+			drawWrappedTextLinesToCanvas(x, y, lineheight, lineWidthMax, canvas);
+		} else {
+			context.fillText(textInput, x, y);
+		}
 	}
 
-	function drawWrappedTextLinesToCanvas(canvas) {
+	function drawWrappedTextLinesToCanvas(x, y, lineheight, lineWidthMax, canvas) {
+		y = y - (lineheight / 2); // start half a line height higher
 		const context = canvas.getContext('2d');
-		context.font = "42px Lato";
-		context.fillStyle = textColor;
-		context.textAlign = "center";
-		const x = 200;
-		const y = 90;
-		const lineheight = 46;
 		const words =  textInput.split(' ');
+		let currentLine = '';
+		let textLines = [];
+		// seperate words into lines of text that will fit
 		for (var i = 0; i < words.length; i++) {
-			context.fillText(words[i], x, y + (i * lineheight) );
+			const word = words[i];
+			const lineWithNextWord = currentLine + word + ' ';
+			if (lineWithNextWord.length < lineWidthMax) {
+				// current word fits so add it to the currentLine
+				currentLine = lineWithNextWord;
+			} else {
+				// current line is full, add it to textLines array
+				textLines.push(currentLine);
+				// reset check for next line of text
+				currentLine = word + ' ';
+			}
+		}
+		// add remaining text to textLines array
+		textLines.push(currentLine);
+		// draws wrapped lines of text
+		for (let i = 0; i < textLines.length; i++) {
+			context.fillText(textLines[i], x, y + (i * lineheight));
 		}
 	}
 
@@ -204,8 +226,7 @@ export default function ShareCard() {
 	function shareCardClickHandler() {
 		const canvas = createCanvas();
 		drawImageToCanvas(canvas);
-		// drawTextToCanvas(canvas);
-		drawWrappedTextLinesToCanvas(canvas);
+		drawTextToCanvas(canvas);
 		// drawSVGToCanvas(canvas); // NOTE: not currently working - shows up on browser, but not showing up on share card
 		shareFile(canvas);
 	}
@@ -279,8 +300,8 @@ export default function ShareCard() {
 								className="custom-text"
 								name="custom-text"
 								type="text"
-								maxLength="20"
-								placeholder="Add Your Text Here"
+								maxLength="34" // max characters for 2 lines of text
+								placeholder="maximum 34 characters"
 								value={textInput}
 								onChange={textInputHandler}
 								onFocus={textFocusHandler}
