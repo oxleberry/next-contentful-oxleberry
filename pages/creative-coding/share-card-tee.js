@@ -249,7 +249,7 @@ export default function ShareCard() {
 		<>
 			<Head>
 				<title>Oxleberry | Design a T-shirt</title>
-				<meta name="description" content="Oxleberry Share Card - Send a custom greeting" />
+				<meta name="description" content="Oxleberry Design a T-shirt" />
 			</Head>
 			<div className="full-backboard share-card-page">
 				<Header headline="Design a T-shirt" isSubPage={true}></Header>
@@ -309,7 +309,7 @@ export default function ShareCard() {
 						</div>
 						{/* Option Galley Image */}
 						<div className="option option-image">
-							<label className="option-label">Choose a gallery image:</label>
+							<label className="option-label">Choose an image:</label>
 							<div className="gallery-container">
 								<button
 									type="button"

@@ -4,9 +4,9 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
 	// States =================
-	const [colorInput, setColorInput] = useState('#000000');
+	const [backgroundColor, setBackgroundColor] = useState('#000000');
 	const [textInput, setTextInput] = useState('Welcome!');
-	const [textColor, setTextColor] = useState('#ffffff');
+	const [textColor, setTextColor] = useState('#eeddb9');
 	const [isCustomText, setIsCustomText] = useState(false);
 	const [galleryImagePath, setGalleryImagePath] = useState('');
 	const [galleryImage, setGalleryImage] = useState(null);
@@ -61,9 +61,14 @@ export default function ShareCard() {
 		</svg>
 	`
 
-	function colorInputHandler(event) {
+	function backgroundColorHandler(event) {
 		let value = event.target.value;
-		setColorInput(value);
+		setBackgroundColor(value);
+	}
+
+	function textColorHandler(event) {
+		let value = event.target.value;
+		setTextColor(value);
 	}
 
 	function textInputHandler(event) {
@@ -97,7 +102,7 @@ export default function ShareCard() {
 		if (roundedCorners) {
 			drawRoundedCorners(canvas);
 		}
-		context.fillStyle = colorInput;
+		context.fillStyle = backgroundColor;
 		context.fillRect(0, 0, 400, 400);
 		context.restore(); // Restore to the state saved by the most recent call to save()
 		shareFileRef.current.prepend(canvas);
@@ -112,7 +117,7 @@ export default function ShareCard() {
 		const cornerRadius = 40;
 		const context = canvas.getContext('2d');
 		context.beginPath();
-		context.fillStyle = colorInput;
+		context.fillStyle = backgroundColor;
 		context.moveTo(cornerRadius, 0);
 		context.arcTo(width, top, width, height, cornerRadius);
 		context.arcTo(width, height, left, height, cornerRadius);
@@ -126,7 +131,7 @@ export default function ShareCard() {
 		if (galleryImage) {
 			const context = canvas.getContext('2d');
 			const	scale = parseFloat(250 / galleryImageWidth).toFixed(2);
-			context.drawImage(galleryImage, 75, 128, galleryImageWidth * scale, galleryImageHeight * scale);
+			context.drawImage(galleryImage, 75, 140, galleryImageWidth * scale, galleryImageHeight * scale);
 		}
 	}
 
@@ -135,7 +140,43 @@ export default function ShareCard() {
 		context.font = "42px Lato";
 		context.fillStyle = textColor;
 		context.textAlign = "center";
-		context.fillText(textInput, 200, 90);
+		const x = 200;
+		let y = 90;
+		const lineheight = 46;
+		const lineWidthMax = 20;
+		if (textInput.length > lineWidthMax) {
+			drawWrappedTextLinesToCanvas(x, y, lineheight, lineWidthMax, canvas);
+		} else {
+			context.fillText(textInput, x, y);
+		}
+	}
+
+	function drawWrappedTextLinesToCanvas(x, y, lineheight, lineWidthMax, canvas) {
+		y = y - (lineheight / 2); // start half a line height higher
+		const context = canvas.getContext('2d');
+		const words =  textInput.split(' ');
+		let currentLine = '';
+		let textLines = [];
+		// seperate words into lines of text that will fit
+		for (var i = 0; i < words.length; i++) {
+			const word = words[i];
+			const lineWithNextWord = currentLine + word + ' ';
+			if (lineWithNextWord.length < lineWidthMax) {
+				// current word fits so add it to the currentLine
+				currentLine = lineWithNextWord;
+			} else {
+				// current line is full, add it to textLines array
+				textLines.push(currentLine);
+				// reset check for next line of text
+				currentLine = word + ' ';
+			}
+		}
+		// add remaining text to textLines array
+		textLines.push(currentLine);
+		// draws wrapped lines of text
+		for (let i = 0; i < textLines.length; i++) {
+			context.fillText(textLines[i], x, y + (i * lineheight));
+		}
 	}
 
 	// NOTE: not currently working - shows up on browser, but not showing up on share card
@@ -215,9 +256,9 @@ export default function ShareCard() {
 				<main>
 
 					<section className="share-content-section">
-						<div className="share-content-container" style={{background: `${colorInput}`}}>
+						<div className="share-content-container" style={{background: `${backgroundColor}`}}>
 							<h2 className="hidden">Share Content</h2>
-							<p className="text-display">{textInput}</p>
+							<p className="text-display" style={{color: `${textColor}`}}>{textInput}</p>
 							<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
 						</div>
 					</section>
@@ -227,14 +268,14 @@ export default function ShareCard() {
 						<h2 className="hidden">Options</h2>
 						{/* Option Pick a Color */}
 						<div className="option option-color">
-							<label htmlFor="custom-color" className="option-label">Pick a color:</label>
+							<label htmlFor="custom-color" className="option-label">Pick a background color:</label>
 							<input
 								id="custom-color"
 								className="custom-color"
 								name="custom-color"
 								type="color"
-								value={colorInput}
-								onChange={colorInputHandler}
+								value={backgroundColor}
+								onChange={backgroundColorHandler}
 							/>
 						</div>
 						{/* Option Upload an Image */}
@@ -243,14 +284,24 @@ export default function ShareCard() {
 						</div> */}
 						{/* Option Custom Text */}
 						<div className="option option-text">
-							<label htmlFor="custom-text" className="option-label">Customize text:</label>
+							<div className="row">
+								<label htmlFor="custom-text" className="option-label">Customize text:</label>
+								<input
+									id="custom-text-color"
+									className="custom-text-color"
+									name="custom-text-color"
+									type="color"
+									value={textColor}
+									onChange={textColorHandler}
+								/>
+							</div>
 							<input
 								id="custom-text"
 								className="custom-text"
 								name="custom-text"
 								type="text"
-								maxLength="20"
-								placeholder="Add Your Text Here"
+								maxLength="34" // max characters for 2 lines of text
+								placeholder="maximum 34 characters"
 								value={textInput}
 								onChange={textInputHandler}
 								onFocus={textFocusHandler}
@@ -258,7 +309,7 @@ export default function ShareCard() {
 						</div>
 						{/* Option Galley Image */}
 						<div className="option option-image">
-							<label className="option-label">Choose a gallery image:</label>
+							<label className="option-label">Choose an image:</label>
 							<div className="gallery-container">
 								<button
 									type="button"
