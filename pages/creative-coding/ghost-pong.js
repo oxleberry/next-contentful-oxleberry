@@ -83,8 +83,8 @@ class Paddle {
 
 // GHOST PUCK =====================
 class GhostPuck {
-	constructor (image, x, y) {
-		this.image = image;
+	constructor (x, y) {
+		this.image = null;
 		this.size = 50;
 		this.x = x;
 		this.y = y;
@@ -145,22 +145,11 @@ class GhostPong extends React.Component {
 	// Game Play functions =================
 	// check and update if the ghost puck hits top or bottom sides of the gameboard
 	checkEdges (ghost, gameBoard) {
-		const bottomEdge = ghost.y > gameBoard.height - ghost.size/2 - gameBoard.stroke;
-		const topEdge = ghost.y < 0 + ghost.size/2 + gameBoard.stroke;
-		const movingLeftToRight = ghost.speedX > 0;
-		const movingRightToLeft = ghost.speedX < 0;
-		if (bottomEdge && movingLeftToRight) {
+		const topEdge = ghost.y <= 0 + ghost.size/2 + gameBoard.stroke;
+		const bottomEdge = ghost.y >= gameBoard.height - ghost.size/2 - gameBoard.stroke;
+		if (topEdge || bottomEdge) {
 			ghost.changeVerticalDirection();
-			ghost.updateGhostImage(this.ghostRightUp);
-		} else if (bottomEdge && movingRightToLeft){
-			ghost.changeVerticalDirection();
-			ghost.updateGhostImage(this.ghostLeftUp);
-		} else if (topEdge && movingLeftToRight){
-			ghost.changeVerticalDirection();
-			ghost.updateGhostImage(this.ghostRightDown);
-		} else if (topEdge && movingRightToLeft){
-			ghost.changeVerticalDirection();
-			ghost.updateGhostImage(this.ghostLeftDown);
+			this.getGhostImage(ghost);
 		}
 	}
 
@@ -192,20 +181,6 @@ class GhostPong extends React.Component {
 				ghostSpanCheck && // and within 1 unit of a ghost's movement
 				ghostBottom >= paddleTop && // and that bottom of ghost is above paddle top
 				ghostTop <= paddleBottom) { // and that top of ghost is below paddle bottom
-			// console.log('===================================');
-			// console.log('ghostRightEdge', ghostRightEdge);
-			// console.log('ghostLeftEdge', ghostLeftEdge);
-			// console.log('paddleCenterX', paddleCenterX);
-			// console.log('ghostX', ghost.x);
-			// console.log('ghostY', this.ghost.y);
-			// console.log('paddleY', paddle.y);
-			// console.log('ghostCenterY', ghostCenterY);
-			// console.log('paddleTop', paddleTop);
-			// console.log('paddleBottom', paddleBottom);
-			// console.log('ghostTop', ghostTop);
-			// console.log('ghostBottom', ghostBottom);
-			// console.log('this.gameBoard.height', this.gameBoard.height);
-			// console.log('HIT');
 
 			// p5.map = re-maps a number from one range to another
 			// maps the yAngle based on where the ghost hits the paddle
@@ -214,9 +189,24 @@ class GhostPong extends React.Component {
 
 			ghost.increaseSpeed();
 			ghost.changeHorizontalDirection();
-
-			ghost.updateGhostImage(this.ghostLeftUp);
+			this.getGhostImage(ghost);
 			paddle.paddleHit = true;
+		}
+	}
+
+	getGhostImage(ghost) {
+		const movingLeft = ghost.speedX < 0;
+		const movingRight = ghost.speedX >= 0;
+		const movingUp = ghost.speedY < 0;
+		const movingDown = ghost.speedY >= 0;
+		if (movingLeft && movingUp) {
+			ghost.updateGhostImage(this.ghostLeftUp);
+		} else if (movingLeft && movingDown) {
+			ghost.updateGhostImage(this.ghostLeftDown);
+		} else if (movingRight && movingUp) {
+			ghost.updateGhostImage(this.ghostRightUp);
+		} else if (movingRight && movingDown) {
+			ghost.updateGhostImage(this.ghostRightDown);
 		}
 	}
 
@@ -257,10 +247,7 @@ class GhostPong extends React.Component {
 	setup = (p5, canvasParentRef) => {
 		// Create GameBoard = width, height
 		// refactor settings
-		this.gameBoard = new GameBoard(
-			this.ghostSize * 14,
-			this.ghostSize * 10
-			);
+		this.gameBoard = new GameBoard(600, 400);
 		// p5 CANVAS
 		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
 		p5.frameRate(30);
@@ -282,9 +269,8 @@ class GhostPong extends React.Component {
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-left-down.png", img => {
 			this.ghostLeftDown = img;
 		});
-		// Create Ghost = image, x, y
+		// Create Ghost = x, y
 		this.ghost = new GhostPuck(
-			this.ghostRightUp,
 			this.gameBoard.width / 2,
 			this.gameBoard.height / 2
 		);
@@ -307,20 +293,19 @@ class GhostPong extends React.Component {
 
 	draw = p5 => {
 		this.gameBoard.drawGameBoardBg(p5);
-
+		// update paddles
 		this.checkPaddle(p5, this.left, this.ghost);
 		this.checkPaddle(p5, this.right, this.ghost);
-		this.left.drawPaddle(p5);
-		this.right.drawPaddle(p5);
 		this.left.movePaddle(p5, this.gameBoard.height, this.gameBoard.stroke);
 		this.right.movePaddle(p5, this.gameBoard.height, this.gameBoard.stroke);
-
-		// this.test();
-		this.ghost.moveGhost();
+		this.left.drawPaddle(p5);
+		this.right.drawPaddle(p5);
+		// update ghost
 		this.checkEdges(this.ghost, this.gameBoard);
+		this.ghost.moveGhost();
 		this.ghost.drawGhost(p5);
+		// draw game boarder
 		this.gameBoard.drawGameBoardBorder(p5);
-		// p5.noLoop();
 	}
 
 
