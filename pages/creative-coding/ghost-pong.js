@@ -246,8 +246,8 @@ class GhostPong extends React.Component {
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
 		// Create GameBoard = width, height
-		// refactor settings
-		this.gameBoard = new GameBoard(600, 400);
+		this.gameBoard = new GameBoard(600, 400); // desktop
+		// this.gameBoard = new GameBoard(400, 280); // mobile
 		// p5 CANVAS
 		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
 		p5.frameRate(30);
@@ -258,10 +258,10 @@ class GhostPong extends React.Component {
 		// Ghost Images
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-right-up.png", img => {
 			this.ghostRightUp = img;
-			this.ghost.image = this.ghostRightUp; // starting ghost image
 		});
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-right-down.png", img => {
 			this.ghostRightDown = img;
+			this.ghost.image = this.ghostRightDown; // starting ghost image
 		});
 		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-left-up.png", img => {
 			this.ghostLeftUp = img;
