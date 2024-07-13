@@ -132,13 +132,13 @@ class GhostPong extends React.Component {
 		super();
 
 		// Global Variables =================
-		this.ghostSize = new GhostPuck().size;
 		this.paddle = {
 			distanceFromEdge: 30, // distance paddle is from edge of game board
 			width: new Paddle().width, // used for setting stripe placement
 			speed: new Paddle().speed, // used for changing directions
 			startSpeed: 0
 		}
+		this.audioPop = null;
 	}
 
 
@@ -191,6 +191,7 @@ class GhostPong extends React.Component {
 			ghost.changeHorizontalDirection();
 			this.getGhostImage(ghost);
 			paddle.paddleHit = true;
+			this.audioPop.play();
 		}
 	}
 
@@ -289,6 +290,8 @@ class GhostPong extends React.Component {
 			this.gameBoard.width - this.paddle.distanceFromEdge - this.paddle.width / 2,
 			this.paddle.startSpeed
 		);
+		// Audio
+		this.audioPop = new Audio('/creative-coding-pages/ghost-pong/audio/pop.mp3');
 	}
 
 	draw = p5 => {
