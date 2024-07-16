@@ -99,9 +99,14 @@ class GhostPuck {
 		}
 	}
 
-	moveGhost() {
-		this.x = this.x + this.speedX;
-		this.y = this.y + this.speedY;
+	moveGhost(isPaused) {
+		if (isPaused) {
+			this.x += 0;
+			this.y += 0;
+		} else {
+			this.x += this.speedX;
+			this.y += this.speedY;
+		}
 	}
 
 	changeHorizontalDirection() {
@@ -131,6 +136,10 @@ class GhostPong extends React.Component {
 	constructor() {
 		super();
 
+		this.state = {
+			isPaused: false,
+		};
+
 		// Global Variables =================
 		this.paddle = {
 			distanceFromEdge: 30, // distance paddle is from edge of game board
@@ -139,6 +148,8 @@ class GhostPong extends React.Component {
 			startSpeed: 0
 		}
 		this.audioPop = null;
+
+		this.togglePause = this.togglePause.bind(this);
 	}
 
 
@@ -211,6 +222,10 @@ class GhostPong extends React.Component {
 		}
 	}
 
+	togglePause(event) {
+		this.setState(prevState => ({ ...prevState, isPaused: !this.state.isPaused }));
+	}
+
 	test() {
 		console.log('===================================');
 		console.log('this.gameBoard', this.gameBoard);
@@ -223,22 +238,26 @@ class GhostPong extends React.Component {
 	// Keyboard event listener =================
 	// move paddle up and down
 	keyPressed = (p5, event) => {
-		if (p5.keyCode === 186) { // keycode = ;
+		if (p5.key === ';') {
 			this.right.updatePaddleDirection( - this.paddle.speed);
-		} else if (p5.keyCode === 190) { // keycode = .
+		} else if (p5.key === '.') {
 			this.right.updatePaddleDirection(this.paddle.speed);
-		} else if (p5.keyCode === 83) { // keycode = s
+		} else if (p5.key === 's') {
 			this.left.updatePaddleDirection( - this.paddle.speed);
-		} else if (p5.keyCode === 88) { // keycode = x
+		} else if (p5.key === 'x') {
 			this.left.updatePaddleDirection(this.paddle.speed);
+
+		// pause game
+		} else if (p5.key === 'p') {
+			this.togglePause();
 		}
 	}
 
 	// stop paddles from moving
 	keyReleased = (p5, event) => {
-		if (p5.keyCode === 186 || p5.keyCode === 190) { // keycode = ; or .
+		if (p5.key === ';' || p5.key === '.') {
 			this.right.updatePaddleDirection(0);
-		} else if  (p5.keyCode === 83 || p5.keyCode === 88) { // keycode = s or x
+		} else if  (p5.key === 's' || p5.key === 'x') {
 			this.left.updatePaddleDirection(0);
 		}
 	}
@@ -305,7 +324,7 @@ class GhostPong extends React.Component {
 		this.right.drawPaddle(p5);
 		// update ghost
 		this.checkEdges(this.ghost, this.gameBoard);
-		this.ghost.moveGhost();
+		this.ghost.moveGhost(this.state.isPaused);
 		this.ghost.drawGhost(p5);
 		// draw game boarder
 		this.gameBoard.drawGameBoardBorder(p5);
@@ -323,7 +342,13 @@ class GhostPong extends React.Component {
 					<Header headline="Ghost Pong Game" isSubPage={true}></Header>
 
 					{/* Ghost Pong Game */}
-					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} keyReleased={this.keyReleased} />
+					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} keyReleased={this.keyReleased} keyIsDown={this.keyIsDown}/>
+
+					{/* Controls */}
+					<button
+						className={`button pause-button${this.state.isPaused? ' isPaused': ''}`}
+						onClick={this.togglePause}
+					>PAUSE</button>
 				</main>
 			</>
 		);

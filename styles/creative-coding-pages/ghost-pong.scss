@@ -9,4 +9,27 @@
 	h1 {
 		font-family: fonts.$alt-title-for-g;
 	}
+
+	.button {
+		position: relative;
+		display: inline-block;
+		width: 160px;
+		padding: 6px 10px;
+		color: #fff;
+		font-size: 16px;
+		font-weight: bold;
+		background: grey; /* fallback */
+		background-image: linear-gradient(#bcbcbc, #727272);
+		border-radius: 5px;
+		border-style: none;
+		box-shadow: 0px 1px 4px -1px #333;
+		text-shadow: 0px -1px #333;
+		margin-top: 20px;
+		margin-bottom: 7px;
+	}
+
+	.isPaused {
+		background: #cc3102; /* fallback */
+		background: linear-gradient(#e8734f, #cc3102);
+	}
 }

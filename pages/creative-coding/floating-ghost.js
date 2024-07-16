@@ -53,9 +53,14 @@ class Ghost {
 		}
 	}
 
-	moveGhost() {
-		this.x = this.x + this.speedX;
-		this.y = this.y + this.speedY;
+	moveGhost(isPaused) {
+		if (isPaused) {
+			this.x += 0;
+			this.y += 0;
+		} else {
+			this.x += this.speedX;
+			this.y += this.speedY;
+		}
 	}
 
 	changeHorizontalDirection() {
@@ -64,14 +69,6 @@ class Ghost {
 
 	changeVerticalDirection() {
 		this.speedY *= -1; // positive value moves right, negative value moves left
-	}
-
-	increaseSpeed() {
-		if (this.speedX >= 0) {
-			this.speedX += this.incrementSpeed;
-		} else {
-			this.speedX -= this.incrementSpeed;
-		}
 	}
 
 	updateGhostImage(img) {
@@ -85,8 +82,14 @@ class FloatingGhost extends React.Component {
 	constructor() {
 		super();
 
+		this.state = {
+			isPaused: false,
+		};
+
 		// Global Variables =================
 		this.ghostSize = new Ghost().size;
+
+		this.togglePause = this.togglePause.bind(this);
 	}
 
 
@@ -128,10 +131,14 @@ class FloatingGhost extends React.Component {
 		}
 	}
 
+	togglePause(event) {
+		this.setState(prevState => ({ ...prevState, isPaused: !this.state.isPaused }));
+	}
+
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
-    // Create GameBoard = width, height
-		this.gameBoard = new GameBoard(800, 550); // desktop
+		// Create GameBoard = width, height
+		this.gameBoard = new GameBoard(800, 520); // desktop
 		// this.gameBoard = new GameBoard(380, 280); // mobile
 		// p5 CANVAS
 		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
@@ -163,8 +170,8 @@ class FloatingGhost extends React.Component {
 
 	draw = p5 => {
 		this.gameBoard.drawGameBoardBg(p5);
-		this.ghost.moveGhost();
 		this.checkEdges(this.ghost, this.gameBoard);
+		this.ghost.moveGhost(this.state.isPaused);
 		this.ghost.drawGhost(p5);
 		this.gameBoard.drawGameBoardBorder(p5);
 	}
@@ -182,6 +189,12 @@ class FloatingGhost extends React.Component {
 
 					{/* Floating Ghost */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} keyReleased={this.keyReleased} />
+
+					{/* Controls */}
+					<button
+						className={`button pause-button${this.state.isPaused? ' isPaused': ''}`}
+						onClick={this.togglePause}
+					>PAUSE</button>
 				</main>
 			</>
 		);
