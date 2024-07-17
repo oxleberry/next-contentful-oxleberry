@@ -156,9 +156,16 @@ class GhostPong extends React.Component {
 	// Game Play functions =================
 	// check and update if the ghost puck hits top or bottom sides of the gameboard
 	checkEdges (ghost, gameBoard) {
-		const topEdge = ghost.y <= 0 + ghost.size/2 + gameBoard.stroke;
-		const bottomEdge = ghost.y >= gameBoard.height - ghost.size/2 - gameBoard.stroke;
-		if (topEdge || bottomEdge) {
+		const topEdge = (ghost.size/2) + gameBoard.stroke;
+		const bottomEdge = gameBoard.height - (ghost.size/2) - gameBoard.stroke;
+		const topEdgeCheck = ghost.y <= topEdge;
+		const bottomEdgeCheck = ghost.y >= bottomEdge;
+		if (topEdgeCheck) {
+			ghost.y = topEdge + 1; // reposition ghost inbounds, additional measure for not getting stuck out of frame
+			ghost.changeVerticalDirection();
+			this.getGhostImage(ghost);
+		} else if (bottomEdgeCheck) {
+			ghost.y = bottomEdge - 1; // reposition ghost inbounds, additional measure for not getting stuck out of frame
 			ghost.changeVerticalDirection();
 			this.getGhostImage(ghost);
 		}
@@ -169,14 +176,14 @@ class GhostPong extends React.Component {
 		let ghostEdgeCheck;
 		let ghostSpanCheck; // distance that the ghost moves at = (ghost.speedX)
 
-		const ghostLeftEdge = ghost.x - (ghost.size / 2);
-		const ghostRightEdge = ghost.x + (ghost.size / 2);
+		const ghostLeftEdge = ghost.x - (ghost.size/2);
+		const ghostRightEdge = ghost.x + (ghost.size/2);
 		const ghostCenterY = ghost.y;
-		const ghostTop = ghost.y - (ghost.size / 3);
-		const ghostBottom = ghost.y + (ghost.size / 3);
+		const ghostTop = ghost.y - (ghost.size/3);
+		const ghostBottom = ghost.y + (ghost.size/3);
 		const paddleCenterX = paddle.x;
-		const paddleTop = paddle.y - (paddle.height) / 2 - (ghost.size / 3);
-		const paddleBottom = paddle.y + (paddle.height) / 2 + (ghost.size / 3);
+		const paddleTop = paddle.y - (paddle.height/2) - (ghost.size/3);
+		const paddleBottom = paddle.y + (paddle.height/2) + (ghost.size/3);
 
 		// find where on the ghost to check based on which paddle is being used
 		if (paddle.name === 'right') {
