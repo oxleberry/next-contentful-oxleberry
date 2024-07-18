@@ -67,12 +67,16 @@ class Paddle {
 		p5.rect(this.stripePosX, this.y, this.stripeWidth, this.height);
 	}
 
-	movePaddle(p5, gameBoardHeight, gameBoardStroke) {
-		this.y += this.speedY;
-		let topBoundary = gameBoardStroke / 2 + this.height / 2;
-		let bottomBoundary = gameBoardHeight - gameBoardStroke / 2 - this.height / 2;
-		// constrain = target, top, bottom
-		this.y = p5.constrain (this.y, topBoundary, bottomBoundary);
+	movePaddle(p5, isPaused, gameBoardHeight, gameBoardStroke) {
+		if (isPaused) { 
+			this.y += 0;
+		} else {
+			const topBoundary = gameBoardStroke / 2 + this.height / 2;
+			const bottomBoundary = gameBoardHeight - gameBoardStroke / 2 - this.height / 2;
+			this.y += this.speedY;
+			// constrain = target, top, bottom
+			this.y = p5.constrain (this.y, topBoundary, bottomBoundary);
+		}
 	}
 
 	updatePaddleDirection(direction) {
@@ -325,8 +329,8 @@ class GhostPong extends React.Component {
 		// update paddles
 		this.checkPaddle(p5, this.left, this.ghost);
 		this.checkPaddle(p5, this.right, this.ghost);
-		this.left.movePaddle(p5, this.gameBoard.height, this.gameBoard.stroke);
-		this.right.movePaddle(p5, this.gameBoard.height, this.gameBoard.stroke);
+		this.left.movePaddle(p5, this.state.isPaused, this.gameBoard.height, this.gameBoard.stroke);
+		this.right.movePaddle(p5, this.state.isPaused, this.gameBoard.height, this.gameBoard.stroke);
 		this.left.drawPaddle(p5);
 		this.right.drawPaddle(p5);
 		// update ghost
@@ -353,7 +357,7 @@ class GhostPong extends React.Component {
 
 					{/* Controls */}
 					<button
-						className={`button pause-button${this.state.isPaused? ' isPaused': ''}`}
+						className={`button pause-button${this.state.isPaused? ' is-paused': ''}`}
 						onClick={this.togglePause}
 					>PAUSE</button>
 				</main>

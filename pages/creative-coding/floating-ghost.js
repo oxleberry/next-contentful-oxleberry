@@ -192,7 +192,7 @@ class FloatingGhost extends React.Component {
 
 					{/* Controls */}
 					<button
-						className={`button pause-button${this.state.isPaused? ' isPaused': ''}`}
+						className={`button pause-button${this.state.isPaused? ' is-paused': ''}`}
 						onClick={this.togglePause}
 					>PAUSE</button>
 				</main>
