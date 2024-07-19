@@ -11,6 +11,16 @@ const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 })
 
 
+// Other Components =================
+const Scoreboard = (props) => {
+	return (
+		<div className={`scoreboard ${props.id}`} id={props.id}>
+			<p>{props.text}: {props.points}</p>
+		</div>
+	);
+}
+
+
 // GAME BOARD =====================
 class GameBoard {
 	constructor(width, height) {
@@ -68,7 +78,7 @@ class Paddle {
 	}
 
 	movePaddle(p5, isPaused, gameBoardHeight, gameBoardStroke) {
-		if (isPaused) { 
+		if (isPaused) {
 			this.y += 0;
 		} else {
 			const topBoundary = gameBoardStroke / 2 + this.height / 2;
@@ -142,6 +152,8 @@ class GhostPong extends React.Component {
 
 		this.state = {
 			isPaused: false,
+			scoreLeftPlayer: 0,
+			scoreRightPlayer: 0,
 		};
 
 		// Global Variables =================
@@ -152,6 +164,7 @@ class GhostPong extends React.Component {
 			startSpeed: 0
 		}
 		this.audioPop = null;
+		this.audioScore = null;
 
 		this.togglePause = this.togglePause.bind(this);
 	}
@@ -162,8 +175,12 @@ class GhostPong extends React.Component {
 	checkEdges (ghost, gameBoard) {
 		const topEdge = (ghost.size/2) + gameBoard.stroke;
 		const bottomEdge = gameBoard.height - (ghost.size/2) - gameBoard.stroke;
+		const leftEdge = gameBoard.stroke;
+		const rightEdge = gameBoard.width - gameBoard.stroke;
 		const topEdgeCheck = ghost.y <= topEdge;
 		const bottomEdgeCheck = ghost.y >= bottomEdge;
+		const leftEdgeCheck = ghost.x <= leftEdge;
+		const rightEdgeCheck = ghost.x >= rightEdge;
 		if (topEdgeCheck) {
 			ghost.y = topEdge + 1; // reposition ghost inbounds, additional measure for not getting stuck out of frame
 			ghost.changeVerticalDirection();
@@ -172,6 +189,20 @@ class GhostPong extends React.Component {
 			ghost.y = bottomEdge - 1; // reposition ghost inbounds, additional measure for not getting stuck out of frame
 			ghost.changeVerticalDirection();
 			this.getGhostImage(ghost);
+		} else if (leftEdgeCheck) {
+			this.audioScore.play();
+			ghost.x = gameBoard.width / 2;
+			ghost.y = gameBoard.height / 2;
+			ghost.speedX = 0;
+			ghost.speedY = 0;
+			this.setState(prevState => ({ ...prevState, scoreLeftPlayer: this.state.scoreLeftPlayer + 1 }));
+		} else if (rightEdgeCheck) {
+			this.audioScore.play();
+			ghost.x = gameBoard.width / 2;
+			ghost.y = gameBoard.height / 2;
+			ghost.speedX = 0;
+			ghost.speedY = 0;
+			this.setState(prevState => ({ ...prevState, scoreRightPlayer: this.state.scoreRightPlayer + 1 }));
 		}
 	}
 
@@ -322,6 +353,7 @@ class GhostPong extends React.Component {
 		);
 		// Audio
 		this.audioPop = new Audio('/creative-coding-pages/ghost-pong/audio/pop.mp3');
+		this.audioScore = new Audio('/creative-coding-pages/ghost-pong/audio/score.mp3');
 	}
 
 	draw = p5 => {
@@ -351,15 +383,19 @@ class GhostPong extends React.Component {
 				</Head>
 				<main className="full-backboard ghost-pong-page">
 					<Header headline="Ghost Pong Game" isSubPage={true}></Header>
+					<div className="score-wrapper">
+						<Scoreboard id="score-left-player" text="Left Player" points={this.state.scoreLeftPlayer}/>
+						<Scoreboard id="score-right-player" text="Right Player" points={this.state.scoreRightPlayer}/>
+					</div>
 
 					{/* Ghost Pong Game */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} keyReleased={this.keyReleased} keyIsDown={this.keyIsDown}/>
 
 					{/* Controls */}
 					<button
-						className={`button pause-button${this.state.isPaused? ' is-paused': ''}`}
+						className={`settings-button pause-button${this.state.isPaused? ' is-paused': ''}`}
 						onClick={this.togglePause}
-					>PAUSE</button>
+					>Pause</button>
 				</main>
 			</>
 		);

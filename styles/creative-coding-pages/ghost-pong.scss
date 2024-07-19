@@ -10,26 +10,44 @@
 		font-family: fonts.$alt-title-for-g;
 	}
 
-	.button {
+	.scoreboard,
+	.settings-button {
 		position: relative;
 		display: inline-block;
-		width: 160px;
+		width: 180px;
 		padding: 6px 10px;
-		color: #fff;
-		font-size: 16px;
-		font-weight: bold;
 		background: grey; /* fallback */
 		background-image: linear-gradient(#bcbcbc, #727272);
-		border-radius: 5px;
+		border-radius: 3px;
+		box-shadow: 0px 1px 5px -1px #333;
+		margin: 0 18px 20px;
+
+		p {
+			color: #fff;
+			text-transform: uppercase;
+			text-decoration: none;
+			font-size: 16px;
+			font-weight: bold;
+			text-shadow: 2px 2px #606060;
+			margin: 4px;
+		}
+	}
+
+	.settings-button {
+		width: 180px;
+		padding: 8px 10px;
+		color: #fff;
+		text-transform: uppercase;
+		text-shadow: 2px 2px #606060;
+		font-size: 16px;
+		font-weight: bold;
 		border-style: none;
-		box-shadow: 0px 1px 4px -1px #333;
-		text-shadow: 0px -1px #333;
 		margin-top: 20px;
 		margin-bottom: 7px;
 	}
 
 	.is-paused {
 		background: #cc3102; /* fallback */
-		background: linear-gradient(#e8734f, #cc3102);
+		background: linear-gradient(#e8734f, #cc3102);		
 	}
 }
