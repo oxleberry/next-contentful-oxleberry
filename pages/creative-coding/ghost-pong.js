@@ -104,6 +104,7 @@ class GhostPuck {
 		this.y = y;
 		this.speedX = 2; // positive value moves right, negative value moves left
 		this.speedY = 2; // positive value moves down, negative value moves up
+		this.startSpeed = 2;
 		this.incrementSpeed = 2;
 	}
 
@@ -141,6 +142,13 @@ class GhostPuck {
 
 	updateGhostImage(img) {
 		this.image = img;
+	}
+
+	reset(gameBoard) {
+		this.x = gameBoard.width/2;
+		this.y = gameBoard.height/2;
+		this.speedX = this.startSpeed;
+		this.speedY = this.startSpeed;
 	}
 }
 
@@ -191,18 +199,14 @@ class GhostPong extends React.Component {
 			this.getGhostImage(ghost);
 		} else if (leftEdgeCheck) {
 			this.audioScore.play();
-			ghost.x = gameBoard.width / 2;
-			ghost.y = gameBoard.height / 2;
-			ghost.speedX = 0;
-			ghost.speedY = 0;
-			this.setState(prevState => ({ ...prevState, scoreLeftPlayer: this.state.scoreLeftPlayer + 1 }));
+			this.setState(prevState => ({ ...prevState, scoreRightPlayer: this.state.scoreRightPlayer + 1 }));
+			ghost.reset(this.gameBoard);
+			this.getGhostImage(ghost);
 		} else if (rightEdgeCheck) {
 			this.audioScore.play();
-			ghost.x = gameBoard.width / 2;
-			ghost.y = gameBoard.height / 2;
-			ghost.speedX = 0;
-			ghost.speedY = 0;
-			this.setState(prevState => ({ ...prevState, scoreRightPlayer: this.state.scoreRightPlayer + 1 }));
+			this.setState(prevState => ({ ...prevState, scoreLeftPlayer: this.state.scoreLeftPlayer + 1 }));
+			ghost.reset(this.gameBoard);
+			this.getGhostImage(ghost);
 		}
 	}
 
