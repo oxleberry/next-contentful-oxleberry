@@ -150,15 +150,19 @@ class GhostPuck {
 		return randomNum;
 	};
 
-	reset(gameBoard) {
+	resetGhost(gameBoard) {
 		this.x = gameBoard.width/2;
 		this.y = gameBoard.height/2;
 		this.speedX = this.startSpeed;
 		this.speedY = this.startSpeed;
-		const randomNum = this.randomGenerator();
-		// randomly sets the X direction of ghost puck
-		if (randomNum < 5){
+		const randomHorizNum = this.randomGenerator();
+		const randomVertNum = this.randomGenerator();
+		// randomly sets the direction of ghost puck
+		if (randomHorizNum < 5){
 			this.speedX *= -1;
+		}
+		if (randomVertNum < 5){
+			this.speedY *= -1;
 		}
 	}
 }
@@ -186,6 +190,7 @@ class GhostPong extends React.Component {
 		this.audioScore = null;
 
 		this.togglePause = this.togglePause.bind(this);
+		this.resetGame = this.resetGame.bind(this);
 	}
 
 
@@ -211,12 +216,12 @@ class GhostPong extends React.Component {
 		} else if (leftEdgeCheck) {
 			this.audioScore.play();
 			this.setState(prevState => ({ ...prevState, scoreRightPlayer: this.state.scoreRightPlayer + 1 }));
-			ghost.reset(this.gameBoard);
+			ghost.resetGhost(this.gameBoard);
 			this.getGhostImage(ghost);
 		} else if (rightEdgeCheck) {
 			this.audioScore.play();
 			this.setState(prevState => ({ ...prevState, scoreLeftPlayer: this.state.scoreLeftPlayer + 1 }));
-			ghost.reset(this.gameBoard);
+			ghost.resetGhost(this.gameBoard);
 			this.getGhostImage(ghost);
 		}
 	}
@@ -281,6 +286,17 @@ class GhostPong extends React.Component {
 
 	togglePause(event) {
 		this.setState(prevState => ({ ...prevState, isPaused: !this.state.isPaused }));
+	}
+
+	resetGame(event) {
+		if (!this.state.isPaused) {
+			this.ghost.resetGhost(this.gameBoard);
+			this.getGhostImage(this.ghost);
+			this.left.y = this.gameBoard.height/2;
+			this.right.y = this.gameBoard.height/2;
+			this.setState(prevState => ({ ...prevState, scoreLeftPlayer: 0 }));
+			this.setState(prevState => ({ ...prevState, scoreRightPlayer: 0 }));
+		}
 	}
 
 	test() {
@@ -406,11 +422,18 @@ class GhostPong extends React.Component {
 					{/* Ghost Pong Game */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} keyReleased={this.keyReleased} keyIsDown={this.keyIsDown}/>
 
-					{/* Controls */}
-					<button
-						className={`settings-button pause-button${this.state.isPaused? ' is-paused': ''}`}
-						onClick={this.togglePause}
-					>Pause</button>
+					{/* Settings */}
+					<div className="settings-container">
+						<button
+							className={`settings-button pause-button${this.state.isPaused? ' is-paused': ''}`}
+							onClick={this.togglePause}
+						>Pause</button>
+						<button
+							className={`settings-button reset-button`}
+							onClick={this.resetGame}
+							disabled={this.state.isPaused}
+						>Reset</button>
+					</div>
 				</main>
 			</>
 		);
