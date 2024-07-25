@@ -144,11 +144,22 @@ class GhostPuck {
 		this.image = img;
 	}
 
+	// returns: number (randomly generated a number from, 0-9)
+	randomGenerator() {
+		const randomNum = Math.floor(Math.random() * 10);
+		return randomNum;
+	};
+
 	reset(gameBoard) {
 		this.x = gameBoard.width/2;
 		this.y = gameBoard.height/2;
 		this.speedX = this.startSpeed;
 		this.speedY = this.startSpeed;
+		const randomNum = this.randomGenerator();
+		// randomly sets the X direction of ghost puck
+		if (randomNum < 5){
+			this.speedX *= -1;
+		}
 	}
 }
 
