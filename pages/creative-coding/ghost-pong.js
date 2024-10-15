@@ -175,6 +175,7 @@ class GhostPong extends React.Component {
 
 		this.state = {
 			isPaused: false,
+			isMuted: false,
 			scoreLeftPlayer: 0,
 			scoreRightPlayer: 0,
 		};
@@ -190,6 +191,7 @@ class GhostPong extends React.Component {
 		this.audioScore = null;
 
 		this.togglePause = this.togglePause.bind(this);
+		this.toggleMute = this.toggleMute.bind(this);
 		this.resetGame = this.resetGame.bind(this);
 	}
 
@@ -214,12 +216,16 @@ class GhostPong extends React.Component {
 			ghost.changeVerticalDirection();
 			this.getGhostImage(ghost);
 		} else if (leftEdgeCheck) {
-			this.audioScore.play();
+			if (!this.state.isMuted) {
+				this.audioScore.play();
+			}
 			this.setState(prevState => ({ ...prevState, scoreRightPlayer: this.state.scoreRightPlayer + 1 }));
 			ghost.resetGhost(this.gameBoard);
 			this.getGhostImage(ghost);
 		} else if (rightEdgeCheck) {
-			this.audioScore.play();
+			if (!this.state.isMuted) {
+				this.audioScore.play();
+			}
 			this.setState(prevState => ({ ...prevState, scoreLeftPlayer: this.state.scoreLeftPlayer + 1 }));
 			ghost.resetGhost(this.gameBoard);
 			this.getGhostImage(ghost);
@@ -264,7 +270,9 @@ class GhostPong extends React.Component {
 			ghost.changeHorizontalDirection();
 			this.getGhostImage(ghost);
 			paddle.paddleHit = true;
-			this.audioPop.play();
+			if (!this.state.isMuted) {
+				this.audioPop.play();
+			}
 		}
 	}
 
@@ -286,6 +294,10 @@ class GhostPong extends React.Component {
 
 	togglePause(event) {
 		this.setState(prevState => ({ ...prevState, isPaused: !this.state.isPaused }));
+	}
+
+	toggleMute(event) {
+		this.setState(prevState => ({ ...prevState, isMuted: !this.state.isMuted }));
 	}
 
 	resetGame(event) {
@@ -433,6 +445,10 @@ class GhostPong extends React.Component {
 							onClick={this.resetGame}
 							disabled={this.state.isPaused}
 						>Reset</button>
+						<button
+							className={`settings-button mute-button`}
+							onClick={this.toggleMute}
+						>{this.state.isMuted? 'SOUND': 'MUTE'}</button>
 					</div>
 				</main>
 			</>
