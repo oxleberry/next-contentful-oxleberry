@@ -18,6 +18,9 @@
 		font-family: fonts.$alt-title-for-g;
 	}
 
+	// ===========================
+	// Scoreboard
+	// ===========================
 	.scoreboard {
 		display: inline-block;
 		width: 180px;
@@ -36,6 +39,69 @@
 		}
 	}
 
+
+	// ===========================
+	// Controls
+	// ===========================
+	.game-pad {
+		margin-top: 20px;
+		display: inline-block;
+		width: 60px;
+
+		&.left-player-game-pad {
+			margin-right: 80px;
+		}
+
+		&.right-player-game-pad {
+			margin-left: 80px;
+		}
+
+		.control {
+			position: relative;
+			display: inline-block;
+			height: 46px;
+			border-style: none;
+			box-shadow: 1px 0px 2px 0px #7c7c7c;
+			padding: 10px;
+		}
+
+		.control-up {
+			background-color: #9396BA; /* fallback */
+			background: linear-gradient(#9396BA, #73759b);
+			border-top-right-radius: 12px;
+			border-top-left-radius: 12px;
+			padding-bottom: 0;
+		}
+
+		.control-down {
+			background-color: #9396BA; /* fallback */
+			background: linear-gradient(#73759b, #9396BA);
+			border-bottom-left-radius: 12px;
+			border-bottom-right-radius: 12px;
+			padding-top: 0;
+		}
+
+		.arrow {
+			width: 30px;
+			transform: rotate(0deg);
+			opacity: .5;
+		}
+
+		.control-up:hover, .control-up:active {
+			background-color: #abafd8; /* fallback */
+			background: linear-gradient(#abafd8, #7a7ca0);
+		}
+
+		.control-down:hover, .control-down:active {
+			background-color: #abafd8; /* fallback */
+			background: linear-gradient(#7a7ca0, #abafd8);
+		}
+	}
+
+
+	// ===========================
+	// Settings
+	// ===========================
 	.settings-container {
 		display: flex;
 		flex-direction: column;

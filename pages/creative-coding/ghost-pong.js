@@ -434,6 +434,27 @@ class GhostPong extends React.Component {
 					{/* Ghost Pong Game */}
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} keyReleased={this.keyReleased} keyIsDown={this.keyIsDown}/>
 
+					{/* Control Buttons */}
+					<div className="game-pad-container">
+						<div className ="game-pad left-player-game-pad">
+							<button className="control control-up" id="left-player-up">
+								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-up.png" />
+							</button>
+							<button className="control control-down" id="left-player-down">
+								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-down.png" />
+							</button>
+						</div>
+
+						<div className ="game-pad right-player-game-pad">
+							<button className="control control-up" id="right-player-up">
+								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-up.png" />
+							</button>
+							<button className="control control-down" id="right-player-down">
+								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-down.png" />
+							</button>
+						</div>
+					</div>
+
 					{/* Settings */}
 					<div className="settings-container">
 						<button
