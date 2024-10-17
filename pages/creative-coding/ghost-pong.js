@@ -321,17 +321,16 @@ class GhostPong extends React.Component {
 
 
 	// Keyboard event listener =================
-	// move paddle up and down
 	keyPressed = (p5, event) => {
-		if (p5.key === ';') {
+		// move paddle up and down
+		if (p5.key === ';') { // up
 			this.right.updatePaddleDirection( - this.paddle.speed);
-		} else if (p5.key === '.') {
+		} else if (p5.key === '.') { // down
 			this.right.updatePaddleDirection(this.paddle.speed);
-		} else if (p5.key === 's') {
+		} else if (p5.key === 's') { // up
 			this.left.updatePaddleDirection( - this.paddle.speed);
-		} else if (p5.key === 'x') {
+		} else if (p5.key === 'x') { // down
 			this.left.updatePaddleDirection(this.paddle.speed);
-
 		// pause game
 		} else if (p5.key === 'p') {
 			this.togglePause();
@@ -340,6 +339,38 @@ class GhostPong extends React.Component {
 
 	// stop paddles from moving
 	keyReleased = (p5, event) => {
+		if (p5.key === ';' || p5.key === '.') {
+			this.right.updatePaddleDirection(0);
+		} else if  (p5.key === 's' || p5.key === 'x') {
+			this.left.updatePaddleDirection(0);
+		}
+	}
+
+	// Mouse Click event listener =================
+	paddleMouseDownHandler = (event) => {
+		// console.log('event', event);
+		// console.log('event.target.id', event.target.id);
+		const buttonId = event.target.id;
+		switch (buttonId) {
+			case 'left-player-up':
+				this.left.updatePaddleDirection( - this.paddle.speed);
+				break;
+			case 'left-player-down':
+				this.left.updatePaddleDirection( this.paddle.speed);
+				break;
+			case 'right-player-up':
+				this.right.updatePaddleDirection( - this.paddle.speed);
+				break;
+			case 'right-player-down':
+				this.right.updatePaddleDirection( this.paddle.speed);
+				break;
+		}
+	}
+
+	paddleMouseUpHandler = (event) => {
+		// console.log('event', event);
+		this.left.updatePaddleDirection(0);
+		this.right.updatePaddleDirection(0);
 		if (p5.key === ';' || p5.key === '.') {
 			this.right.updatePaddleDirection(0);
 		} else if  (p5.key === 's' || p5.key === 'x') {
@@ -437,19 +468,31 @@ class GhostPong extends React.Component {
 					{/* Control Buttons */}
 					<div className="game-pad-container">
 						<div className ="game-pad left-player-game-pad">
-							<button className="control control-up" id="left-player-up">
+							<button className={`control control-up ${this.state.isPressed? ' is-pressed': ''}`}
+								id="left-player-up" 
+								onMouseDown={this.paddleMouseDownHandler}
+								onMouseUp={this.paddleMouseUpHandler}>
 								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-up.png" />
 							</button>
-							<button className="control control-down" id="left-player-down">
+							<button className="control control-down" 
+								id="left-player-down" 
+								onMouseDown={this.paddleMouseDownHandler}
+								onMouseUp={this.paddleMouseUpHandler}>
 								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-down.png" />
 							</button>
 						</div>
 
 						<div className ="game-pad right-player-game-pad">
-							<button className="control control-up" id="right-player-up">
+							<button className="control control-up" 
+								id="right-player-up" 
+								onMouseDown={this.paddleMouseDownHandler}
+								onMouseUp={this.paddleMouseUpHandler}>
 								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-up.png" />
 							</button>
-							<button className="control control-down" id="right-player-down">
+							<button className="control control-down" 
+								id="right-player-down" 
+								onMouseDown={this.paddleMouseDownHandler}
+								onMouseUp={this.paddleMouseUpHandler}>
 								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-down.png" />
 							</button>
 						</div>
