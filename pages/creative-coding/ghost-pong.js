@@ -1,4 +1,5 @@
 import React from 'react';
+import { Component } from 'react';
 import Head from 'next/head'
 import Header from '../../components/Header'
 
@@ -168,6 +169,43 @@ class GhostPuck {
 }
 
 
+// CONTROL =====================
+class ControlButton extends Component {
+	constructor() {
+		super();
+		this.state = {
+			isPressed: false,
+		};
+
+		this.mousePressed = this.mousePressed.bind(this);
+		this.mouseReleased = this.mouseReleased.bind(this);
+	}
+
+	mousePressed() {
+		const id = `${this.props.player}-${this.props.direction}`
+		this.setState(prevState => ({ ...prevState, isPressed: !this.state.isPressed }));
+		this.props.onControlsMousePressed(id);
+	}
+
+	mouseReleased() {
+		const id = `${this.props.player}-${this.props.direction}`
+		this.setState(prevState => ({ ...prevState, isPressed: !this.state.isPressed }));
+		this.props.onControlsMouseReleased(id);
+	}
+
+	render() {
+		return (
+			<button id={`${this.props.player}-${this.props.direction}`}
+				className={`control control-${this.props.direction}${this.state.isPressed? ' is-pressed': ''}`}
+				onMouseDown={this.mousePressed}
+				onMouseUp={this.mouseReleased}>
+				<img className="arrow" src={this.props.image} />{this.state.age}
+			</button>
+		);
+	}
+}
+
+
 // GAME PLAY =====================
 class GhostPong extends React.Component {
 	constructor() {
@@ -311,14 +349,6 @@ class GhostPong extends React.Component {
 		}
 	}
 
-	test() {
-		console.log('===================================');
-		console.log('this.gameBoard', this.gameBoard);
-		console.log('this.left', this.left);
-		console.log('this.right', this.right);
-		console.log('this.ghost', this.ghost);
-	}
-
 
 	// Keyboard event listener =================
 	keyPressed = (p5, event) => {
@@ -347,10 +377,7 @@ class GhostPong extends React.Component {
 	}
 
 	// Mouse Click event listener =================
-	paddleMouseDownHandler = (event) => {
-		// console.log('event', event);
-		// console.log('event.target.id', event.target.id);
-		const buttonId = event.target.id;
+	controlMousePressedHandler = (buttonId) => {
 		switch (buttonId) {
 			case 'left-player-up':
 				this.left.updatePaddleDirection( - this.paddle.speed);
@@ -367,14 +394,20 @@ class GhostPong extends React.Component {
 		}
 	}
 
-	paddleMouseUpHandler = (event) => {
-		// console.log('event', event);
-		this.left.updatePaddleDirection(0);
-		this.right.updatePaddleDirection(0);
-		if (p5.key === ';' || p5.key === '.') {
-			this.right.updatePaddleDirection(0);
-		} else if  (p5.key === 's' || p5.key === 'x') {
-			this.left.updatePaddleDirection(0);
+	controlMouseReleasedHandler = (buttonId) => {
+		switch (buttonId) {
+			case 'left-player-up':
+				this.left.updatePaddleDirection(0);
+				break;
+			case 'left-player-down':
+				this.left.updatePaddleDirection(0);
+				break;
+			case 'right-player-up':
+				this.right.updatePaddleDirection(0);
+				break;
+			case 'right-player-down':
+				this.right.updatePaddleDirection(0);
+				break;
 		}
 	}
 
@@ -467,34 +500,33 @@ class GhostPong extends React.Component {
 
 					{/* Control Buttons */}
 					<div className="game-pad-container">
-						<div className ="game-pad left-player-game-pad">
-							<button className={`control control-up ${this.state.isPressed? ' is-pressed': ''}`}
-								id="left-player-up" 
-								onMouseDown={this.paddleMouseDownHandler}
-								onMouseUp={this.paddleMouseUpHandler}>
-								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-up.png" />
-							</button>
-							<button className="control control-down" 
-								id="left-player-down" 
-								onMouseDown={this.paddleMouseDownHandler}
-								onMouseUp={this.paddleMouseUpHandler}>
-								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-down.png" />
-							</button>
+						<div className="game-pad left-player-game-pad">
+							<ControlButton
+								player="left-player"
+								direction="up"
+								image="/creative-coding-pages/ghost-pong/images/arrow-up.png"
+								onControlsMousePressed={this.controlMousePressedHandler}
+								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
+							<ControlButton
+								player="left-player"
+								direction="down"
+								image="/creative-coding-pages/ghost-pong/images/arrow-down.png"
+								onControlsMousePressed={this.controlMousePressedHandler}
+								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
 						</div>
-
-						<div className ="game-pad right-player-game-pad">
-							<button className="control control-up" 
-								id="right-player-up" 
-								onMouseDown={this.paddleMouseDownHandler}
-								onMouseUp={this.paddleMouseUpHandler}>
-								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-up.png" />
-							</button>
-							<button className="control control-down" 
-								id="right-player-down" 
-								onMouseDown={this.paddleMouseDownHandler}
-								onMouseUp={this.paddleMouseUpHandler}>
-								<img className="arrow" src="/creative-coding-pages/ghost-pong/images/arrow-down.png" />
-							</button>
+						<div className="game-pad right-player-game-pad">
+							<ControlButton
+								player="right-player"
+								direction="up"
+								image="/creative-coding-pages/ghost-pong/images/arrow-up.png"
+								onControlsMousePressed={this.controlMousePressedHandler}
+								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
+							<ControlButton
+								player="right-player"
+								direction="down"
+								image="/creative-coding-pages/ghost-pong/images/arrow-down.png"
+								onControlsMousePressed={this.controlMousePressedHandler}
+								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
 						</div>
 					</div>
 
