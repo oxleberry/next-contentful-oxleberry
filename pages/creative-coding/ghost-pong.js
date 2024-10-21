@@ -500,6 +500,14 @@ class GhostPong extends React.Component {
 
 					{/* Control Buttons */}
 					<div className="game-pad-container">
+						<div className="key-guide-container left-player-guide">
+							<div className="key-guide title">
+								<span>Left Player Keyboard Keys</span>
+							</div>
+							<span className="key-guide">s</span>
+							<span className="key-guide">x</span>
+						</div>
+
 						<div className="game-pad left-player-game-pad">
 							<ControlButton
 								player="left-player"
@@ -527,6 +535,13 @@ class GhostPong extends React.Component {
 								image="/creative-coding-pages/ghost-pong/images/arrow-down.png"
 								onControlsMousePressed={this.controlMousePressedHandler}
 								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
+						</div>
+						<div className="key-guide-container right-player-guide">
+							<div className="key-guide title">
+								<span>Right Player Keyboard Keys</span>
+							</div>
+							<span className="key-guide">;</span>
+							<span className="key-guide">.</span>
 						</div>
 					</div>
 

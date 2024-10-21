@@ -43,10 +43,18 @@
 	// ===========================
 	// Controls
 	// ===========================
+	.game-pad-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 10px;
+	}
+
 	.game-pad {
-		margin-top: 20px;
-		display: inline-block;
-		width: 60px;
+		// display: inline-block;
+		// width: 60px;
+		display: flex;
+		flex-direction: column;
 
 		&.left-player-game-pad {
 			margin-right: 80px;
@@ -63,6 +71,11 @@
 			border-style: none;
 			box-shadow: 1px 0px 2px 0px #7c7c7c;
 			padding: 10px;
+
+			img {
+				display: block;
+				pointer-events: none;
+			}
 		}
 
 		.control-up {
@@ -108,13 +121,54 @@
 
 
 	// ===========================
+	// Keyboard Guide
+	// ===========================
+	.key-guide-container {
+		display: grid;
+		gap: 4px;
+		margin: 15px;
+
+		.title {
+			display: flex;
+			align-items: center;
+		}
+
+		&.left-player-guide {
+			grid-template-columns: 118px 34px;
+
+			.title {
+				grid-row: span 2;
+			}
+		}
+
+		&.right-player-guide {
+			grid-template-columns: 34px 118px;
+
+			.title {
+				grid-column: 2;
+				grid-row: 1 / span 2;
+			}
+		}
+
+		.key-guide {
+			background-color: #e8e8e8;
+			color: #8e8c8c;
+			font-size: 16px;
+			font-weight: bold;
+			border-radius: 3px;
+			padding: 11px 8px;
+		}
+	}
+
+
+	// ===========================
 	// Settings
 	// ===========================
 	.settings-container {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		margin-top: 20px;
+		margin-top: 10px;
 		padding-bottom: 80px;
 	}
 
