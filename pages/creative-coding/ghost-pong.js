@@ -206,6 +206,31 @@ class ControlButton extends Component {
 }
 
 
+// KEYBOARD GUIDE =====================
+	// Props:
+	// side = string | Example: "left", "right"
+	// name = string | Example: "Left", "Right"
+	// topKey = string
+	// bottomKey = string
+	class KeyboardGuide extends Component {
+		constructor() {
+			super();
+		}
+
+		render() {
+			return (
+				<div className={`key-guide-container ${this.props.side}-player-guide`}>
+					<div className="key-guide title">
+						<span>{this.props.name} Player Keyboard Keys</span>
+					</div>
+					<span className="key-guide">{this.props.topKey}</span>
+					<span className="key-guide">{this.props.bottomKey}</span>
+				</div>
+			);
+		}
+	}
+
+
 // GAME PLAY =====================
 class GhostPong extends React.Component {
 	constructor() {
@@ -500,14 +525,7 @@ class GhostPong extends React.Component {
 
 					{/* Control Buttons */}
 					<div className="game-pad-container">
-						<div className="key-guide-container left-player-guide">
-							<div className="key-guide title">
-								<span>Left Player Keyboard Keys</span>
-							</div>
-							<span className="key-guide">s</span>
-							<span className="key-guide">x</span>
-						</div>
-
+						<KeyboardGuide side="left" name="Left" topKey="s" bottomKey="x"/>
 						<div className="game-pad left-player-game-pad">
 							<ControlButton
 								player="left-player"
@@ -536,13 +554,7 @@ class GhostPong extends React.Component {
 								onControlsMousePressed={this.controlMousePressedHandler}
 								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
 						</div>
-						<div className="key-guide-container right-player-guide">
-							<div className="key-guide title">
-								<span>Right Player Keyboard Keys</span>
-							</div>
-							<span className="key-guide">;</span>
-							<span className="key-guide">.</span>
-						</div>
+						<KeyboardGuide side="right" name="Right" topKey=";" bottomKey="."/>
 					</div>
 
 					{/* Settings */}
