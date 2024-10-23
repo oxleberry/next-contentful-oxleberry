@@ -150,6 +150,10 @@
 			}
 		}
 
+		&.hide {
+			display: none;
+		}
+
 		.key-guide {
 			background-color: #e8e8e8;
 			color: #8e8c8c;

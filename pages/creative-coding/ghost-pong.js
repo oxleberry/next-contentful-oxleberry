@@ -212,6 +212,7 @@ class ControlButton extends Component {
 	// name = string | Example: "Left", "Right"
 	// topKey = string
 	// bottomKey = string
+	// isHidden = boolean
 	class KeyboardGuide extends Component {
 		constructor() {
 			super();
@@ -219,7 +220,7 @@ class ControlButton extends Component {
 
 		render() {
 			return (
-				<div className={`key-guide-container ${this.props.side}-player-guide`}>
+				<div className={`key-guide-container ${this.props.side}-player-guide${this.props.isHidden ? ' hide': ''}`}>
 					<div className="key-guide title">
 						<span>{this.props.name} Player Keyboard Keys</span>
 					</div>
@@ -241,6 +242,7 @@ class GhostPong extends React.Component {
 			isMuted: false,
 			scoreLeftPlayer: 0,
 			scoreRightPlayer: 0,
+			isMobile: true,
 		};
 
 		// Global Variables =================
@@ -436,12 +438,22 @@ class GhostPong extends React.Component {
 		}
 	}
 
+	setMobileOff = () => {
+		this.setState(prevState => ({ ...prevState, isMobile: false }));
+	}
+
 
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
-		// Create GameBoard = width, height
-		this.gameBoard = new GameBoard(600, 400); // desktop
-		// this.gameBoard = new GameBoard(400, 280); // mobile
+		let boardWidth = 360;
+		let boardHeight = 280;
+		// set gameboard size on larger viewports
+		if (window.innerWidth > 800) {
+			boardWidth = 600;
+			boardHeight = 400;
+			this.setMobileOff();
+		}
+		this.gameBoard = new GameBoard(boardWidth, boardHeight);
 		// p5 CANVAS
 		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
 		p5.frameRate(30);
@@ -525,7 +537,7 @@ class GhostPong extends React.Component {
 
 					{/* Control Buttons */}
 					<div className="game-pad-container">
-						<KeyboardGuide side="left" name="Left" topKey="s" bottomKey="x"/>
+						<KeyboardGuide side="left" name="Left" topKey="s" bottomKey="x" isHidden={this.state.isMobile}/>
 						<div className="game-pad left-player-game-pad">
 							<ControlButton
 								player="left-player"
@@ -554,7 +566,7 @@ class GhostPong extends React.Component {
 								onControlsMousePressed={this.controlMousePressedHandler}
 								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
 						</div>
-						<KeyboardGuide side="right" name="Right" topKey=";" bottomKey="."/>
+						<KeyboardGuide side="right" name="Right" topKey=";" bottomKey="." isHidden={this.state.isMobile}/>
 					</div>
 
 					{/* Settings */}
