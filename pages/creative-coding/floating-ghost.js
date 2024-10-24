@@ -105,27 +105,43 @@ class FloatingGhost extends React.Component {
 		const movingLeft = ghost.speedX < 0;
 		const movingRight = ghost.speedX > 0;
 		if (topEdge && movingLeft) {
+			ghost.x += 1; // reposition ghost inbounds, additional measure for not getting stuck out of frame
+			ghost.y += 1; // reposition ghost inbounds, additional measure for not getting stuck out of frame
 			ghost.changeVerticalDirection();
 			ghost.updateGhostImage(this.ghostLeftDown);
 		} else if (topEdge && movingRight) {
+			ghost.x -= 1; // reposition ghost inbounds
+			ghost.y += 1; // reposition ghost inbounds
 			ghost.changeVerticalDirection();
 			ghost.updateGhostImage(this.ghostRightDown);
 		} else if (bottomEdge && movingLeft) {
+			ghost.x += 1; // reposition ghost inbounds
+			ghost.y -= 1; // reposition ghost inbounds
 			ghost.changeVerticalDirection();
 			ghost.updateGhostImage(this.ghostLeftUp);
 		} else if (bottomEdge && movingRight) {
+			ghost.x -= 1; // reposition ghost inbounds
+			ghost.y -= 1; // reposition ghost inbounds
 			ghost.changeVerticalDirection();
 			ghost.updateGhostImage(this.ghostRightUp);
 		} else if (leftEdge && movingUp) {
+			ghost.x += 1; // reposition ghost inbounds
+			ghost.y -= 1; // reposition ghost inbounds
 			ghost.changeHorizontalDirection();
 			ghost.updateGhostImage(this.ghostRightUp);
 		} else if (leftEdge && movingDown) {
+			ghost.x += 1; // reposition ghost inbounds
+			ghost.y -= 1; // reposition ghost inbounds
 			ghost.changeHorizontalDirection();
 			ghost.updateGhostImage(this.ghostRightDown);
 		} else if (rightEdge && movingUp) {
+			ghost.x -= 1; // reposition ghost inbounds
+			ghost.y += 1; // reposition ghost inbounds
 			ghost.changeHorizontalDirection();
 			ghost.updateGhostImage(this.ghostLeftUp);
 		} else if (rightEdge && movingDown) {
+			ghost.x -= 1; // reposition ghost inbounds
+			ghost.y -= 1; // reposition ghost inbounds
 			ghost.changeHorizontalDirection();
 			ghost.updateGhostImage(this.ghostLeftDown);
 		}
@@ -137,9 +153,14 @@ class FloatingGhost extends React.Component {
 
 	// p5 Drawing Library functions =================
 	setup = (p5, canvasParentRef) => {
-		// Create GameBoard = width, height
-		this.gameBoard = new GameBoard(800, 520); // desktop
-		// this.gameBoard = new GameBoard(380, 280); // mobile
+		let boardWidth = 360;
+		let boardHeight = 280;
+		// set gameboard size on larger viewports
+		if (window.innerWidth > 800) {
+			boardWidth = 600;
+			boardHeight = 400;
+		}
+		this.gameBoard = new GameBoard(boardWidth, boardHeight);
 		// p5 CANVAS
 		p5.createCanvas(this.gameBoard.width, this.gameBoard.height).parent(canvasParentRef);
 		p5.frameRate(30);
@@ -191,10 +212,12 @@ class FloatingGhost extends React.Component {
 					<Sketch setup={this.setup} draw={this.draw} keyPressed={this.keyPressed} keyReleased={this.keyReleased} />
 
 					{/* Controls */}
-					<button
-						className={`button pause-button${this.state.isPaused? ' is-paused': ''}`}
-						onClick={this.togglePause}
-					>PAUSE</button>
+					<div className="settings-container">
+						<button
+							className={`settings-button pause-button${this.state.isPaused? ' is-paused': ''}`}
+							onClick={this.togglePause}
+						>PAUSE</button>
+					</div>
 				</main>
 			</>
 		);
