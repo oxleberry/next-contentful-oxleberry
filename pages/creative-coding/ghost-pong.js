@@ -3,6 +3,8 @@ import { Component } from 'react';
 import Head from 'next/head'
 import Header from '../../components/Header'
 
+import { createClient } from 'contentful'
+
 // Will only import `react-p5` on client-side
 // This is useful if a component relies on browser APIs like window.
 // https://nextjs.org/docs/pages/building-your-application/optimizing/lazy-loading#with-no-ssr
@@ -10,6 +12,21 @@ import dynamic from 'next/dynamic'
 const Sketch = dynamic(() => import('react-p5').then((mod) => mod.default), {
 	ssr: false,
 })
+
+
+// get CMS content =================
+export async function getStaticProps() {
+	const client = createClient({
+		space: process.env.CONTENTFUL_SPACE_ID,
+		accessToken: process.env.CONTENTFUL_ACCESS_KEY
+	});
+	const res = await client.getEntries({ content_type: 'ghostPong' });
+	return {
+		props: {
+			ghostPongItems: res.items
+		}
+	}
+}
 
 
 // Other Components =================
@@ -234,7 +251,7 @@ class ControlButton extends Component {
 
 // GAME PLAY =====================
 class GhostPong extends React.Component {
-	constructor() {
+	constructor({ ghostPongItems }) {
 		super();
 
 		this.state = {
@@ -246,6 +263,15 @@ class GhostPong extends React.Component {
 		};
 
 		// Global Variables =================
+		this.ghostImage = ghostPongItems.filter((item) => item.fields.assetsId === 'ghost');
+		this.ghostImagePaths = this.ghostImage[0].fields.assets.map( image => {
+			return {
+				...this.ghostImagePaths,
+				title: image.fields.title,
+				url: image.fields.file.url
+			}
+		});
+
 		this.paddle = {
 			distanceFromEdge: 30, // distance paddle is from edge of game board
 			width: new Paddle().width, // used for setting stripe placement
@@ -462,19 +488,25 @@ class GhostPong extends React.Component {
 		p5.rectMode(p5.CENTER);
 		p5.imageMode(p5.CENTER);
 		// Ghost Images
-		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-right-up.png", img => {
-			this.ghostRightUp = img;
-		});
-		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-right-down.png", img => {
-			this.ghostRightDown = img;
-			this.ghost.image = this.ghostRightDown; // starting ghost image
-		});
-		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-left-up.png", img => {
-			this.ghostLeftUp = img;
-		});
-		p5.loadImage("/creative-coding-pages/ghost-pong/images/ghost-left-down.png", img => {
-			this.ghostLeftDown = img;
-		});
+		this.ghostImagePaths.forEach( image => {
+			p5.loadImage(image.url, img => {
+				switch (image.title) {
+					case 'ghost-left-down':
+						this.ghostLeftDown = img;
+						break;
+					case 'ghost-left-up':
+						this.ghostLeftUp = img;
+						break;
+					case 'ghost-right-down':
+						this.ghostRightDown = img;
+						this.ghost.image = this.ghostRightDown; // starting ghost image
+						break;
+					case 'ghost-right-up':
+						this.ghostRightUp = img;
+						break;
+				}
+			});
+		})
 		// Create Ghost = x, y
 		this.ghost = new GhostPuck(
 			this.gameBoard.width / 2,
