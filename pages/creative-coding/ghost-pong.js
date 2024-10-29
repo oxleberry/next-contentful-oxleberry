@@ -271,6 +271,10 @@ class GhostPong extends React.Component {
 				url: image.fields.file.url
 			}
 		});
+		this.arrowImageDown = ghostPongItems.filter((item) => item.fields.assetsId === 'arrowDown');
+		this.arrowDown = this.arrowImageDown[0].fields.assets[0].fields.file.url;
+		this.arrowImageUp = ghostPongItems.filter((item) => item.fields.assetsId === 'arrowUp');
+		this.arrowUp = this.arrowImageUp[0].fields.assets[0].fields.file.url;
 
 		this.paddle = {
 			distanceFromEdge: 30, // distance paddle is from edge of game board
@@ -574,13 +578,13 @@ class GhostPong extends React.Component {
 							<ControlButton
 								player="left-player"
 								direction="up"
-								image="/creative-coding-pages/ghost-pong/images/arrow-up.png"
+								image={this.arrowUp}
 								onControlsMousePressed={this.controlMousePressedHandler}
 								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
 							<ControlButton
 								player="left-player"
 								direction="down"
-								image="/creative-coding-pages/ghost-pong/images/arrow-down.png"
+								image={this.arrowDown}
 								onControlsMousePressed={this.controlMousePressedHandler}
 								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
 						</div>
@@ -588,13 +592,13 @@ class GhostPong extends React.Component {
 							<ControlButton
 								player="right-player"
 								direction="up"
-								image="/creative-coding-pages/ghost-pong/images/arrow-up.png"
+								image={this.arrowUp}
 								onControlsMousePressed={this.controlMousePressedHandler}
 								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
 							<ControlButton
 								player="right-player"
 								direction="down"
-								image="/creative-coding-pages/ghost-pong/images/arrow-down.png"
+								image={this.arrowDown}
 								onControlsMousePressed={this.controlMousePressedHandler}
 								onControlsMouseReleased={this.controlMouseReleasedHandler}/>
 						</div>
