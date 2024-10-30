@@ -275,6 +275,10 @@ class GhostPong extends React.Component {
 		this.arrowDown = this.arrowImageDown[0].fields.assets[0].fields.file.url;
 		this.arrowImageUp = ghostPongItems.filter((item) => item.fields.assetsId === 'arrowUp');
 		this.arrowUp = this.arrowImageUp[0].fields.assets[0].fields.file.url;
+		this.audioPopAsset = ghostPongItems.filter((item) => item.fields.assetsId === 'audioPop');
+		this.audioPopPath = this.audioPopAsset[0].fields.assets[0].fields.file.url;
+		this.audioScoreAsset = ghostPongItems.filter((item) => item.fields.assetsId === 'audioScore');
+		this.audioScorePath = this.audioScoreAsset[0].fields.assets[0].fields.file.url;
 
 		this.paddle = {
 			distanceFromEdge: 30, // distance paddle is from edge of game board
@@ -532,8 +536,8 @@ class GhostPong extends React.Component {
 			this.paddle.startSpeed
 		);
 		// Audio
-		this.audioPop = new Audio('/creative-coding-pages/ghost-pong/audio/pop.mp3');
-		this.audioScore = new Audio('/creative-coding-pages/ghost-pong/audio/score.mp3');
+		this.audioPop = new Audio(this.audioPopPath);
+		this.audioScore = new Audio(this.audioScorePath);
 	}
 
 	draw = p5 => {
