@@ -123,6 +123,17 @@
 			color: var(--options-color);
 		}
 
+		// Garment Style
+		.option-garment-section {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 20px;
+
+			.option-garment {
+				text-align: center;
+			}
+		}
+
 		// Custom Color
 		.option-color {
 			display: flex;

@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
 	// States =================
+	const [garmentStyle, setgarmentStyle] = useState('adult-tee');
 	const [backgroundColor, setBackgroundColor] = useState('pink');
 	// const [backgroundColor, setBackgroundColor] = useState('#000000');
 	const [textInput, setTextInput] = useState('Welcome!');
@@ -61,6 +62,11 @@ export default function ShareCard() {
 			<rect class="share-svg-rect-pink" width="100" height="100"></rect>
 		</svg>
 	`
+
+	function garmentStyleHandler(event) {
+		let value = event.target.value;
+		setgarmentStyle(value);
+	}
 
 	function backgroundColorHandler(event) {
 		let value = event.target.value;
@@ -258,9 +264,7 @@ export default function ShareCard() {
 
 					<section className="share-content-section">
 						<div className="share-content-container" style={{background: `${backgroundColor}`}}>
-							{/* <img className="tee-image" src="/creative-coding-pages/share-card/images/onesie.png" /> */}
-							{/* <img className="tee-image" src="/creative-coding-pages/share-card/images/adult-tee.png" /> */}
-							<img className="tee-image" src="/creative-coding-pages/share-card/images/womens-tee.png" />
+							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} />
 							<h2 className="hidden">Share Content</h2>
 							<p className="text-display" style={{color: `${textColor}`}}>{textInput}</p>
 							<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
@@ -270,6 +274,44 @@ export default function ShareCard() {
 					{/* Option Section */}
 					<section className="options-container">
 						<h2 className="hidden">Options</h2>
+						{/* Option - Garment style */}
+						<div className="option option-garment-section">
+							<legend className="option-label">Garment style:</legend>
+							<div className="option-garment">
+								<input
+									id="adult-tee"
+									className="custom-garment"
+									name="custom-garment"
+									type="radio"
+									value="adult-tee"
+									defaultChecked
+									onChange={garmentStyleHandler}
+								/>
+								<label htmlFor="custom-garment" className="option-label">Adult</label>
+							</div>
+							<div className="option-garment">
+								<input
+									id="women-tee"
+									className="custom-garment"
+									name="custom-garment"
+									type="radio"
+									value="womens-tee"
+									onChange={garmentStyleHandler}
+								/>
+								<label htmlFor="custom-garment" className="option-label">Womens</label>
+							</div>
+							<div className="option-garment">
+								<input
+									id="onesie"
+									className="custom-garment"
+									name="custom-garment"
+									type="radio"
+									value="onesie"
+									onChange={garmentStyleHandler}
+								/>
+								<label htmlFor="custom-garment" className="option-label">Onesie</label>
+							</div>
+						</div>
 						{/* Option Pick a Color */}
 						<div className="option option-color">
 							<label htmlFor="custom-color" className="option-label">Pick a background color:</label>
