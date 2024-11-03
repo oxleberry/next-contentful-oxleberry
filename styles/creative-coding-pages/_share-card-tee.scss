@@ -1,0 +1,216 @@
+@use '../utilities/mixins' as *;
+// @use '../utilities/colors';
+@use '../utilities/fonts';
+
+
+.share-card-tee-page {
+	/* Variables */
+	--options-color: #34485f;
+	--options-input-color: #9daec1;
+	--footer-height: 110px;
+	--nav-height: 58px;
+	--header-height: 110px;
+	--not-main-height: calc(var(--footer-height) + var(--nav-height) + var(--header-height));
+
+	main {
+		display: grid;
+		justify-content: center;
+		// align-items: center; // toggle to hide canvas
+		min-height: calc(100vh - var(--not-main-height));
+		// grid-template-columns: repeat(3, 500px); // toggle to hide canvas
+		grid-template-columns: 500px .6fr;  // toggle to hide canvas
+		// grid-template-columns: 400px .6fr;  // toggle to hide canvas
+		gap: 48px;
+		max-width: 1400px;
+		margin: 0 auto;
+		padding: 0 20px;
+
+		@include bp(m) {
+			height: auto;
+			grid-template-columns: 400px;
+			padding: 0 50px 50px;
+		}
+	}
+
+	h1 {
+		font-family: fonts.$alt-title-for-g;
+	}
+
+	section {
+		// border: 2px solid #ccc;
+		// background-color: #f0f2f5;
+		// max-height: 600px;
+	}
+
+	.hidden {
+		display: none;
+	}
+
+	// ========================
+	// Share Content Section
+	// ========================
+	.share-content-section {
+		display: flex;
+		flex-direction: column;
+		// justify-content: center;
+		// background-color: red;
+
+		.share-content-container {
+			position: relative;
+			display: grid;
+			grid-template-rows: 72px 1fr;
+			gap: 32px;
+			// height: 550px;
+			height: 100%;
+			max-width: 100%;
+			border: 8px solid var(--options-color);
+			overflow: hidden;
+		}
+
+		.text-display {
+			font-size: 42px;
+			margin: 0;
+			align-self: center;
+			text-align: center;
+			color: #fff;
+		}
+
+		.image-display {
+			width: 100%;
+			max-width: 300px;
+			margin: 0 auto;
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: top center;
+		}
+
+		.tee-image {
+			position: absolute;
+			width: 100%;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+	}
+
+	// =====================
+	// Options Section
+	// =====================
+	.options-container {
+		border: 8px solid var(--options-color);
+		display: grid;
+		// grid-template-rows: repeat(4, auto);
+
+		.option {
+			border-bottom: 4px solid var(--options-color);
+			padding: 18px 18px 18px;
+
+			&:last-of-type {
+				border: none;
+			}
+		}
+
+		.row {
+			display: flex;
+			padding-bottom: 10px;
+		}
+
+		.option-label {
+			font-family: fonts.$sans-serif-cute;
+			font-weight: 500;
+			display: block;
+			font-size: 18px;
+			text-transform: uppercase;
+			color: var(--options-color);
+		}
+
+		// Custom Color
+		.option-color {
+			display: flex;
+		}
+
+		input[type="color"] {
+			width: 40px;
+			height: 40px;
+			border-radius: 3px;
+			margin-left: 14px;
+			margin-top: -8px;
+		}
+
+		// Custom Text
+		.custom-text {
+			height: 54px;
+			width: 100%;
+			border: 2px solid var(--options-input-color);
+			text-indent: 14px;
+			font-size: 16px;
+		}
+
+		// Gallery
+		.option-image .option-label {
+			padding-bottom: 14px;
+		}
+
+		.gallery-container {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 12px;
+
+			.gallery-image-button {
+				border: none;
+				border-radius: 12px;
+				padding: 10px;
+				opacity: .7;
+				transition: opacity 200ms ease-in-out;
+
+				&:hover {
+					opacity: 1;
+				}
+			}
+
+			.gallery-image {
+				width: 100%;
+			}
+
+			.button-black {
+				background-color: black;
+			}
+		}
+
+		.option-share {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		// =====================
+		// Share Card Button
+		// =====================
+		.share-button {
+			font-family: fonts.$sans-serif-cute;
+			font-weight: 800;
+			font-size: 18px;
+			text-transform: uppercase;
+			color: var(--options-color);
+			padding: 10px 16px;
+
+			border-radius: 6px;
+			border: 1px solid #a8b6c5;
+			// background-image: linear-gradient(#fff, #ebf0f5);
+			// background-image: linear-gradient(#fff, #d7e0e8);
+			background-image: linear-gradient(#f1f5fb, #d7e0e8);
+
+			svg.share-icon {
+				width: 22px;
+				margin-inline-start: 10px;
+
+				path {
+					fill: var(--options-color)
+				}
+			}
+		}
+	}
+
+	.canvas-container {
+		// display: none; // toggle to hide canvas
+	}
+}

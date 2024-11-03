@@ -4,7 +4,8 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
 	// States =================
-	const [backgroundColor, setBackgroundColor] = useState('#000000');
+	const [backgroundColor, setBackgroundColor] = useState('pink');
+	// const [backgroundColor, setBackgroundColor] = useState('#000000');
 	const [textInput, setTextInput] = useState('Welcome!');
 	const [textColor, setTextColor] = useState('#eeddb9');
 	const [isCustomText, setIsCustomText] = useState(false);
@@ -251,12 +252,15 @@ export default function ShareCard() {
 				<title>Oxleberry | Design a T-shirt</title>
 				<meta name="description" content="Oxleberry Design a T-shirt" />
 			</Head>
-			<div className="full-backboard share-card-page">
+			<div className="full-backboard share-card-tee-page">
 				<Header headline="Design a T-shirt" isSubPage={true}></Header>
 				<main>
 
 					<section className="share-content-section">
 						<div className="share-content-container" style={{background: `${backgroundColor}`}}>
+							{/* <img className="tee-image" src="/creative-coding-pages/share-card/images/onesie.png" /> */}
+							{/* <img className="tee-image" src="/creative-coding-pages/share-card/images/adult-tee.png" /> */}
+							<img className="tee-image" src="/creative-coding-pages/share-card/images/womens-tee.png" />
 							<h2 className="hidden">Share Content</h2>
 							<p className="text-display" style={{color: `${textColor}`}}>{textInput}</p>
 							<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
