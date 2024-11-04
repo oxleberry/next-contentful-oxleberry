@@ -5,8 +5,7 @@ import { useEffect, useState, useRef } from 'react'
 export default function ShareCard() {
 	// States =================
 	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
-	const [backgroundColor, setBackgroundColor] = useState('pink');
-	// const [backgroundColor, setBackgroundColor] = useState('#000000');
+	const [garmentColor, setGarmentColor] = useState('#1d1d1d');
 	const [textInput, setTextInput] = useState('Welcome!');
 	const [textColor, setTextColor] = useState('#eeddb9');
 	const [isCustomText, setIsCustomText] = useState(false);
@@ -68,9 +67,9 @@ export default function ShareCard() {
 		setGarmentStyle(value);
 	}
 
-	function backgroundColorHandler(event) {
+	function garmentColorHandler(event) {
 		let value = event.target.value;
-		setBackgroundColor(value);
+		setGarmentColor(value);
 	}
 
 	function textColorHandler(event) {
@@ -107,6 +106,24 @@ export default function ShareCard() {
 		)
 	}
 
+	function displayColorSwatch(colorId, hexValue) {
+		return (
+			<div className="option-color">
+				<input
+					id={`color-${colorId}`}
+					className={`color-${colorId}`}
+					name="color-selector"
+					type="radio"
+					value={hexValue}
+					defaultChecked 
+					onChange={garmentColorHandler}
+					style={{background: hexValue}}
+				/>
+				<label htmlFor="custom-color" className="option-label">{colorId}</label>
+			</div>
+		)
+	}
+
 	function galleryClickHandler(event) {
 		let image = event.target;
 		let imagePath = event.target.src;
@@ -126,7 +143,7 @@ export default function ShareCard() {
 		if (roundedCorners) {
 			drawRoundedCorners(canvas);
 		}
-		context.fillStyle = backgroundColor;
+		context.fillStyle = garmentColor;
 		context.fillRect(0, 0, 400, 400);
 		context.restore(); // Restore to the state saved by the most recent call to save()
 		shareFileRef.current.prepend(canvas);
@@ -141,7 +158,7 @@ export default function ShareCard() {
 		const cornerRadius = 40;
 		const context = canvas.getContext('2d');
 		context.beginPath();
-		context.fillStyle = backgroundColor;
+		context.fillStyle = garmentColor;
 		context.moveTo(cornerRadius, 0);
 		context.arcTo(width, top, width, height, cornerRadius);
 		context.arcTo(width, height, left, height, cornerRadius);
@@ -280,7 +297,7 @@ export default function ShareCard() {
 				<main>
 
 					<section className="share-content-section">
-						<div className="share-content-container" style={{background: `${backgroundColor}`}}>
+						<div className="share-content-container" style={{background: `${garmentColor}`}}>
 							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} />
 							<h2 className="hidden">Share Content</h2>
 							<p className="text-display" style={{color: `${textColor}`}}>{textInput}</p>
@@ -299,16 +316,28 @@ export default function ShareCard() {
 							{displayGarmentOption('onesie', 'Onesie', false)}
 						</div>
 						{/* Option Pick a Color */}
-						<div className="option option-color">
-							<label htmlFor="custom-color" className="option-label">Pick a background color:</label>
-							<input
-								id="custom-color"
-								className="custom-color"
-								name="custom-color"
-								type="color"
-								value={backgroundColor}
-								onChange={backgroundColorHandler}
-							/>
+						<div className="option option-garment-color">
+							<legend className="option-label">Garment color:</legend>
+							{displayColorSwatch('black', '#1d1d1d')}
+							{displayColorSwatch('red', '#d41b02')}
+							{displayColorSwatch('gold', '#ffaa00')}
+							{displayColorSwatch('olive', '#5f6e1f')}
+							{displayColorSwatch('navy', '#022c59')}
+							{displayColorSwatch('pink', '#ffade2')}
+							{displayColorSwatch('charcoal', '#4d4b49')}
+							{displayColorSwatch('grey', '#bfbebb')}
+							{displayColorSwatch('white', '#fff')}
+							<div className="option-color">
+								<input
+									id="color-custom"
+									className="color-selector"
+									name="color-selector"
+									type="color"
+									defaultValue="#9daec1"
+									onChange={garmentColorHandler}
+								/>
+								<label htmlFor="custom-color" className="option-label">Custom</label>
+							</div>
 						</div>
 						{/* Option Upload an Image */}
 						{/* <div className="option option-custom-image">
