@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
 	// States =================
-	const [garmentStyle, setgarmentStyle] = useState('adult-tee');
+	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
 	const [backgroundColor, setBackgroundColor] = useState('pink');
 	// const [backgroundColor, setBackgroundColor] = useState('#000000');
 	const [textInput, setTextInput] = useState('Welcome!');
@@ -65,7 +65,7 @@ export default function ShareCard() {
 
 	function garmentStyleHandler(event) {
 		let value = event.target.value;
-		setgarmentStyle(value);
+		setGarmentStyle(value);
 	}
 
 	function backgroundColorHandler(event) {
@@ -88,6 +88,23 @@ export default function ShareCard() {
 			setTextInput('');
 			setIsCustomText(true);
 		}
+	}
+
+	function displayGarmentOption(garmentId, garmentName, defaultChecked) {
+		return (
+			<div className="option-garment">
+				<input
+					id={garmentId}
+					className="custom-garment"
+					name="custom-garment"
+					type="radio"
+					value={garmentId}
+					defaultChecked={defaultChecked}
+					onChange={garmentStyleHandler}
+				/>
+				<label htmlFor="custom-garment" className="option-label">{garmentName}</label>
+			</div>
+		)
 	}
 
 	function galleryClickHandler(event) {
@@ -275,42 +292,11 @@ export default function ShareCard() {
 					<section className="options-container">
 						<h2 className="hidden">Options</h2>
 						{/* Option - Garment style */}
-						<div className="option option-garment-section">
+						<div className="option option-garment-style">
 							<legend className="option-label">Garment style:</legend>
-							<div className="option-garment">
-								<input
-									id="adult-tee"
-									className="custom-garment"
-									name="custom-garment"
-									type="radio"
-									value="adult-tee"
-									defaultChecked
-									onChange={garmentStyleHandler}
-								/>
-								<label htmlFor="custom-garment" className="option-label">Adult</label>
-							</div>
-							<div className="option-garment">
-								<input
-									id="women-tee"
-									className="custom-garment"
-									name="custom-garment"
-									type="radio"
-									value="womens-tee"
-									onChange={garmentStyleHandler}
-								/>
-								<label htmlFor="custom-garment" className="option-label">Womens</label>
-							</div>
-							<div className="option-garment">
-								<input
-									id="onesie"
-									className="custom-garment"
-									name="custom-garment"
-									type="radio"
-									value="onesie"
-									onChange={garmentStyleHandler}
-								/>
-								<label htmlFor="custom-garment" className="option-label">Onesie</label>
-							</div>
+							{displayGarmentOption('adult-tee', 'Adult', true)}
+							{displayGarmentOption('womens-tee', 'Womens', false)}
+							{displayGarmentOption('onesie', 'Onesie', false)}
 						</div>
 						{/* Option Pick a Color */}
 						<div className="option option-color">
