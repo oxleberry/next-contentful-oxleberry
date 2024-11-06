@@ -56,9 +56,9 @@
 
 		.share-content-container {
 			position: relative;
-			display: grid;
-			grid-template-rows: 72px 1fr;
-			gap: 32px;
+			// display: grid;
+			// grid-template-rows: 72px 1fr;
+			// gap: 32px;
 			// height: 550px;
 			height: 100%;
 			max-width: 100%;
@@ -75,12 +75,9 @@
 		}
 
 		.image-display {
-			width: 100%;
-			max-width: 300px;
+			width: 40%;
 			margin: 0 auto;
-			background-repeat: no-repeat;
-			background-size: contain;
-			background-position: top center;
+			position: absolute;
 		}
 
 		.tee-image {
@@ -88,6 +85,11 @@
 			width: 100%;
 			top: 50%;
 			transform: translateY(-50%);
+			pointer-events: none;
+		}
+
+		[draggable] {
+			cursor: move;
 		}
 	}
 

@@ -3,6 +3,8 @@ import Header from '../../components/Header'
 import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
+	const borderWidth = 8;
+
 	// States =================
 	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
 	const [garmentColor, setGarmentColor] = useState('#1d1d1d');
@@ -14,9 +16,13 @@ export default function ShareCard() {
 	const [galleryImageWidth, setGalleryImageWidth] = useState(0);
 	const [galleryImageHeight, setGalleryImageHeight] = useState(0);
 	const [roundedCorners, setRoundedCorners] = useState(true);
+	const [startPos, setStartPos] = useState({ x: null, y: null});
+	const [artPos, setArtPos] = useState({ x: 170, y: 155});
 
 	// Elements
 	const shareFileRef = useRef(null);
+	const dragContainerRef = useRef(null);
+	const dragArtImageRef = useRef(null);
 
 	// NOTE: not currently working - shows up on browser, but not showing up on share card
 	const svgString = `
@@ -115,7 +121,6 @@ export default function ShareCard() {
 					name="color-selector"
 					type="radio"
 					value={hexValue}
-					defaultChecked 
 					onChange={garmentColorHandler}
 					style={{background: hexValue}}
 				/>
@@ -133,6 +138,53 @@ export default function ShareCard() {
 		setGalleryImageHeight(event.target.offsetHeight);
 	}
 
+
+	// =======================================
+	// Draggable Image functions
+	// =======================================
+	function dragStartHandler(event) {
+		if (event.target == null) return;
+		// store cursor start position
+		setStartPos({
+			x: event.clientX,
+			y: event.clientY
+		});
+	}
+
+	function dragOverHandler(event) {
+		if (event.target == null) return;
+		event.preventDefault();
+		// calculate new position
+		let mouseX = event.clientX;
+		let mouseY = event.clientY;
+		let distanceX = mouseX - startPos.x;
+		let distanceY = mouseY - startPos.y;
+		// update position
+		dragArtImageRef.current.style.left = artPos.x + distanceX + 'px';
+		dragArtImageRef.current.style.top = artPos.y + distanceY + 'px';
+	}
+
+	function dragDropHandler(event) {
+		if (event.target == null) return;
+		event.preventDefault();
+		// calculate distance from parent container (adjusting for border thickness)
+		let parentDistX = dragContainerRef.current.getBoundingClientRect().left;
+		let artDistX = dragArtImageRef.current.getBoundingClientRect().left;
+		let newPosX = artDistX - parentDistX - borderWidth;
+		let parentDistY = dragContainerRef.current.getBoundingClientRect().top;
+		let artDistY = dragArtImageRef.current.getBoundingClientRect().top;
+		let newPosY = artDistY - parentDistY - borderWidth;
+		// save new position
+		setArtPos({
+			x: newPosX,
+			y: newPosY
+		});
+	}
+
+
+	// =======================================
+	// Share Card functions 
+	// =======================================
 	function createCanvas() {
 		const canvas = document.createElement('canvas');
 		canvas.width = 400;
@@ -297,11 +349,25 @@ export default function ShareCard() {
 				<main>
 
 					<section className="share-content-section">
-						<div className="share-content-container" style={{background: `${garmentColor}`}}>
+						<div
+							className="share-content-container"
+							ref={dragContainerRef}
+							onDragOver={e => dragOverHandler(e, false)}
+							onDrop={e => dragDropHandler(e, false)}
+							style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
+						>
+							<img
+								src={galleryImagePath}
+								alt=""
+								className="image-display"
+								ref={dragArtImageRef}
+								draggable
+								onDragStart={e => dragStartHandler(e, false)}
+								style={{left: artPos.x, top: artPos.y}}
+							/>
 							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} />
 							<h2 className="hidden">Share Content</h2>
-							<p className="text-display" style={{color: `${textColor}`}}>{textInput}</p>
-							<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
+							{/* <p className="text-display" style={{color: `${textColor}`}}>{textInput}</p> */}
 						</div>
 					</section>
 
