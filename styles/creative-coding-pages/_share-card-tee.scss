@@ -66,18 +66,17 @@
 			overflow: hidden;
 		}
 
-		.image-display {
-			width: 40%;
-			margin: 0 auto;
-			position: absolute;
-		}
-
 		.tee-image {
 			position: absolute;
 			width: 100%;
 			top: 50%;
 			transform: translateY(-50%);
 			pointer-events: none;
+		}
+
+		.design-image {
+			margin: 0 auto;
+			position: absolute;
 		}
 
 		[draggable] {
@@ -215,6 +214,29 @@
 			input[type="radio"]:not(:disabled):hover {
 				transform: scale(1.2);
 				transition: all 200ms ease-in-out;
+			}
+		}
+
+		// Art Size
+		.option-size {
+			display: flex;
+
+			.option-label {
+				margin-right: 10px;
+			}
+
+			.size-control {
+				cursor: pointer;
+				width: 40px;
+				color: var(--options-color);
+				font-size: 26px;
+				font-weight: bold;
+				border-radius: 2px;
+				border: 1px solid #a8b6c5;
+				background-color: #d7e0e8;
+				background-image: linear-gradient(#f1f5fb, #d7e0e8);
+				padding-bottom: 7px;
+				margin: 0 8px;
 			}
 		}
 

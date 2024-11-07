@@ -112,8 +112,27 @@ export default function ShareCard() {
 		)
 	}
 
+	function sizeClickHandler(event) {
+		if (curDragElem == null) return;
+		let increment = 30;
+		let updateWidth;
+		// increment based on button clicked
+		if (event.target.id == "plus") {
+			updateWidth = curDragElem.width + increment;
+		} else if (event.target.id == "minus") {
+			updateWidth = curDragElem.width - increment;
+		}
+		// update width of current design
+		setDesigns(designs.map(design => {
+			if (design.id == curDragElem.id) {
+				return { ...design, width: updateWidth };
+			} else {
+				return design;
+			}
+		}));
+	}
+
 	function galleryClickHandler(event) {
-		let image = event.target;
 		let imagePath = event.target.src;
 		// setGalleryImage(image);
 		// setGalleryImagePath(imagePath);
@@ -121,10 +140,18 @@ export default function ShareCard() {
 		// setGalleryImageHeight(event.target.offsetHeight);
 		let nextId = designIdx + 1;
 		setDesignIdx(nextId);
-		setDesigns( // Replace the state
-			[ // with a new array
-				...designs, // that contains all the old items
-				{ id: nextId, posX: 170, posY: 150, path: imagePath, dragClass: 'draggable' } // and one new item at the end
+		// add new design
+		setDesigns(
+			[
+				...designs,
+				{
+					id: nextId,
+					path: imagePath,
+					posX: 175,
+					posY: 130,
+					width: 220,
+					dragClass: 'draggable'
+				}
 			]
 		);
 	}
@@ -183,7 +210,7 @@ export default function ShareCard() {
 			}
 		}));
 		// clear target element
-		setCurDragElem(null);
+		// setCurDragElem(null);
 	}
 
 
@@ -367,11 +394,11 @@ export default function ShareCard() {
 									alt=""
 									key={idx}
 									id={idx}
-									className={`image-display design-${idx} ${design.dragClass}`}
+									className={`design-image design-${idx} ${design.dragClass}`}
 									ref={dragArtImageRef}
 									draggable
 									onDragStart={event => dragStartHandler(event, false)}
-									style={{left: design.posX, top: design.posY}}
+									style={{left: design.posX, top: design.posY, width: design.width}}
 								/>
 							)}
 							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} />
@@ -417,6 +444,20 @@ export default function ShareCard() {
 						{/* <div className="option option-custom-image">
 							<label className="option-label">Upload in image:</label>
 						</div> */}
+						{/* Option Size */}
+						<div className="option option-size">
+							<label className="option-label">Art size:</label>
+							<button
+								id="minus"
+								className="size-control"
+								onClick={sizeClickHandler}
+							>-</button>
+							<button
+								id="plus"
+								className="size-control"
+								onClick={sizeClickHandler}
+							>+</button>
+						</div>
 						{/* Option Galley Image */}
 						<div className="option option-image">
 							<label className="option-label">Choose an image:</label>
