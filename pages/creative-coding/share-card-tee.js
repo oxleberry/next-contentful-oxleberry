@@ -16,8 +16,10 @@ export default function ShareCard() {
 	const [galleryImageWidth, setGalleryImageWidth] = useState(0);
 	const [galleryImageHeight, setGalleryImageHeight] = useState(0);
 	const [roundedCorners, setRoundedCorners] = useState(true);
-	const [startPos, setStartPos] = useState({ x: null, y: null});
-	const [artPos, setArtPos] = useState({ x: 170, y: 155});
+	const [startCursorPos, setStartCursorPos] = useState({ x: null, y: null});
+	const [curDragElem, setCurDragElem] = useState(null);
+	const [designs, setDesigns] = useState([]);
+	const [designIdx, setDesignIdx] = useState(-1);
 
 	// Elements
 	const shareFileRef = useRef(null);
@@ -136,6 +138,14 @@ export default function ShareCard() {
 		setGalleryImagePath(imagePath);
 		setGalleryImageWidth(event.target.offsetWidth);
 		setGalleryImageHeight(event.target.offsetHeight);
+		let nextId = designIdx + 1;
+		setDesignIdx(nextId);
+		setDesigns( // Replace the state
+			[ // with a new array
+				...designs, // that contains all the old items
+				{ id: nextId, posX: 170, posY: 150, path: imagePath, dragClass: 'draggable' } // and one new item at the end
+			]
+		);
 	}
 
 
@@ -144,8 +154,9 @@ export default function ShareCard() {
 	// =======================================
 	function dragStartHandler(event) {
 		if (event.target == null) return;
-		// store cursor start position
-		setStartPos({
+		// track current desing & cursor start position
+		setCurDragElem(event.target);
+		setStartCursorPos({
 			x: event.clientX,
 			y: event.clientY
 		});
@@ -154,36 +165,41 @@ export default function ShareCard() {
 	function dragOverHandler(event) {
 		if (event.target == null) return;
 		event.preventDefault();
+		let currentDesign = designs.find(design => design.id == event.target.id);
+		if (currentDesign == undefined) return;
 		// calculate new position
-		let mouseX = event.clientX;
-		let mouseY = event.clientY;
-		let distanceX = mouseX - startPos.x;
-		let distanceY = mouseY - startPos.y;
-		// update position
-		dragArtImageRef.current.style.left = artPos.x + distanceX + 'px';
-		dragArtImageRef.current.style.top = artPos.y + distanceY + 'px';
+		let cursorX = event.clientX;
+		let cursorY = event.clientY;
+		let distanceX = cursorX - startCursorPos.x;
+		let distanceY = cursorY - startCursorPos.y;
+		curDragElem.style.left = currentDesign.posX + distanceX + 'px';
+		curDragElem.style.top = currentDesign.posY + distanceY + 'px';
 	}
 
 	function dragDropHandler(event) {
 		if (event.target == null) return;
 		event.preventDefault();
-		// calculate distance from parent container (adjusting for border thickness)
 		let parentDistX = dragContainerRef.current.getBoundingClientRect().left;
-		let artDistX = dragArtImageRef.current.getBoundingClientRect().left;
+		let artDistX = curDragElem.getBoundingClientRect().left;
 		let newPosX = artDistX - parentDistX - borderWidth;
 		let parentDistY = dragContainerRef.current.getBoundingClientRect().top;
-		let artDistY = dragArtImageRef.current.getBoundingClientRect().top;
+		let artDistY = curDragElem.getBoundingClientRect().top;
 		let newPosY = artDistY - parentDistY - borderWidth;
-		// save new position
-		setArtPos({
-			x: newPosX,
-			y: newPosY
-		});
+		// update position of art & reset all items to be draggable
+		setDesigns(designs.map(design => {
+			if (design.id == event.target.id) { // find unique item
+				return { ...design, posX: newPosX, posY: newPosY }; // update target item
+			} else {
+				return { ...design }; // update all other items
+			}
+		}));
+		// clear target element
+		setCurDragElem(null);
 	}
 
 
 	// =======================================
-	// Share Card functions 
+	// Share Card functions
 	// =======================================
 	function createCanvas() {
 		const canvas = document.createElement('canvas');
@@ -352,19 +368,23 @@ export default function ShareCard() {
 						<div
 							className="share-content-container"
 							ref={dragContainerRef}
-							onDragOver={e => dragOverHandler(e, false)}
-							onDrop={e => dragDropHandler(e, false)}
+							onDragOver={event => dragOverHandler(event, false)}
+							onDrop={event => dragDropHandler(event, false)}
 							style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 						>
-							<img
-								src={galleryImagePath}
-								alt=""
-								className="image-display"
-								ref={dragArtImageRef}
-								draggable
-								onDragStart={e => dragStartHandler(e, false)}
-								style={{left: artPos.x, top: artPos.y}}
-							/>
+							{designs.map((design, idx) =>
+								<img
+									src={design.path}
+									alt=""
+									key={idx}
+									id={idx}
+									className={`image-display design-${idx}`}
+									ref={dragArtImageRef}
+									draggable
+									onDragStart={event => dragStartHandler(event, false)}
+									style={{left: design.posX, top: design.posY}}
+								/>
+							)}
 							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} />
 							<h2 className="hidden">Share Content</h2>
 							{/* <p className="text-display" style={{color: `${textColor}`}}>{textInput}</p> */}
