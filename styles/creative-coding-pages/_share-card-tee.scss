@@ -66,14 +66,6 @@
 			overflow: hidden;
 		}
 
-		.text-display {
-			font-size: 42px;
-			margin: 0;
-			align-self: center;
-			text-align: center;
-			color: #fff;
-		}
-
 		.image-display {
 			width: 40%;
 			margin: 0 auto;
@@ -226,15 +218,6 @@
 			}
 		}
 
-		// Custom Text
-		.custom-text {
-			height: 54px;
-			width: 100%;
-			border: 2px solid var(--options-input-color);
-			text-indent: 14px;
-			font-size: 16px;
-		}
-
 		// Gallery
 		.option-image .option-label {
 			padding-bottom: 14px;
@@ -287,6 +270,7 @@
 			border: 1px solid #a8b6c5;
 			// background-image: linear-gradient(#fff, #ebf0f5);
 			// background-image: linear-gradient(#fff, #d7e0e8);
+			background-color: #d7e0e8;
 			background-image: linear-gradient(#f1f5fb, #d7e0e8);
 
 			svg.share-icon {

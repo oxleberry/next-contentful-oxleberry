@@ -10,8 +10,6 @@ export default function ShareCard() {
 	const [garmentColor, setGarmentColor] = useState('#1d1d1d');
 	const [textInput, setTextInput] = useState('Welcome!');
 	const [textColor, setTextColor] = useState('#eeddb9');
-	const [isCustomText, setIsCustomText] = useState(false);
-	const [galleryImagePath, setGalleryImagePath] = useState('');
 	const [galleryImage, setGalleryImage] = useState(null);
 	const [galleryImageWidth, setGalleryImageWidth] = useState(0);
 	const [galleryImageHeight, setGalleryImageHeight] = useState(0);
@@ -80,23 +78,6 @@ export default function ShareCard() {
 		setGarmentColor(value);
 	}
 
-	function textColorHandler(event) {
-		let value = event.target.value;
-		setTextColor(value);
-	}
-
-	function textInputHandler(event) {
-		let value = event.target.value;
-		setTextInput(value);
-	}
-
-	function textFocusHandler(event) {
-		if (!isCustomText) {
-			setTextInput('');
-			setIsCustomText(true);
-		}
-	}
-
 	function displayGarmentOption(garmentId, garmentName, defaultChecked) {
 		return (
 			<div className="option-garment">
@@ -134,10 +115,10 @@ export default function ShareCard() {
 	function galleryClickHandler(event) {
 		let image = event.target;
 		let imagePath = event.target.src;
-		setGalleryImage(image);
-		setGalleryImagePath(imagePath);
-		setGalleryImageWidth(event.target.offsetWidth);
-		setGalleryImageHeight(event.target.offsetHeight);
+		// setGalleryImage(image);
+		// setGalleryImagePath(imagePath);
+		// setGalleryImageWidth(event.target.offsetWidth);
+		// setGalleryImageHeight(event.target.offsetHeight);
 		let nextId = designIdx + 1;
 		setDesignIdx(nextId);
 		setDesigns( // Replace the state
@@ -395,7 +376,6 @@ export default function ShareCard() {
 							)}
 							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} />
 							<h2 className="hidden">Share Content</h2>
-							{/* <p className="text-display" style={{color: `${textColor}`}}>{textInput}</p> */}
 						</div>
 					</section>
 
@@ -437,31 +417,6 @@ export default function ShareCard() {
 						{/* <div className="option option-custom-image">
 							<label className="option-label">Upload in image:</label>
 						</div> */}
-						{/* Option Custom Text */}
-						<div className="option option-text">
-							<div className="row">
-								<label htmlFor="custom-text" className="option-label">Customize text:</label>
-								<input
-									id="custom-text-color"
-									className="custom-text-color"
-									name="custom-text-color"
-									type="color"
-									value={textColor}
-									onChange={textColorHandler}
-								/>
-							</div>
-							<input
-								id="custom-text"
-								className="custom-text"
-								name="custom-text"
-								type="text"
-								maxLength="34" // max characters for 2 lines of text
-								placeholder="maximum 34 characters"
-								value={textInput}
-								onChange={textInputHandler}
-								onFocus={textFocusHandler}
-							/>
-						</div>
 						{/* Option Galley Image */}
 						<div className="option option-image">
 							<label className="option-label">Choose an image:</label>
