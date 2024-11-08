@@ -16,8 +16,18 @@ export default function ShareCard() {
 	const [roundedCorners, setRoundedCorners] = useState(true);
 	const [startCursorPos, setStartCursorPos] = useState({ x: null, y: null});
 	const [curDragElem, setCurDragElem] = useState(null);
-	const [designs, setDesigns] = useState([]);
 	const [designIdx, setDesignIdx] = useState(-1);
+	const [designs, setDesigns] = useState([]);
+	/* ========================= 
+		designs = [{
+			id: number
+			path: string
+			posX: number
+			posY: number
+			width: number
+			dragClass: string, ex: 'draggable', 'no-drag'
+		}]
+	========================= */
 
 	// Elements
 	const shareFileRef = useRef(null);
@@ -112,6 +122,16 @@ export default function ShareCard() {
 		)
 	}
 
+	function getDesignPosition(design) {
+		let parentDistX = dragContainerRef.current.getBoundingClientRect().left;
+		let artDistX = design.getBoundingClientRect().left;
+		let newPosX = artDistX - parentDistX - borderWidth;
+		let parentDistY = dragContainerRef.current.getBoundingClientRect().top;
+		let artDistY = design.getBoundingClientRect().top;
+		let updateY = artDistY - parentDistY - borderWidth;
+		return { x: newPosX, y: updateY };
+	}
+
 	function sizeClickHandler(event) {
 		let currentDesign;
 		if (curDragElem == null) {
@@ -121,18 +141,26 @@ export default function ShareCard() {
 		} else {
 			currentDesign = curDragElem;
 		}
+		let currentPos = getDesignPosition(currentDesign);
 		let increment = 30;
 		let updateWidth;
+		let updatePosX;
+		let updatePosY;
 		// increment based on button clicked
 		if (event.target.id == "plus") {
 			updateWidth = currentDesign.width + increment;
+			updatePosX = currentPos.x - increment / 2;
+			updatePosY = currentPos.y - increment / 2;
 		} else if (event.target.id == "minus") {
 			updateWidth = currentDesign.width - increment;
+			updatePosX = currentPos.x + increment / 2;
+			updatePosY = currentPos.y + increment / 2;
 		}
-		// update width of current design
+		// update width of current design &
+		// update position of current design (to update size from the center)
 		setDesigns(designs.map(design => {
 			if (design.id == currentDesign.id) {
-				return { ...design, width: updateWidth };
+				return { ...design, width: updateWidth, posX: updatePosX, posY: updatePosY };
 			} else {
 				return design;
 			}
@@ -204,16 +232,11 @@ export default function ShareCard() {
 	function dragDropHandler(event) {
 		if (event.target == null) return;
 		event.preventDefault();
-		let parentDistX = dragContainerRef.current.getBoundingClientRect().left;
-		let artDistX = curDragElem.getBoundingClientRect().left;
-		let newPosX = artDistX - parentDistX - borderWidth;
-		let parentDistY = dragContainerRef.current.getBoundingClientRect().top;
-		let artDistY = curDragElem.getBoundingClientRect().top;
-		let newPosY = artDistY - parentDistY - borderWidth;
+		let currentPos = getDesignPosition(curDragElem);
 		// update position of art & reset all items to be draggable
 		setDesigns(designs.map(design => {
 			if (design.id == event.target.id) { // find unique item
-				return { ...design, posX: newPosX, posY: newPosY, dragClass: 'draggable' }; // update target item
+				return { ...design, posX: currentPos.x, posY: currentPos.y, dragClass: 'draggable' }; // update target item
 			} else {
 				return { ...design, dragClass: 'draggable' }; // update all other items
 			}
