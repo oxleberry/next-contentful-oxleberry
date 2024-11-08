@@ -4,5 +4,31 @@
 
 
 .share-card-page {
+	/* Variables */
+	--options-color: #34485f;
+
 	text-align: center;
+
+	main {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 20px;
+		max-width: 1400px;
+		margin: 0 auto;
+	}
+
+	section {
+		border: 2px solid #ccc;
+		height: 65vh;
+	}
+
+	.share-content-container {
+	}
+
+	.options-container {
+		border: 8px solid var(--options-color);
+	}
+
+	.canvas-container {
+	}
 }
