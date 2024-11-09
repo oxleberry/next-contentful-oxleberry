@@ -167,6 +167,9 @@ export default function ShareCard() {
 		}));
 	}
 
+	function rotateClickHandler(event) {
+	}
+
 	function galleryClickHandler(event) {
 		let imagePath = event.target.src;
 		// setGalleryImage(image);
@@ -404,7 +407,7 @@ export default function ShareCard() {
 		<>
 			<Head>
 				<title>Oxleberry | Design a T-shirt</title>
-				<meta name="description" content="Oxleberry Design a T-shirt" />
+				<meta name="description" content="Oxleberry Design a T-Shirt" />
 			</Head>
 			<div className="full-backboard share-card-tee-page">
 				<Header headline="Design a T-shirt" isSubPage={true}></Header>
@@ -440,14 +443,14 @@ export default function ShareCard() {
 					<section className="options-container">
 						<h2 className="hidden">Options</h2>
 						{/* Option - Garment style */}
-						<div className="option option-garment-style">
+						<div className="option-section option-garment-style">
 							<legend className="option-label">Garment style:</legend>
 							{displayGarmentOption('adult-tee', 'Adult', true)}
 							{displayGarmentOption('womens-tee', 'Womens', false)}
 							{displayGarmentOption('onesie', 'Onesie', false)}
 						</div>
 						{/* Option Pick a Color */}
-						<div className="option option-garment-color">
+						<div className="option-section option-garment-color">
 							<legend className="option-label">Garment color:</legend>
 							{displayColorSwatch('black', '#1d1d1d')}
 							{displayColorSwatch('red', '#d41b02')}
@@ -474,22 +477,50 @@ export default function ShareCard() {
 						{/* <div className="option option-custom-image">
 							<label className="option-label">Upload in image:</label>
 						</div> */}
-						{/* Option Size */}
-						<div className="option option-size">
-							<label className="option-label">Art size:</label>
-							<button
-								id="minus"
-								className="size-control"
-								onClick={sizeClickHandler}
-							>-</button>
-							<button
-								id="plus"
-								className="size-control"
-								onClick={sizeClickHandler}
-							>+</button>
+
+						<div className="option-section option-size-rotate">
+							{/* Option Size */}
+							<div className="sub-container">
+								<div className="option-size">
+									<label className="option-label">Art size:</label>
+									<button
+										id="minus"
+										className="option-button"
+										onClick={sizeClickHandler}
+									>-</button>
+									<button
+										id="plus"
+										className="option-button"
+										onClick={sizeClickHandler}
+									>+</button>
+								</div>
+							</div>
+							{/* Option Rotate */}
+							<div className="sub-container">
+								<div className="option-rotate">
+									<label className="option-label">Rotate art:</label>
+									<button
+										id="rotate-left"
+										className="option-button"
+										onClick={rotateClickHandler} >
+										<svg className="rotate-icon rotate-left" viewBox="0 0 500 500">
+											<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
+										</svg>
+									</button>
+									<button
+										id="rotate-right"
+										className="option-button"
+										onClick={rotateClickHandler} >
+										<svg className="rotate-icon rotate-right" viewBox="0 0 500 500">
+											<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
+										</svg>
+									</button>
+								</div>
+							</div>
 						</div>
+
 						{/* Option Galley Image */}
-						<div className="option option-image">
+						<div className="option-section option-image">
 							<label className="option-label">Choose an image:</label>
 							<div className="gallery-container">
 								<button
@@ -497,26 +528,27 @@ export default function ShareCard() {
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}
 								>
-									<img className="gallery-image" src="/creative-coding-pages/share-card/images/geo-flower.svg" />
+									{/* <img className="gallery-image gallery-image-1" src="/creative-coding-pages/share-card/images/geo-flower.svg" /> */}
+									<img className="gallery-image gallery-image-1" src="/creative-coding-pages/share-card/images/sakura-flower.svg" />
 								</button>
 								<button
 									type="button"
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}
 								>
-									<img className="gallery-image" src="/creative-coding-pages/share-card/images/sugar-skull.svg" />
+									<img className="gallery-image c" src="/creative-coding-pages/share-card/images/sugar-skull.svg" />
 								</button>
 								<button
 									type="button"
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}
 								>
-									<img className="gallery-image" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
+									<img className="gallery-image gallery-image-3" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
 								</button>
 							</div>
 						</div>
 						{/* Share Card Button */}
-						<div className="option option-share">
+						<div className="option-section option-share">
 							<button
 								type="button"
 								className="share-button"
@@ -528,7 +560,7 @@ export default function ShareCard() {
 							</button>
 						</div>
 						{/* Share Url Button */}
-						<div className="option option-share">
+						<div className="option-section option-share">
 							<button
 								type="button"
 								className="share-button"
