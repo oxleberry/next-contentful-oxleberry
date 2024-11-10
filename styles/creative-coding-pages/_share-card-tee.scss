@@ -74,9 +74,15 @@
 			pointer-events: none;
 		}
 
+		.design-image-wrapper {
+			// background-color: #2e2e2e;
+			width: 100%;
+			position: absolute;
+		}
+
 		.design-image {
 			margin: 0 auto;
-			position: absolute;
+			width: 100%;
 		}
 
 		[draggable] {
@@ -283,6 +289,7 @@
 
 			.rotate-right {
 				transform: rotate(-8deg) scaleX(-1);
+				// transform: scaleX(-1);
 			}
 		}
 

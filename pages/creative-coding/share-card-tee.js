@@ -124,10 +124,10 @@ export default function ShareCard() {
 	}
 
 	function getDesignPosition(design) {
-		let parentDistX = dragContainerRef.current.getBoundingClientRect().left;
+		let parentDistX = dragContainerRef.current.parentElement.getBoundingClientRect().left;
 		let artDistX = design.getBoundingClientRect().left;
 		let newPosX = artDistX - parentDistX - borderWidth;
-		let parentDistY = dragContainerRef.current.getBoundingClientRect().top;
+		let parentDistY = dragContainerRef.current.parentElement.getBoundingClientRect().top;
 		let artDistY = design.getBoundingClientRect().top;
 		let updateY = artDistY - parentDistY - borderWidth;
 		return { x: newPosX, y: updateY };
@@ -147,13 +147,15 @@ export default function ShareCard() {
 		let updateWidth;
 		let updatePosX;
 		let updatePosY;
+		// extracting the digits from the width style
+		let widthValue = currentDesign.style.width.replace(/\D/g, '');
 		// increment based on button clicked
 		if (event.target.id == "plus") {
-			updateWidth = currentDesign.width + increment;
+			updateWidth = +widthValue + increment;
 			updatePosX = currentPos.x - increment / 2;
 			updatePosY = currentPos.y - increment / 2;
 		} else if (event.target.id == "minus") {
-			updateWidth = currentDesign.width - increment;
+			updateWidth = +widthValue - increment;
 			updatePosX = currentPos.x + increment / 2;
 			updatePosY = currentPos.y + increment / 2;
 		}
@@ -234,7 +236,7 @@ export default function ShareCard() {
 	function dragStartHandler(event) {
 		if (event.target == null) return;
 		// track current desing & cursor start position
-		setCurDragElem(event.target);
+		setCurDragElem(event.target.parentElement);
 		setStartCursorPos({
 			x: event.clientX,
 			y: event.clientY
@@ -453,17 +455,24 @@ export default function ShareCard() {
 							style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 						>
 							{designs.map((design, idx) =>
-								<img
-									src={design.path}
-									alt=""
+								<div 
+									className={`design-image-wrapper ${design.dragClass}`}
 									key={idx}
 									id={idx}
-									className={`design-image design-${idx} ${design.dragClass}`}
-									ref={(el) => (designRefs.current[idx] = el)}
 									draggable
-									onDragStart={event => dragStartHandler(event, false)}
-									style={{left: design.posX, top: design.posY, width: design.width, transform: `rotate(${design.rotate}deg)`}}
-								/>
+									ref={(el) => (designRefs.current[idx] = el)}
+									style={{left: design.posX, top: design.posY, width: design.width}}
+									>
+									<img
+										src={design.path}
+										alt=""
+										id={idx}
+										className={`design-image design-${idx} ${design.dragClass}`}
+										draggable
+										onDragStart={event => dragStartHandler(event, false)}
+										style={{transform: `rotate(${design.rotate}deg)`, width: design.width}}
+									/>
+								</div>
 							)}
 							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} />
 							<h2 className="hidden">Share Content</h2>
