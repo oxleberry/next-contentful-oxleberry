@@ -1,6 +1,7 @@
 @use './utilities/mixins' as *;
 @use './utilities/colors';
 @use './utilities/fonts';
+@use './utilities/z-index';
 
 /* Components */
 @use 'components/about-tile';

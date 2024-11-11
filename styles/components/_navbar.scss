@@ -1,6 +1,7 @@
 @use '../utilities/mixins' as *;
 @use '../utilities/colors';
 @use '../utilities/fonts';
+@use '../utilities/z-index';
 
 
 // =====================
@@ -42,7 +43,7 @@ $mobile-nav-z-index: (1: 5, 2: 4, 3: 3, 4: 2, 5: 1);
 	background-color: colors.$navbar;
 	width: 100%;
 	height: var(--desktop-nav-height);
-	z-index: 100;
+	z-index: z-index.$navbar-z-index;
 
 	@include bp(m) {
 		display: none;
@@ -117,7 +118,7 @@ $mobile-nav-z-index: (1: 5, 2: 4, 3: 3, 4: 2, 5: 1);
 	height: var(--desktop-nav-height);
 	width: 100%;
 	display: none;
-	z-index: 100;
+	z-index: z-index.$navbar-z-index;
 
 	@include bp(m) {
 		display: block;
