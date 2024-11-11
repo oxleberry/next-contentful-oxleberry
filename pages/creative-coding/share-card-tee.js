@@ -18,6 +18,7 @@ export default function ShareCard() {
 	const [curDragElem, setCurDragElem] = useState(null);
 	const [designIdx, setDesignIdx] = useState(-1);
 	const [designs, setDesigns] = useState([]);
+	const [designZIndex, setDesignZIndex] = useState(-1);
 	/* ========================= 
 		designs = [{
 			id: number
@@ -27,6 +28,7 @@ export default function ShareCard() {
 			width: number
 			rotate: number
 			dragClass: string, ex: 'draggable', 'no-drag'
+			zIndex: number
 		}]
 	========================= */
 
@@ -165,7 +167,7 @@ export default function ShareCard() {
 			if (design.id == currentDesign.id) {
 				return { ...design, width: updateWidth, posX: updatePosX, posY: updatePosY };
 			} else {
-				return design;
+				return design; // no changes to these item
 			}
 		}));
 	}
@@ -209,7 +211,9 @@ export default function ShareCard() {
 		// setGalleryImageWidth(event.target.offsetWidth);
 		// setGalleryImageHeight(event.target.offsetHeight);
 		let nextId = designIdx + 1;
+		let nextZIndex = designZIndex + 1;
 		setDesignIdx(nextId);
+		setDesignZIndex(nextZIndex);
 		// add a new design
 		setDesigns(
 			[
@@ -221,7 +225,8 @@ export default function ShareCard() {
 					posY: 130,
 					width: 220,
 					rotate: 0,
-					dragClass: 'draggable'
+					dragClass: 'draggable',
+					zIndex: nextZIndex
 				}
 			]
 		);
@@ -241,10 +246,13 @@ export default function ShareCard() {
 			x: event.clientX,
 			y: event.clientY
 		});
+		let nextZIndex = designZIndex + 1;
+		setDesignZIndex(nextZIndex);
+		// set current design to top z-index
 		// set all other designs to not be draggable
-		setDesigns(designs.map(design => {
+		setDesigns(designs.map((design, idx) => {
 			if (design.id == event.target.id) { // find unique item
-				return design; // no changes to target item
+				return { ...design, zIndex: nextZIndex }; // update current design
 			} else {
 				return { ...design, dragClass: 'no-drag' }; // update all other items
 			}
@@ -461,7 +469,7 @@ export default function ShareCard() {
 									id={idx}
 									draggable
 									ref={(el) => (designRefs.current[idx] = el)}
-									style={{left: design.posX, top: design.posY, width: design.width}}
+									style={{left: design.posX, top: design.posY, width: design.width, zIndex: design.zIndex}}
 									>
 									<img
 										src={design.path}
