@@ -6,7 +6,7 @@
 .share-card-tee-page {
 	/* Variables */
 	--options-color: #34485f;
-	--options-input-color: #9daec1;
+	--options-color-light: #9daec1;
 	--footer-height: 110px;
 	--nav-height: 58px;
 	--header-height: 110px;
@@ -159,7 +159,7 @@
 			input[type="radio"] {
 			// Guide to styling radio buttons
 			// https://dev.to/adbutterfield/custom-styling-radio-buttons-the-modern-way-the-butterfield-way-emk
-				--radio-border-color: var(--options-input-color);
+				--radio-border-color: var(--options-color-light);
 				--radio-checked-color: var(--options-color);
 
 				box-sizing: border-box;
@@ -212,7 +212,7 @@
 			}
 
 			input[type="radio"] {
-				--radio-border-color: var(--options-input-color);
+				--radio-border-color: var(--options-color-light);
 				cursor: pointer;
 				width: 28px;
 				height: 28px;
@@ -234,7 +234,14 @@
 				width: 35px;
 				height: 40px;
 				border: 0 solid transparent;
+				background-color: transparent;
 				margin-top: -3px;
+			}
+
+			// Chrome Custom Color overwrites
+			input[type="color"]::-webkit-color-swatch {
+				border: none;
+				height: 28px;
 			}
 
 			input[type="color"]:not(:disabled):hover,
