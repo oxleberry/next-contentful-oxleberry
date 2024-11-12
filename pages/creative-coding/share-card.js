@@ -1,7 +1,16 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
+import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
+	// States =================
+	const [textInput, setTextInput] = useState('');
+
+	function textInputHandler(event) {
+		let value = event.target.value;
+		setTextInput(value);
+	}
+
 	return (
 		<>
 			<Head>
@@ -14,6 +23,10 @@ export default function ShareCard() {
 
 					<section className="share-content-container">
 						<h2 className="hidden">Share Content</h2>
+						<div id="design-target">
+							{/* <img id="design-display" src="" /> */}
+							<p id="text-display" className="custom-text-output">{textInput}</p>
+						</div>
 					</section>
 
 					{/* Option Section */}
@@ -26,7 +39,16 @@ export default function ShareCard() {
 							<label className="option-label">Upload in image:</label>
 						</div>
 						<div className="option option-text">
-							<label className="option-label">Create text:</label>
+							<label htmlFor="custom-text" className="option-label">Create text:</label>
+							<input
+								id="custom-text"
+								className="custom-text"
+								name="custom-text"
+								type="text"
+								placeholder="Add Your Text Here"
+								value={textInput}
+								onChange={textInputHandler}
+							/>
 						</div>
 						<div className="option option-image">
 							<label className="option-label">Choose an image from the gallery:</label>

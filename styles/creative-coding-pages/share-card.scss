@@ -6,6 +6,7 @@
 .share-card-page {
 	/* Variables */
 	--options-color: #34485f;
+	--options-color-light: #9daec1;
 
 	main {
 		display: grid;
@@ -25,6 +26,14 @@
 	}
 
 	.share-content-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 50px;
+
+		.custom-text-output {
+			font-size: 26px;
+		}
 	}
 
 	.options-container {
@@ -38,6 +47,7 @@
 			text-transform: uppercase;
 			font-weight: 400;
 			color: var(--options-color);
+			padding-bottom: 14px;
 		}
 
 		.option {
@@ -48,6 +58,15 @@
 			&:last-of-type {
 				border: none;
 			}
+		}
+
+		.custom-text {
+			// margin-top: 14px;
+			height: 54px;
+			width: 100%;
+			border: 2px solid var(--options-color-light);
+			text-indent: 14px;
+			font-size: 16px;
 		}
 	}
 
