@@ -317,7 +317,35 @@
 			}
 		}
 
-		// Gallery
+		// Upload Image
+		.option-upload-image {
+			display: flex;
+
+			.option-label {
+				margin-right: 16px;
+				padding-bottom: 10px;
+			}
+
+			input::file-selector-button {
+				font-size: 1.5rem;
+				text-transform: uppercase;
+				font-weight: bold;
+				color: var(--options-color);
+				background-color: #d7e0e8;
+				background-image: linear-gradient(#f1f5fb, #d7e0e8);
+				border: 1px solid var(--options-color-light);
+				border-radius: 2px;
+				padding: 4px 10px;
+				cursor: pointer;
+			}
+
+			input[type='file'] {
+				font-size: 1.7rem;
+				color: var(--options-color);
+			}
+		}
+
+		// Image Gallery
 		.option-image .option-label {
 			padding-bottom: 14px;
 		}

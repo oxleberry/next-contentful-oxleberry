@@ -19,7 +19,7 @@ export default function ShareCard() {
 	const [designIdx, setDesignIdx] = useState(-1);
 	const [designs, setDesigns] = useState([]);
 	const [designZIndex, setDesignZIndex] = useState(-1);
-	/* ========================= 
+	/* =========================
 		designs = [{
 			id: number
 			path: string
@@ -214,12 +214,7 @@ export default function ShareCard() {
 		setCurDragElem(lastDesign);
 	}
 
-	function galleryClickHandler(event) {
-		let imagePath = event.target.src;
-		// setGalleryImage(image);
-		// setGalleryImagePath(imagePath);
-		// setGalleryImageWidth(event.target.offsetWidth);
-		// setGalleryImageHeight(event.target.offsetHeight);
+	function setNewDesign(image) {
 		let nextId = designIdx + 1;
 		let nextZIndex = designZIndex + 1;
 		setDesignIdx(nextId);
@@ -230,7 +225,7 @@ export default function ShareCard() {
 				...designs,
 				{
 					id: nextId,
-					path: imagePath,
+					path: image,
 					posX: 175,
 					posY: 130,
 					width: 220,
@@ -242,6 +237,30 @@ export default function ShareCard() {
 		);
 		// clear target element
 		setCurDragElem(null);
+	}
+
+	function uploadImageClickHandler(event) {
+		let imageFile;
+		let reader;
+		let uploadImage;
+		imageFile = event.target.files[0];
+		if(!imageFile.type.match('image.*')) {
+			alert("This file is not a unsupported image file");
+			return;
+		}
+		reader = new FileReader();
+		reader.addEventListener('load', (function() {
+			return function(event) {
+				uploadImage = event.target.result;
+				setNewDesign(uploadImage);
+			};
+		})(imageFile), false);
+		reader.readAsDataURL(imageFile);
+	}
+
+	function galleryClickHandler(event) {
+		let galleryImagePath = event.target.src;
+		setNewDesign(galleryImagePath);
 	}
 
 
@@ -473,7 +492,7 @@ export default function ShareCard() {
 							style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 						>
 							{designs.map((design, idx) =>
-								<div 
+								<div
 									className={`design-image-wrapper ${design.dragClass}`}
 									key={idx}
 									id={design.id}
@@ -531,10 +550,6 @@ export default function ShareCard() {
 								<label htmlFor="custom-color" className="option-label">Custom</label>
 							</div>
 						</div>
-						{/* Option Upload an Image */}
-						{/* <div className="option option-custom-image">
-							<label className="option-label">Upload in image:</label>
-						</div> */}
 
 						<div className="option-section option-size-rotate-delete">
 							{/* Option Size */}
@@ -591,6 +606,17 @@ export default function ShareCard() {
 							</div>
 						</div>
 
+						{/* Option Upload an Image */}
+						<div className="option-section option-upload-image">
+							<label htmlFor="upload-image" className="option-label">Upload in image:</label>
+							<input
+								id="upload-image"
+								onChange={uploadImageClickHandler}
+								type="file"
+								name="custom-image"
+								accept=".png, .jpg, .jpeg, .gif, .webp"/>
+						</div>
+
 						{/* Option Galley Image */}
 						<div className="option-section option-image">
 							<label className="option-label">Choose an image:</label>
@@ -632,14 +658,14 @@ export default function ShareCard() {
 							</button>
 						</div>
 						{/* Share Url Button */}
-						<div className="option-section option-share">
+						{/* <div className="option-section option-share">
 							<button
 								type="button"
 								className="share-button"
 								onClick={shareUrlClickHandler}
 							>Share Url
 							</button>
-						</div>
+						</div> */}
 					</section>
 
 					<section
