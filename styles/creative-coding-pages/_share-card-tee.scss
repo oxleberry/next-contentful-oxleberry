@@ -80,6 +80,15 @@
 			// background-color: #2e2e2e;
 			width: 100%;
 			position: absolute;
+			// mix-blend-mode: normal;
+			// mix-blend-mode: lighten;
+			// mix-blend-mode: darken;
+			// mix-blend-mode: multiply;
+			// mix-blend-mode: screen;
+			// mix-blend-mode: overlay;
+			// mix-blend-mode: hard-light;
+			// mix-blend-mode: luminosity;
+			// mix-blend-mode: normal;
 		}
 
 		.design-image {
@@ -383,15 +392,58 @@
 			}
 		}
 
+		// =====================
+		// Filters Section
+		// =====================
+		.option-filters {
+			display: grid;
+			grid-template-columns: auto 2fr;
+			gap: 14px;
+			padding-bottom: 6px;
+
+			.filter-label {
+				display: inline-block;
+				font-size: 16px;
+				font-weight: bold;
+				color: var(--options-color);
+				border: 1px solid #a8b6c5;
+				background-color: #d7e0e8;
+				background-image: linear-gradient(#f1f5fb, #d7e0e8);
+				transition: all 200ms ease-out;
+				padding: 6px 10px;
+				margin-right: 12px;
+				margin-bottom: 12px;
+				cursor: pointer;
+				// user-select: none;
+
+				&:hover {
+					box-shadow: 0 0 0 2px var(--options-color-light);
+				}
+			}
+
+			input[type="radio"]:not(:disabled):checked + .filter-label {
+				color: white;
+				border: 1px solid var(--options-color);
+				background-color: var(--options-color);
+				background-image: linear-gradient(var(--options-color), var(--options-color));
+				transition: all 200ms ease-out;
+
+				&:hover {
+					box-shadow: 0 0 0 2px transparent;
+					cursor: inherit;
+				}
+			}
+		}
+
+		// =====================
+		// Share Card Button
+		// =====================
 		.option-share {
 			display: flex;
 			justify-content: center;
 			align-items: center;
 		}
 
-		// =====================
-		// Share Card Button
-		// =====================
 		.share-button {
 			font-family: fonts.$sans-serif-cute;
 			font-weight: 800;
