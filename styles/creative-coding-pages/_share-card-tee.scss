@@ -20,7 +20,6 @@
 		min-height: calc(100vh - var(--not-main-height));
 		// grid-template-columns: repeat(3, 500px); // toggle to hide canvas
 		grid-template-columns: 600px .6fr;  // toggle to hide canvas
-		// grid-template-columns: 400px .6fr;  // toggle to hide canvas
 		gap: 48px;
 		max-width: 1400px;
 		margin: 0 auto;
@@ -37,12 +36,6 @@
 		font-family: fonts.$alt-title-for-g;
 	}
 
-	section {
-		// border: 2px solid #ccc;
-		// background-color: #f0f2f5;
-		// max-height: 600px;
-	}
-
 	.hidden {
 		display: none;
 	}
@@ -53,14 +46,9 @@
 	.share-content-section {
 		display: flex;
 		flex-direction: column;
-		// justify-content: center;
 
 		.share-content-container {
 			position: relative;
-			// display: grid;
-			// grid-template-rows: 72px 1fr;
-			// gap: 32px;
-			// height: 550px;
 			height: 100%;
 			max-width: 100%;
 			border: 8px solid var(--options-color);
@@ -105,13 +93,12 @@
 		}
 	}
 
-	// =====================
+	// =========================
 	// Options Section
-	// =====================
+	// =========================
 	.options-container {
 		border: 8px solid var(--options-color);
 		display: grid;
-		// grid-template-rows: repeat(4, auto);
 
 		.option-section {
 			border-bottom: 4px solid var(--options-color);
@@ -142,21 +129,22 @@
 			color: var(--options-color);
 			font-size: 26px;
 			font-weight: bold;
-			border-radius: 2px;
 			border: 1px solid #a8b6c5;
 			background-color: #d7e0e8;
 			background-image: linear-gradient(#f1f5fb, #d7e0e8);
 			padding-bottom: 7px;
 			margin: 0 6px;
-			transition: transform 200ms ease-in-out;
+			transition: all 200ms ease-out;
 
 			&:hover {
-				transform: scale(1.1);
-				transition: transform 200ms ease-in-out;
+				box-shadow: 0 0 0 2px var(--options-color-light);
+				transition: all 200ms ease-out;
 			}
 		}
 
+		// =========================
 		// Garment Style
+		// =========================
 		.option-garment-style {
 			display: grid;
 			grid-template-columns: 1fr repeat(3, .6fr);
@@ -183,6 +171,11 @@
 				appearance: none;
 				background-color: transparent;
 				outline: none;
+
+				&:hover {
+					box-shadow: 0 0 0 2px var(--options-color-light);
+					transition: all 200ms ease-out;
+				}
 			}
 
 			input[type="radio"]:not(:disabled):checked {
@@ -197,17 +190,17 @@
 					transparent 60%,
 					transparent 100%
 				);
-			}
 
-			input[type="radio"]:not(:disabled):hover {
-				background-color: var(--radio-checked-color);
-				border: 2px solid var(--radio-checked-color);
-				// transition: all 200ms ease-in-out;
-				// transform: scale(1.2);
+				&:hover {
+					box-shadow: 0 0 0 2px transparent;
+					cursor: inherit;
+				}
 			}
 		}
 
+		// =========================
 		// Garment Color
+		// =========================
 		.option-garment-color {
 			display: flex;
 			flex-direction: row;
@@ -246,50 +239,58 @@
 				border: 0 solid transparent;
 				background-color: transparent;
 				margin-top: -3px;
+				color: transparent;
 			}
 
-			// Chrome Custom Color overwrites
 			input[type="color"]::-webkit-color-swatch {
+				border-radius: 0;
 				border: none;
 				height: 28px;
 			}
 
 			input[type="color"]:not(:disabled):hover,
 			input[type="radio"]:not(:disabled):hover {
-				transform: scale(1.2);
-				transition: all 200ms ease-in-out;
+				transform: scale(1.15);
+				transition: all 200ms ease-out;
 			}
 		}
 
+		// =========================
 		// Upload Image
+		// =========================
 		.option-upload-image {
 			display: flex;
 
 			.option-label {
-				margin-right: 16px;
-				padding-bottom: 10px;
+				margin-top: 8px;
+				margin-right: 12px;
 			}
 
 			input::file-selector-button {
-				font-size: 1.5rem;
-				text-transform: uppercase;
+				font-size: 16px;
 				font-weight: bold;
 				color: var(--options-color);
 				background-color: #d7e0e8;
 				background-image: linear-gradient(#f1f5fb, #d7e0e8);
 				border: 1px solid var(--options-color-light);
-				border-radius: 2px;
-				padding: 4px 10px;
+				padding: 6px 14px;
+				margin: 2px;
 				cursor: pointer;
+
+				&:hover {
+					box-shadow: 0 0 0 2px var(--options-color-light);
+					transition: all 200ms ease-out;
+				}
 			}
 
 			input[type='file'] {
-				font-size: 1.7rem;
-				color: var(--options-color);
+				color: transparent;
 			}
 		}
 
+		// =========================
 		// Image Gallery
+		// =========================
 		.option-image {
 			.option-label {
 				padding-bottom: 14px;
@@ -302,10 +303,10 @@
 
 				.gallery-image-button {
 					border: none;
-					border-radius: 12px;
 					padding: 10px;
 					opacity: .7;
 					transition: opacity 200ms ease-in-out;
+					cursor: pointer;
 
 					&:hover {
 						opacity: 1;
@@ -327,7 +328,9 @@
 			}
 		}
 
+		// =========================
 		// Art Size, Rotate & Delete
+		// =========================
 		.option-size-rotate-delete {
 			display: grid;
 			grid-template-columns: 1fr 1fr 1fr;
