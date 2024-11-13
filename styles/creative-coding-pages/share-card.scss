@@ -33,9 +33,13 @@
 
 		.custom-text-output {
 			font-size: 26px;
+			color: black;
 		}
 	}
 
+	// =====================
+	// Options Sections
+	// =====================
 	.options-container {
 		border: 8px solid var(--options-color);
 		display: flex;
@@ -60,6 +64,19 @@
 			}
 		}
 
+		// Custom Color
+		.option-color {
+			display: flex;
+		}
+
+		input[type="color"] {
+			width: 116px;
+			height: 40px;
+			border-radius: 3px;
+			margin-left: 14px;
+		}
+
+		// Custom Text
 		.custom-text {
 			// margin-top: 14px;
 			height: 54px;
