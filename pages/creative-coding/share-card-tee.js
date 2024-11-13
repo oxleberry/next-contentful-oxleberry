@@ -551,6 +551,45 @@ export default function ShareCard() {
 							</div>
 						</div>
 
+						{/* Option Upload an Image */}
+						<div className="option-section option-upload-image">
+							<label htmlFor="upload-image" className="option-label">Upload in image:</label>
+							<input
+								id="upload-image"
+								onChange={uploadImageClickHandler}
+								type="file"
+								name="custom-image"
+								accept=".png, .jpg, .jpeg, .gif, .webp"/>
+						</div>
+
+						{/* Option Galley Image */}
+						<div className="option-section option-image">
+							<label className="option-label">Choose an image:</label>
+							<div className="gallery-container">
+								<button
+									type="button"
+									className="gallery-image-button button-black"
+									onClick={galleryClickHandler}
+								>
+									<img className="gallery-image gallery-image-1" src="/creative-coding-pages/share-card/images/sakura-flower.svg" />
+								</button>
+								<button
+									type="button"
+									className="gallery-image-button button-black"
+									onClick={galleryClickHandler}
+								>
+									<img className="gallery-image gallery-image-2" src="/creative-coding-pages/share-card/images/sugar-skull.svg" />
+								</button>
+								<button
+									type="button"
+									className="gallery-image-button button-black"
+									onClick={galleryClickHandler}
+								>
+									<img className="gallery-image gallery-image-3" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
+								</button>
+							</div>
+						</div>
+
 						<div className="option-section option-size-rotate-delete">
 							{/* Option Size */}
 							<div className="sub-container">
@@ -606,45 +645,6 @@ export default function ShareCard() {
 							</div>
 						</div>
 
-						{/* Option Upload an Image */}
-						<div className="option-section option-upload-image">
-							<label htmlFor="upload-image" className="option-label">Upload in image:</label>
-							<input
-								id="upload-image"
-								onChange={uploadImageClickHandler}
-								type="file"
-								name="custom-image"
-								accept=".png, .jpg, .jpeg, .gif, .webp"/>
-						</div>
-
-						{/* Option Galley Image */}
-						<div className="option-section option-image">
-							<label className="option-label">Choose an image:</label>
-							<div className="gallery-container">
-								<button
-									type="button"
-									className="gallery-image-button button-black"
-									onClick={galleryClickHandler}
-								>
-									{/* <img className="gallery-image gallery-image-1" src="/creative-coding-pages/share-card/images/geo-flower.svg" /> */}
-									<img className="gallery-image gallery-image-1" src="/creative-coding-pages/share-card/images/sakura-flower.svg" />
-								</button>
-								<button
-									type="button"
-									className="gallery-image-button button-black"
-									onClick={galleryClickHandler}
-								>
-									<img className="gallery-image c" src="/creative-coding-pages/share-card/images/sugar-skull.svg" />
-								</button>
-								<button
-									type="button"
-									className="gallery-image-button button-black"
-									onClick={galleryClickHandler}
-								>
-									<img className="gallery-image gallery-image-3" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
-								</button>
-							</div>
-						</div>
 						{/* Share Card Button */}
 						<div className="option-section option-share">
 							<button

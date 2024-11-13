@@ -252,6 +252,72 @@
 			}
 		}
 
+		// Upload Image
+		.option-upload-image {
+			display: flex;
+
+			.option-label {
+				margin-right: 16px;
+				padding-bottom: 10px;
+			}
+
+			input::file-selector-button {
+				font-size: 1.5rem;
+				text-transform: uppercase;
+				font-weight: bold;
+				color: var(--options-color);
+				background-color: #d7e0e8;
+				background-image: linear-gradient(#f1f5fb, #d7e0e8);
+				border: 1px solid var(--options-color-light);
+				border-radius: 2px;
+				padding: 4px 10px;
+				cursor: pointer;
+			}
+
+			input[type='file'] {
+				font-size: 1.7rem;
+				color: var(--options-color);
+			}
+		}
+
+		// Image Gallery
+		.option-image {
+			.option-label {
+				padding-bottom: 14px;
+			}
+
+			.gallery-container {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 20px;
+
+				.gallery-image-button {
+					border: none;
+					border-radius: 12px;
+					padding: 10px;
+					opacity: .7;
+					transition: opacity 200ms ease-in-out;
+
+					&:hover {
+						opacity: 1;
+					}
+				}
+
+				.gallery-image {
+					width: 100%;
+				}
+
+				.button-black {
+					background-color: black;
+				}
+
+				.gallery-image-1 {
+					padding-left: 6px;
+					padding-right: 6px;
+				}
+			}
+		}
+
 		// Art Size, Rotate & Delete
 		.option-size-rotate-delete {
 			display: grid;
@@ -314,70 +380,6 @@
 				width: 26px;
 				margin-left: auto;
 				margin-right: auto;
-			}
-		}
-
-		// Upload Image
-		.option-upload-image {
-			display: flex;
-
-			.option-label {
-				margin-right: 16px;
-				padding-bottom: 10px;
-			}
-
-			input::file-selector-button {
-				font-size: 1.5rem;
-				text-transform: uppercase;
-				font-weight: bold;
-				color: var(--options-color);
-				background-color: #d7e0e8;
-				background-image: linear-gradient(#f1f5fb, #d7e0e8);
-				border: 1px solid var(--options-color-light);
-				border-radius: 2px;
-				padding: 4px 10px;
-				cursor: pointer;
-			}
-
-			input[type='file'] {
-				font-size: 1.7rem;
-				color: var(--options-color);
-			}
-		}
-
-		// Image Gallery
-		.option-image .option-label {
-			padding-bottom: 14px;
-		}
-
-		.gallery-container {
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
-			gap: 20px;
-
-			.gallery-image-button {
-				border: none;
-				border-radius: 12px;
-				padding: 10px;
-				opacity: .7;
-				transition: opacity 200ms ease-in-out;
-
-				&:hover {
-					opacity: 1;
-				}
-			}
-
-			.gallery-image {
-				width: 100%;
-			}
-
-			.button-black {
-				background-color: black;
-			}
-
-			.gallery-image-1 {
-				padding-left: 6px;
-				padding-right: 6px;
 			}
 		}
 
