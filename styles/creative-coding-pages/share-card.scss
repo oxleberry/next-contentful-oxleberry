@@ -14,54 +14,69 @@
 		gap: 20px;
 		max-width: 1400px;
 		margin: 0 auto;
+		padding: 0 20px;
 	}
 
 	section {
 		border: 2px solid #ccc;
-		height: 65vh;
+		height: 67vh;
 	}
 
 	.hidden {
 		display: none;
 	}
 
+	// ========================
+	// Share Content Section
+	// ========================
 	.share-content-container {
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		display: grid;
+		grid-template-rows: 1fr 2fr;
+		gap: 24px;
 		padding: 50px;
 
-		.custom-text-output {
-			font-size: 26px;
-			color: black;
+		.text-display {
+			font-size: 42px;
+			margin: 0;
+			align-self: flex-end;
+			text-align: center;
+			color: #fff;
+		}
+
+		.image-display {
+			width: 100%;
+			max-width: 300px;
+			margin: 0 auto;
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: top center;
 		}
 	}
 
 	// =====================
-	// Options Sections
+	// Options Section
 	// =====================
 	.options-container {
 		border: 8px solid var(--options-color);
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-rows: 1fr 1.5fr 2fr;
+
+		.option {
+			border-bottom: 4px solid var(--options-color);
+			padding: 14px 18px 18px;
+
+			&:last-of-type {
+				border: none;
+			}
+		}
 
 		.option-label {
-			display: inline-block;
+			display: block;
 			font-size: 18px;
 			text-transform: uppercase;
 			font-weight: 400;
 			color: var(--options-color);
 			padding-bottom: 14px;
-		}
-
-		.option {
-			height: 25%;
-			border-bottom: 4px solid var(--options-color);
-			padding: 14px;
-
-			&:last-of-type {
-				border: none;
-			}
 		}
 
 		// Custom Color
@@ -78,12 +93,38 @@
 
 		// Custom Text
 		.custom-text {
-			// margin-top: 14px;
 			height: 54px;
 			width: 100%;
 			border: 2px solid var(--options-color-light);
 			text-indent: 14px;
 			font-size: 16px;
+		}
+
+		// Gallery Image
+		.gallery-container {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 12px;
+
+			.gallery-image-button {
+				border: none;
+				border-radius: 12px;
+				padding: 10px;
+				opacity: .7;
+				transition: opacity 200ms ease-in-out;
+
+				&:hover {
+					opacity: 1;
+				}
+			}
+
+			.gallery-image {
+				width: 100%;
+			}
+
+			.button-black {
+				background-color: black;
+			}
 		}
 	}
 
