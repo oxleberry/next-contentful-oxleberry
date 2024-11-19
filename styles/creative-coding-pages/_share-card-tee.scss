@@ -68,15 +68,6 @@
 			// background-color: #2e2e2e;
 			width: 100%;
 			position: absolute;
-			// mix-blend-mode: normal;
-			// mix-blend-mode: lighten;
-			// mix-blend-mode: darken;
-			// mix-blend-mode: multiply;
-			// mix-blend-mode: screen;
-			// mix-blend-mode: overlay;
-			// mix-blend-mode: hard-light;
-			// mix-blend-mode: luminosity;
-			// mix-blend-mode: normal;
 		}
 
 		.design-image {
@@ -284,7 +275,9 @@
 			}
 
 			input[type='file'] {
-				color: transparent;
+				// color: transparent;
+				font-size: 1.7rem;
+				color: var(--options-color);
 			}
 		}
 
@@ -424,7 +417,20 @@
 				}
 			}
 
-			input[type="radio"]:not(:disabled):checked + .filter-label {
+			// input[type="radio"]:not(:disabled):checked + .filter-label {
+			// 	color: white;
+			// 	border: 1px solid var(--options-color);
+			// 	background-color: var(--options-color);
+			// 	background-image: linear-gradient(var(--options-color), var(--options-color));
+			// 	transition: all 200ms ease-out;
+
+			// 	&:hover {
+			// 		box-shadow: 0 0 0 2px transparent;
+			// 		cursor: inherit;
+			// 	}
+			// }
+
+			.active {
 				color: white;
 				border: 1px solid var(--options-color);
 				background-color: var(--options-color);

@@ -4,6 +4,56 @@ import { useEffect, useState, useRef } from 'react'
 
 export default function ShareCard() {
 	const borderWidth = 8;
+	const seedFilterData = [
+		{
+			id: 1,
+			name: 'None',
+			value: 'normal',
+			isActive: true
+		},
+		{
+			id: 2,
+			name: 'Lighten',
+			value: 'lighten',
+			isActive: false
+		},
+		{
+			id: 3,
+			name: 'Darken',
+			value: 'darken',
+			isActive: false
+		},
+		{
+			id: 4,
+			name: 'Multiply',
+			value: 'multiply',
+			isActive: false
+		},
+		{
+			id: 5,
+			name: 'Screen',
+			value: 'screen',
+			isActive: false
+		},
+		{
+			id: 6,
+			name: 'Overlay',
+			value: 'overlay',
+			isActive: false
+		},
+		{
+			id: 7,
+			name: 'Hard Light',
+			value: 'hard-light',
+			isActive: false
+		},
+		{
+			id: 8,
+			name: 'Luminosity',
+			value: 'luminosity',
+			isActive: false
+		}
+	]
 
 	// States =================
 	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
@@ -17,8 +67,9 @@ export default function ShareCard() {
 	const [startCursorPos, setStartCursorPos] = useState({ x: null, y: null});
 	const [curDragElem, setCurDragElem] = useState(null);
 	const [designIdx, setDesignIdx] = useState(-1);
-	const [designs, setDesigns] = useState([]);
 	const [designZIndex, setDesignZIndex] = useState(-1);
+	const [filterButtons, setFilterButtons] = useState(seedFilterData);
+	const [designs, setDesigns] = useState([]);
 	/* =========================
 		designs = [{
 			id: number
@@ -27,6 +78,7 @@ export default function ShareCard() {
 			posY: number
 			width: number
 			rotate: number
+			filter: string
 			dragClass: string, ex: 'draggable', 'no-drag'
 			zIndex: number
 		}]
@@ -125,23 +177,6 @@ export default function ShareCard() {
 		)
 	}
 
-	function displayFilter(value, name, isActive) {
-		return (
-			<>
-				<input
-					id={value}
-					className={`option-button option-button-filter hidden`}
-					name="filter-selector"
-					type="radio"
-					value={value}
-					defaultChecked={isActive}
-					onChange={filterClickHandler}
-				/>
-				<label htmlFor={value} className="filter-label">{name}</label>
-			</>
-		)
-	}
-
 	function getDesignPosition(design) {
 		let parentDistX = dragContainerRef.current.parentElement.getBoundingClientRect().left;
 		let artDistX = design.getBoundingClientRect().left;
@@ -229,10 +264,30 @@ export default function ShareCard() {
 		// set current design to last design added
 		let lastDesign = designRefs.current[designRefs.current.length - 1];
 		setCurDragElem(lastDesign);
+		// remove all filters status
+		setFilterButtons(filterButtons.map(filter => {
+			return { ...filter, isActive: false };
+		}));
 	}
 
 	function filterClickHandler(event) {
-		console.log('event.target.id', event.target.id);
+		let currentDesign = getCurrentDesign();
+		// update filter style of current design
+		setDesigns(designs.map(design => {
+			if (design.id == currentDesign.id) {
+				return { ...design, filter: event.target.id };
+			} else {
+				return design;
+			}
+		}));
+		// update current filter button to be active
+		setFilterButtons(filterButtons.map(filter => {
+			if (filter.value == event.target.value) {
+				return { ...filter, isActive: true };
+			} else {
+				return { ...filter, isActive: false };
+			}
+		}));
 	}
 
 	function setNewDesign(image) {
@@ -252,12 +307,21 @@ export default function ShareCard() {
 					width: 220,
 					rotate: 0,
 					dragClass: 'draggable',
+					filter: 'normal',
 					zIndex: nextZIndex
 				}
 			]
 		);
 		// clear target element
 		setCurDragElem(null);
+		// reset filter buttons to default filter
+		setFilterButtons(filterButtons.map(filter => {
+			if (filter.value == 'normal') {
+				return { ...filter, isActive: true };
+			} else {
+				return { ...filter, isActive: false };
+			}
+		}));
 	}
 
 	function uploadImageClickHandler(event) {
@@ -296,15 +360,25 @@ export default function ShareCard() {
 			x: event.clientX,
 			y: event.clientY
 		});
+		let designFilter;
 		let nextZIndex = designZIndex + 1;
 		setDesignZIndex(nextZIndex);
 		// set current design to top z-index
 		// set all other designs to not be draggable
 		setDesigns(designs.map((design, idx) => {
 			if (design.id == event.target.id) { // find unique item
+				designFilter = design.filter;
 				return { ...design, zIndex: nextZIndex }; // update current design
 			} else {
 				return { ...design, dragClass: 'no-drag' }; // update all other items
+			}
+		}));
+		// set filter buttons to filter type of current design
+		setFilterButtons(filterButtons.map(filter => {
+			if (filter.value == designFilter) {
+				return { ...filter, isActive: true };
+			} else {
+				return { ...filter, isActive: false };
 			}
 		}));
 	}
@@ -519,7 +593,7 @@ export default function ShareCard() {
 									id={design.id}
 									draggable
 									ref={(el) => (designRefs.current[idx] = el)}
-									style={{left: design.posX, top: design.posY, width: design.width, zIndex: design.zIndex}}
+									style={{left: design.posX, top: design.posY, width: design.width, mixBlendMode: design.filter, zIndex: design.zIndex}}
 									>
 									<img
 										src={design.path}
@@ -667,18 +741,24 @@ export default function ShareCard() {
 							</div>
 						</div>
 
-						{/* Option Pick a Color */}
+						{/* Option Filters */}
 						<div className="option-section option-filters">
 							<label className="option-label">Filters:</label>
 							<div className="option-filter-list">
-								{displayFilter('normal', 'None', true)}
-								{displayFilter('lighten', 'Lighten', false)}
-								{displayFilter('darken', 'Darken', false)}
-								{displayFilter('multiply', 'Multiply', false)}
-								{displayFilter('screen', 'Screen', false)}
-								{displayFilter('overlay', 'Overlay', false)}
-								{displayFilter('hard-light', 'Hard Light', false)}
-								{displayFilter('luminosity', 'Luminosity', false)}
+								{filterButtons.map((filter, idx) =>
+									<span key={idx}>
+										<input
+											id={filter.value}
+											className={`option-button option-button-filter hidden`}
+											name="filter-selector"
+											type="radio"
+											value={filter.value}
+											defaultChecked={filter.isActive}
+											onChange={filterClickHandler}
+										/>
+										<label htmlFor={filter.value} className={`filter-label${filter.isActive ? ' active' : ''}`}>{filter.name}</label>
+									</span>
+								)}
 							</div>
 						</div>
 
