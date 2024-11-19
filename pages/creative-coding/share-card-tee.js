@@ -25,6 +25,69 @@ export default function ShareCard() {
 		}
 	]
 
+	const seedGarmentColorData = [
+		{
+			id: 1,
+			name: 'black',
+			value: '#1d1d1d',
+			isActive: true
+		},
+		{
+			id: 2,
+			name: 'red',
+			value: '#d41b02',
+			isActive: false
+		},
+		{
+			id: 3,
+			name: 'gold',
+			value: '#ffaa00',
+			isActive: false
+		},
+		{
+			id: 4,
+			name: 'olive',
+			value: '#5f6e1f',
+			isActive: false
+		},
+		{
+			id: 5,
+			name: 'navy',
+			value: '#022c59',
+			isActive: false
+		},
+		{
+			id: 6,
+			name: 'pink',
+			value: '#ffade2',
+			isActive: false
+		},
+		{
+			id: 7,
+			name: 'charcoal',
+			value: '#4d4b49',
+			isActive: false
+		},
+		// {
+		// 	id: 8,
+		// 	name: 'grey',
+		// 	value: '#bfbebb',
+		// 	isActive: false
+		// },
+		{
+			id: 8,
+			name: 'tan',
+			value: '#cbb699',
+			isActive: false
+		},
+		{
+			id: 9,
+			name: 'white',
+			value: '#fff',
+			isActive: false
+		}
+	]
+
 	const seedFilterData = [
 		{
 			id: 1,
@@ -162,23 +225,6 @@ export default function ShareCard() {
 	function garmentColorHandler(event) {
 		let value = event.target.value;
 		setGarmentColor(value);
-	}
-
-	function displayColorSwatch(colorId, hexValue) {
-		return (
-			<div className="option-color">
-				<input
-					id={`color-${colorId}`}
-					className={`color-${colorId}`}
-					name="color-selector"
-					type="radio"
-					value={hexValue}
-					onChange={garmentColorHandler}
-					style={{background: hexValue}}
-				/>
-				<label htmlFor="custom-color" className="option-label">{colorId}</label>
-			</div>
-		)
 	}
 
 	function getDesignPosition(design) {
@@ -640,21 +686,25 @@ export default function ShareCard() {
 						{/* Option Pick a Color */}
 						<div className="option-section option-garment-color">
 							<legend className="option-label">Garment color:</legend>
-							{displayColorSwatch('black', '#1d1d1d')}
-							{displayColorSwatch('red', '#d41b02')}
-							{displayColorSwatch('gold', '#ffaa00')}
-							{displayColorSwatch('olive', '#5f6e1f')}
-							{displayColorSwatch('navy', '#022c59')}
-							{displayColorSwatch('pink', '#ffade2')}
-							{displayColorSwatch('charcoal', '#4d4b49')}
-							{displayColorSwatch('grey', '#bfbebb')}
-							{/* {displayColorSwatch('tan', '#cbb699')} */}
-							{displayColorSwatch('white', '#fff')}
+							{seedGarmentColorData.map((color, idx) =>
+								<div key={idx} className="option-color">
+									<input
+										id={`color-${color.name}`}
+										className={`color-${color.name}`}
+										name="color-selector"
+										type="radio"
+										value={color.value}
+										onChange={garmentColorHandler}
+										style={{background: color.value}}
+									/>
+									<label htmlFor={`color-${color.name}`} className="option-label">{color.name}</label>
+								</div>
+							)}
 							<div className="option-color">
 								<input
 									id="color-custom"
-									className="color-selector"
-									name="color-selector"
+									className="color-custom"
+									name="color-custom"
 									type="color"
 									defaultValue="#9daec1"
 									onChange={garmentColorHandler}
