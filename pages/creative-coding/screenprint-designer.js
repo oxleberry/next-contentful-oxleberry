@@ -136,6 +136,12 @@ export default function ScreenprintDesigner() {
 			name: 'Luminosity',
 			value: 'luminosity',
 			isActive: false
+		},
+		{
+			id: 9,
+			name: 'Grayscale',
+			value: 'grayscale(100%)',
+			isActive: false
 		}
 	]
 
@@ -163,6 +169,7 @@ export default function ScreenprintDesigner() {
 			width: number
 			rotate: number
 			filter: string
+			grayscale: string
 			dragClass: string, ex: 'draggable', 'no-drag'
 			zIndex: number
 		}]
@@ -322,14 +329,25 @@ export default function ScreenprintDesigner() {
 
 	function filterClickHandler(event) {
 		let currentDesign = getCurrentDesign();
-		// update filter style of current design
-		setDesigns(designs.map(design => {
-			if (design.id == currentDesign.id) {
-				return { ...design, filter: event.target.id };
-			} else {
-				return design;
-			}
-		}));
+		if (event.target.value == "grayscale(100%)") {
+			// update grayscale of current design, reset filter style of current design
+			setDesigns(designs.map(design => {
+				if (design.id == currentDesign.id) {
+					return { ...design, filter: 'normal', grayscale: event.target.id };
+				} else {
+					return design;
+				}
+			}));
+		} else {
+			// update filter style of current design, reset grayscale of current design
+			setDesigns(designs.map(design => {
+				if (design.id == currentDesign.id) {
+					return { ...design, filter: event.target.id, grayscale: 'initial' };
+				} else {
+					return design;
+				}
+			}));
+		}
 		// update current filter button to be active
 		setFilterButtons(filterButtons.map(filter => {
 			if (filter.value == event.target.value) {
@@ -358,6 +376,7 @@ export default function ScreenprintDesigner() {
 					rotate: 0,
 					dragClass: 'draggable',
 					filter: 'normal',
+					grayscale: 'initial',
 					zIndex: nextZIndex
 				}
 			]
@@ -411,6 +430,7 @@ export default function ScreenprintDesigner() {
 			y: event.clientY
 		});
 		let designFilter;
+		let designGrayscale;
 		let nextZIndex = designZIndex + 1;
 		setDesignZIndex(nextZIndex);
 		// set current design to top z-index
@@ -418,19 +438,32 @@ export default function ScreenprintDesigner() {
 		setDesigns(designs.map((design, idx) => {
 			if (design.id == event.target.id) { // find unique item
 				designFilter = design.filter;
+				designGrayscale = design.grayscale;
 				return { ...design, zIndex: nextZIndex }; // update current design
 			} else {
 				return { ...design, dragClass: 'no-drag' }; // update all other items
 			}
 		}));
-		// set filter buttons to filter type of current design
-		setFilterButtons(filterButtons.map(filter => {
-			if (filter.value == designFilter) {
-				return { ...filter, isActive: true };
-			} else {
-				return { ...filter, isActive: false };
-			}
-		}));
+		// update filter buttons
+		if (designGrayscale == "grayscale(100%)") {
+			// set filter buttons to grayscale button
+			setFilterButtons(filterButtons.map(filter => {
+				if (filter.value == designGrayscale) {
+					return { ...filter, isActive: true };
+				} else {
+					return { ...filter, isActive: false };
+				}
+			}));
+		} else {
+			// set filter buttons to filter type of current design
+			setFilterButtons(filterButtons.map(filter => {
+				if (filter.value == designFilter) {
+					return { ...filter, isActive: true };
+				} else {
+					return { ...filter, isActive: false };
+				}
+			}));
+		}
 	}
 
 	function dragOverHandler(event) {
@@ -646,7 +679,14 @@ export default function ScreenprintDesigner() {
 									id={design.id}
 									draggable
 									ref={(el) => (designRefs.current[idx] = el)}
-									style={{left: design.posX, top: design.posY, width: design.width, mixBlendMode: design.filter, zIndex: design.zIndex}}
+									style={{
+										left: design.posX,
+										top: design.posY,
+										width: design.width,
+										mixBlendMode: design.filter,
+										filter: design.grayscale,
+										zIndex: design.zIndex
+									}}
 									>
 									<img
 										src={design.path}
@@ -819,7 +859,7 @@ export default function ScreenprintDesigner() {
 							<label className="option-label">Filters:</label>
 							<div className="option-filter-list">
 								{filterButtons.map((filter, idx) =>
-									<button 
+									<button
 										key={idx}
 										id={filter.value}
 										className={`option-button-filter${filter.isActive ? ' active' : ''}`}
