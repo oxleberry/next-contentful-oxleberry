@@ -4,7 +4,7 @@
 @use '../utilities/z-index';
 
 
-.share-card-tee-page {
+.screenprint-designer-page {
 	/* Variables */
 	--options-color: #34485f;
 	--options-color-light: #9daec1;
@@ -43,11 +43,11 @@
 	// ========================
 	// Share Content Section
 	// ========================
-	.share-content-section {
+	.design-layout-section {
 		display: flex;
 		flex-direction: column;
 
-		.share-content-container {
+		.design-layout-container {
 			position: relative;
 			height: 100%;
 			max-width: 100%;

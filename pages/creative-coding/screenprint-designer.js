@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Header from '../../components/Header'
 import { useEffect, useState, useRef } from 'react'
 
-export default function ShareCard() {
+export default function ScreenprintDesigner() {
 	const borderWidth = 8;
 	const seedGarmentStyleData = [
 		{
@@ -621,21 +621,24 @@ export default function ShareCard() {
 	return (
 		<>
 			<Head>
-				<title>Oxleberry | Design a T-shirt</title>
-				<meta name="description" content="Oxleberry Design a T-Shirt" />
+				<title>Oxleberry | Screenprint Designer</title>
+				<meta name="description" content="Oxleberry - Screenprint Designer" />
 			</Head>
-			<div className="full-backboard share-card-tee-page">
-				<Header headline="Design a T-shirt" isSubPage={true}></Header>
+			<div className="full-backboard screenprint-designer-page">
+				<Header headline="Screenprint Designer" isSubPage={true}></Header>
 				<main>
 
-					<section className="share-content-section">
+					{/* Design layout container */}
+					<section className="design-layout-section">
 						<div
-							className="share-content-container"
+							className="design-layout-container"
 							ref={dragContainerRef}
 							onDragOver={event => dragOverHandler(event, false)}
 							onDrop={event => dragDropHandler(event, false)}
 							style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 						>
+							<h2 className="hidden">Design layout workspace</h2>
+							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} alt="screenprint designer workspace"/>
 							{designs.map((design, idx) =>
 								<div
 									className={`design-image-wrapper ${design.dragClass}`}
@@ -656,8 +659,6 @@ export default function ShareCard() {
 									/>
 								</div>
 							)}
-							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} alt="screenprint designer workspace"/>
-							<h2 className="hidden">Share Content</h2>
 						</div>
 					</section>
 
