@@ -394,7 +394,7 @@ export default function ScreenprintDesigner() {
 	}
 
 	function galleryClickHandler(event) {
-		let galleryImagePath = event.target.src;
+		let galleryImagePath = event.target.firstElementChild.src;
 		setNewDesign(galleryImagePath);
 	}
 
