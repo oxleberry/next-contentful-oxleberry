@@ -656,7 +656,7 @@ export default function ShareCard() {
 									/>
 								</div>
 							)}
-							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} />
+							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} alt="screenprint designer workspace"/>
 							<h2 className="hidden">Share Content</h2>
 						</div>
 					</section>
@@ -678,7 +678,7 @@ export default function ShareCard() {
 										defaultChecked={garment.isActive}
 										onChange={garmentStyleHandler}
 									/>
-									<label htmlFor="custom-garment" className="option-label">{garment.name}</label>
+									<label htmlFor={garment.value} className="option-label">{garment.name}</label>
 								</div>
 							)}
 						</div>
@@ -694,6 +694,7 @@ export default function ShareCard() {
 										name="color-selector"
 										type="radio"
 										value={color.value}
+										defaultChecked={color.isActive}
 										onChange={garmentColorHandler}
 										style={{background: color.value}}
 									/>
@@ -732,21 +733,21 @@ export default function ShareCard() {
 									type="button"
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}
-								>
+									aria-label="flower design">
 									<img className="gallery-image gallery-image-1" src="/creative-coding-pages/share-card/images/sakura-flower.svg" />
 								</button>
 								<button
 									type="button"
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}
-								>
+									aria-label="sugar skull design">
 									<img className="gallery-image gallery-image-2" src="/creative-coding-pages/share-card/images/sugar-skull.svg" />
 								</button>
 								<button
 									type="button"
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}
-								>
+									aria-label="flaming bunny design">
 									<img className="gallery-image gallery-image-3" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
 								</button>
 							</div>
@@ -761,11 +762,13 @@ export default function ShareCard() {
 										id="minus"
 										className="option-button"
 										onClick={sizeClickHandler}
+										aria-label="decrease art size"
 									>-</button>
 									<button
 										id="plus"
 										className="option-button"
 										onClick={sizeClickHandler}
+										aria-label="increase art size"
 									>+</button>
 								</div>
 							</div>
@@ -776,7 +779,8 @@ export default function ShareCard() {
 									<button
 										id="rotate-left"
 										className="option-button"
-										onClick={rotateClickHandler} >
+										onClick={rotateClickHandler}
+										aria-label="rotate art left">
 										<svg className="rotate-icon rotate-left-icon" viewBox="0 0 500 500">
 											<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
 										</svg>
@@ -784,7 +788,8 @@ export default function ShareCard() {
 									<button
 										id="rotate-right"
 										className="option-button"
-										onClick={rotateClickHandler} >
+										onClick={rotateClickHandler}
+										aria-label="rotate art right">
 										<svg className="rotate-icon rotate-right-icon" viewBox="0 0 500 500">
 											<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
 										</svg>
@@ -798,7 +803,8 @@ export default function ShareCard() {
 									<button
 										id="delete"
 										className="option-button"
-										onClick={deleteClickHandler} >
+										onClick={deleteClickHandler}
+										aria-label="delete art">
 										<svg className="delete-icon" viewBox="0 0 32 32">
 											<path d="M25 4h-18c-1.657 0-3 1.343-3 3v1h24v-1c0-1.657-1.343-3-3-3zM19.76 2l0.441 3.156h-8.402l0.441-3.156h7.52zM20 0h-8c-0.825 0-1.593 0.668-1.708 1.486l-0.585 4.185c-0.114 0.817 0.467 1.486 1.292 1.486h10c0.825 0 1.407-0.668 1.292-1.486l-0.585-4.185c-0.114-0.817-0.883-1.486-1.708-1.486v0zM25.5 10h-19c-1.1 0-1.918 0.896-1.819 1.992l1.638 18.016c0.1 1.095 1.081 1.992 2.181 1.992h15c1.1 0 2.081-0.896 2.181-1.992l1.638-18.016c0.1-1.095-0.719-1.992-1.819-1.992zM12 28h-3l-1-14h4v14zM18 28h-4v-14h4v14zM23 28h-3v-14h4l-1 14z" fill="#000000"></path>
 										</svg>
@@ -812,18 +818,14 @@ export default function ShareCard() {
 							<label className="option-label">Filters:</label>
 							<div className="option-filter-list">
 								{filterButtons.map((filter, idx) =>
-									<span key={idx}>
-										<input
-											id={filter.value}
-											className={`option-button option-button-filter hidden`}
-											name="filter-selector"
-											type="radio"
-											value={filter.value}
-											defaultChecked={filter.isActive}
-											onChange={filterClickHandler}
-										/>
-										<label htmlFor={filter.value} className={`filter-label${filter.isActive ? ' active' : ''}`}>{filter.name}</label>
-									</span>
+									<button 
+										key={idx}
+										id={filter.value}
+										className={`option-button-filter${filter.isActive ? ' active' : ''}`}
+										value={filter.value}
+										onClick={filterClickHandler}>
+											{filter.name}
+									</button>
 								)}
 							</div>
 						</div>
