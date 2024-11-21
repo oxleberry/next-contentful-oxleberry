@@ -170,6 +170,7 @@ export default function ScreenprintDesigner() {
 			rotate: number
 			filter: string
 			grayscale: string
+			borderRadius: number
 			dragClass: string, ex: 'draggable', 'no-drag'
 			zIndex: number
 		}]
@@ -309,33 +310,34 @@ export default function ScreenprintDesigner() {
 	}
 
 	function roundedCornersClickHandler(event) {
-		// let currentDesign = getCurrentDesign();
-		// let currentPos = getDesignPosition(currentDesign);
-		// let increment = 30;
-		// let updateWidth;
-		// let updatePosX;
-		// let updatePosY;
-		// // extracting the digits from the width style
-		// let widthValue = currentDesign.style.width.replace(/\D/g, '');
-		// // increment based on button clicked
-		// if (event.target.id == "plus") {
-		// 	updateWidth = +widthValue + increment;
-		// 	updatePosX = currentPos.x - increment / 2;
-		// 	updatePosY = currentPos.y - increment / 2;
-		// } else if (event.target.id == "minus") {
-		// 	updateWidth = +widthValue - increment;
-		// 	updatePosX = currentPos.x + increment / 2;
-		// 	updatePosY = currentPos.y + increment / 2;
-		// }
-		// // update width of current design &
-		// // update position of current design (to update size from the center)
-		// setDesigns(designs.map(design => {
-		// 	if (design.id == currentDesign.id) {
-		// 		return { ...design, width: updateWidth, posX: updatePosX, posY: updatePosY };
-		// 	} else {
-		// 		return design; // no changes to these item
-		// 	}
-		// }));
+		let currentDesign = getCurrentDesign();
+		let increment = 20;
+		let updateBorderRadius;
+		// update rounded corners value of current design
+		if (event.target.id == "decrease") {
+			setDesigns(designs.map(design => {
+				if (design.id == currentDesign.id) {
+					// if border radius is at zero, no need to decrease further
+					if (design.borderRadius == 0) {
+						return design;
+					} else {
+						updateBorderRadius = design.borderRadius - increment;
+						return { ...design, borderRadius: updateBorderRadius };
+					}
+				} else {
+					return design;
+				}
+			}));
+		} else if (event.target.id == "increase") {
+			setDesigns(designs.map(design => {
+				if (design.id == currentDesign.id) {
+					updateBorderRadius = design.borderRadius + increment;
+					return { ...design, borderRadius: updateBorderRadius };
+				} else {
+					return design;
+				}
+			}));
+		}
 	}
 
 	function deleteClickHandler(event) {
@@ -407,6 +409,7 @@ export default function ScreenprintDesigner() {
 					dragClass: 'draggable',
 					filter: 'normal',
 					grayscale: 'initial',
+					borderRadius: 0,
 					zIndex: nextZIndex
 				}
 			]
@@ -725,7 +728,11 @@ export default function ScreenprintDesigner() {
 										className={`design-image design-${idx} ${design.dragClass}`}
 										draggable
 										onDragStart={event => dragStartHandler(event, false)}
-										style={{transform: `rotate(${design.rotate}deg)`, width: design.width}}
+										style={{
+											transform: `rotate(${design.rotate}deg)`,
+											width: design.width,
+											borderRadius: `${design.borderRadius}px`
+										}}
 									/>
 								</div>
 							)}
@@ -877,13 +884,13 @@ export default function ScreenprintDesigner() {
 									<label className="option-label">Rounded Corners:</label>
 									<div className="row">
 										<button
-											id="less"
+											id="decrease"
 											className="option-button"
 											onClick={roundedCornersClickHandler}
 											aria-label="decrease rounded corners"
 										>-</button>
 										<button
-											id="more"
+											id="increase"
 											className="option-button"
 											onClick={roundedCornersClickHandler}
 											aria-label="increase rounded corners"
