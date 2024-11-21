@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
-import { useEffect, useState, useRef } from 'react'
+import { useState, useRef } from 'react'
 
 export default function ShareCard() {
 	// States =================
@@ -10,6 +10,7 @@ export default function ShareCard() {
 	const [isCustomText, setIsCustomText] = useState(false);
 
 	const shareFileRef = useRef(null);
+	const shareImageRef = useRef(null);
 
 	function colorInputHandler(event) {
 		let value = event.target.value;
@@ -39,10 +40,12 @@ export default function ShareCard() {
 		canvas.width = 436;
 		canvas.height = 604;
 		const context = canvas.getContext('2d');
-		context.fillStyle = 'lightblue';
+		context.fillStyle = 'black';
 		context.fillRect(0, 0, 436, 604);
 		shareFileRef.current.appendChild(canvas);
-		return canvas;
+		// draw share image to canvas
+		// shareImageRef.current.crossOrigin = 'anonymous';
+		context.drawImage(shareImageRef.current, 75, 250, 300, 230);
 	}
 
 	return (
@@ -114,7 +117,7 @@ export default function ShareCard() {
 									className="gallery-image-button button-black"
 									onClick={galleryClickHandler}
 								>
-									<img className="gallery-image" src="/creative-coding-pages/share-card/flaming-bunny.png" />
+									<img ref={shareImageRef} className="gallery-image" src="/creative-coding-pages/share-card/flaming-bunny.png" />
 								</button>
 							</div>
 						</div>
