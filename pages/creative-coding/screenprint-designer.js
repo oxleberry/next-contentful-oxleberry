@@ -308,6 +308,36 @@ export default function ScreenprintDesigner() {
 		}
 	}
 
+	function roundedCornersClickHandler(event) {
+		// let currentDesign = getCurrentDesign();
+		// let currentPos = getDesignPosition(currentDesign);
+		// let increment = 30;
+		// let updateWidth;
+		// let updatePosX;
+		// let updatePosY;
+		// // extracting the digits from the width style
+		// let widthValue = currentDesign.style.width.replace(/\D/g, '');
+		// // increment based on button clicked
+		// if (event.target.id == "plus") {
+		// 	updateWidth = +widthValue + increment;
+		// 	updatePosX = currentPos.x - increment / 2;
+		// 	updatePosY = currentPos.y - increment / 2;
+		// } else if (event.target.id == "minus") {
+		// 	updateWidth = +widthValue - increment;
+		// 	updatePosX = currentPos.x + increment / 2;
+		// 	updatePosY = currentPos.y + increment / 2;
+		// }
+		// // update width of current design &
+		// // update position of current design (to update size from the center)
+		// setDesigns(designs.map(design => {
+		// 	if (design.id == currentDesign.id) {
+		// 		return { ...design, width: updateWidth, posX: updatePosX, posY: updatePosY };
+		// 	} else {
+		// 		return design; // no changes to these item
+		// 	}
+		// }));
+	}
+
 	function deleteClickHandler(event) {
 		// skip if designs are empty
 		if (designRefs.current[0] === null) return;
@@ -794,52 +824,76 @@ export default function ScreenprintDesigner() {
 							</div>
 						</div>
 
-						<div className="option-section option-size-rotate-delete">
+						<div className="option-section art-manipulation-section">
 							{/* Option Size */}
-							<div className="sub-container">
-								<div className="option-size">
+							<div className="sub-divider">
+								<div className="option-sub-section option-size">
 									<label className="option-label">Art size:</label>
-									<button
-										id="minus"
-										className="option-button"
-										onClick={sizeClickHandler}
-										aria-label="decrease art size"
-									>-</button>
-									<button
-										id="plus"
-										className="option-button"
-										onClick={sizeClickHandler}
-										aria-label="increase art size"
-									>+</button>
+									<div className="row">
+										<button
+											id="minus"
+											className="option-button"
+											onClick={sizeClickHandler}
+											aria-label="decrease art size"
+										>-</button>
+										<button
+											id="plus"
+											className="option-button"
+											onClick={sizeClickHandler}
+											aria-label="increase art size"
+										>+</button>
+									</div>
 								</div>
 							</div>
 							{/* Option Rotate */}
-							<div className="sub-container">
-								<div className="option-rotate">
-									<label className="option-label">Rotate art:</label>
-									<button
-										id="rotate-left"
-										className="option-button"
-										onClick={rotateClickHandler}
-										aria-label="rotate art left">
-										<svg className="rotate-icon rotate-left-icon" viewBox="0 0 500 500">
-											<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
-										</svg>
-									</button>
-									<button
-										id="rotate-right"
-										className="option-button"
-										onClick={rotateClickHandler}
-										aria-label="rotate art right">
-										<svg className="rotate-icon rotate-right-icon" viewBox="0 0 500 500">
-											<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
-										</svg>
-									</button>
+							<div className="sub-divider">
+								<div className="option-sub-section option-rotate">
+									<label className="option-label">Rotate Art:</label>
+									<div className="row">
+										<button
+											id="rotate-left"
+											className="option-button"
+											onClick={rotateClickHandler}
+											aria-label="rotate art left">
+											<svg className="rotate-icon rotate-left-icon" viewBox="0 0 500 500">
+												<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
+											</svg>
+										</button>
+										<button
+											id="rotate-right"
+											className="option-button"
+											onClick={rotateClickHandler}
+											aria-label="rotate art right">
+											<svg className="rotate-icon rotate-right-icon" viewBox="0 0 500 500">
+												<path d="M 197,190 C 206,199 198,217 185,217 L 69,217 C 59,217 52,210 52,200 L 52,84 C 52,70 70.5,63.5 79,72 L 113.5,106.5 A 198,198 0 1 1 98,377 C 95,374 95,368.5 98,365.5 L133.5,330 C136.5,327 142.5,327 145.5,330 A 132,132 0 1 0 160.5,153.5 Z"></path>
+											</svg>
+										</button>
+									</div>
+								</div>
+							</div>
+							{/* Option Rounded Corners */}
+							<div className="sub-divider">
+								<div className="option-sub-section option-border-radius">
+									<label className="option-label">Rounded Corners:</label>
+									<div className="row">
+										<button
+											id="less"
+											className="option-button"
+											onClick={roundedCornersClickHandler}
+											aria-label="decrease rounded corners"
+										>-</button>
+										<button
+											id="more"
+											className="option-button"
+											onClick={roundedCornersClickHandler}
+											aria-label="increase rounded corners"
+										>+</button>
+									</div>
 								</div>
 							</div>
 							{/* Option Delete */}
-							<div className="sub-container">
-								<div className="option-delete">
+							<div className="sub-divider">
+								<div className="option-sub-section option-delete">
 									<label className="option-label hidden">Delete:</label>
 									<button
 										id="delete"

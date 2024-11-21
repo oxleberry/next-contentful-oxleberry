@@ -102,7 +102,7 @@
 
 		.row {
 			display: flex;
-			padding-bottom: 10px;
+			justify-content: center;
 		}
 
 		.option-label {
@@ -112,25 +112,6 @@
 			font-size: 18px;
 			text-transform: uppercase;
 			color: var(--options-color);
-		}
-
-		.option-button {
-			cursor: pointer;
-			width: 42px;
-			color: var(--options-color);
-			font-size: 26px;
-			font-weight: bold;
-			border: 1px solid #a8b6c5;
-			background-color: #d7e0e8;
-			background-image: linear-gradient(#f1f5fb, #d7e0e8);
-			padding-bottom: 7px;
-			margin: 0 6px;
-			transition: all 200ms ease-out;
-
-			&:hover {
-				box-shadow: 0 0 0 2px var(--options-color-light);
-				transition: all 200ms ease-out;
-			}
 		}
 
 		// =========================
@@ -322,15 +303,17 @@
 			}
 		}
 
-		// =========================
-		// Art Size, Rotate & Delete
-		// =========================
-		.option-size-rotate-delete {
+		// =============================================
+		// Art Size, Rotate, Border Radius, & Delete
+		// =============================================
+		.art-manipulation-section {
 			display: grid;
-			grid-template-columns: 1fr 1fr 1fr;
+			grid-template-columns: 1fr 1fr 1fr .7fr;
+			// grid-template-columns: repeat(4, auto);
 			padding: 0;
+			width: 100%;
 
-			.sub-container {
+			.sub-divider {
 				display: flex;
 
 				&:nth-child(n + 2) {
@@ -343,24 +326,43 @@
 				}
 			}
 
-			.option-label {
-				margin-right: 10px;
-			}
-
-			.option-size,
-			.option-rotate,
-			.option-delete {
+			.option-sub-section {
+				width: 100%;
 				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				grid-template-rows: 1fr auto;
 				padding: 18px 18px;
 			}
 
-			.option-delete {
-				justify-content: center;
-				width: 100%;
+			.option-label {
+				margin-bottom: 12px;
+			}
 
-				.option-label {
-					display: none;
+			.option-button {
+				cursor: pointer;
+				width: 42px;
+				color: var(--options-color);
+				font-size: 26px;
+				font-weight: bold;
+				border: 1px solid #a8b6c5;
+				background-color: #d7e0e8;
+				background-image: linear-gradient(#f1f5fb, #d7e0e8);
+				padding-bottom: 7px;
+				transition: all 200ms ease-out;
+
+				& + .option-button {
+					margin-left: 15px;
 				}
+
+				&:hover {
+					box-shadow: 0 0 0 2px var(--options-color-light);
+					transition: all 200ms ease-out;
+				}
+			}
+
+			.option-delete .option-button {
+				align-self: center;
 			}
 
 			.rotate-icon,
@@ -384,8 +386,6 @@
 
 			.delete-icon {
 				width: 26px;
-				margin-left: auto;
-				margin-right: auto;
 			}
 		}
 
