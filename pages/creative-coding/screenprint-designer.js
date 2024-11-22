@@ -88,6 +88,27 @@ export default function ScreenprintDesigner() {
 		}
 	]
 
+	const seedGalleryImageData = [
+		{
+			id: 1,
+			name: 'sakura-flower',
+			url: '/creative-coding-pages/share-card/images/sakura-flower.svg',
+			ariaLabel: 'flower design',
+		},
+		{
+			id: 2,
+			name: 'sugar-skull',
+			url: '/creative-coding-pages/share-card/images/sugar-skull.svg',
+			ariaLabel: 'sugar skull design',
+		},
+		{
+			id: 3,
+			name: 'flaming-bunny',
+			url: '/creative-coding-pages/share-card/images/flaming-bunny.png',
+			ariaLabel: 'flaming bunny design',
+		}
+	]
+
 	const seedFilterData = [
 		{
 			id: 1,
@@ -796,7 +817,7 @@ export default function ScreenprintDesigner() {
 							{/* Option Upload an Image */}
 							<div className="sub-divider">
 								<div className="option-sub-section option-upload-image">
-									<label htmlFor="upload-image" className="option-label">Upload an image:</label>
+									<label htmlFor="upload-image" className="option-label">Upload your image:</label>
 									<input
 										id="upload-image"
 										onChange={uploadImageClickHandler}
@@ -810,27 +831,18 @@ export default function ScreenprintDesigner() {
 								<div className="option-sub-section option-image-gallery">
 									<label className="option-label">Choose an image:</label>
 									<div className="gallery-container">
-										<button
-											type="button"
-											className="gallery-image-button"
-											onClick={galleryClickHandler}
-											aria-label="flower design">
-											<img className="gallery-image gallery-image-1" src="/creative-coding-pages/share-card/images/sakura-flower.svg" />
-										</button>
-										<button
-											type="button"
-											className="gallery-image-button"
-											onClick={galleryClickHandler}
-											aria-label="sugar skull design">
-											<img className="gallery-image gallery-image-2" src="/creative-coding-pages/share-card/images/sugar-skull.svg" />
-										</button>
-										<button
-											type="button"
-											className="gallery-image-button"
-											onClick={galleryClickHandler}
-											aria-label="flaming bunny design">
-											<img className="gallery-image gallery-image-3" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
-										</button>
+										{seedGalleryImageData.map((image, idx) =>
+											<button
+												key={idx}
+												type="button"
+												className="gallery-image-button"
+												onClick={galleryClickHandler}
+												aria-label={image.ariaLabel}>
+												<img 
+													className={`gallery-image gallery-image-${image.id}`} 
+													src={image.url}/>
+											</button>
+										)}
 									</div>
 								</div>
 							</div>
