@@ -100,6 +100,35 @@
 			}
 		}
 
+		// Options with Sub-sections
+		.sub-section-container {
+			padding: 0;
+
+			.sub-divider {
+				display: flex;
+
+				&:nth-child(n + 2) {
+					&::before {
+						content: '';
+						height: 100%;
+						width: 4px;
+						background-color: var(--options-color);
+					}
+				}
+			}
+
+			.option-sub-section {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				padding: 18px 18px;
+			}
+
+			.option-label {
+				padding-bottom: 14px;
+			}
+		}
+
 		.row {
 			display: flex;
 			justify-content: center;
@@ -227,78 +256,68 @@
 			}
 		}
 
-		// =========================
-		// Upload Image
-		// =========================
-		.option-upload-image {
-			display: flex;
+		// ===============================
+		// Upload Image & Image Gallery
+		// ===============================
+		.images-section {
+			display: grid;
+			grid-template-columns: auto auto;
 
-			.option-label {
-				margin-top: 8px;
-				margin-right: 12px;
-			}
-
-			input::file-selector-button {
-				font-size: 16px;
-				font-weight: bold;
-				color: var(--options-color);
-				background-color: #d7e0e8;
-				background-image: linear-gradient(#f1f5fb, #d7e0e8);
-				border: 1px solid var(--options-color-light);
-				padding: 6px 14px;
-				margin: 2px;
-				cursor: pointer;
-
-				&:hover {
-					box-shadow: 0 0 0 2px var(--options-color-light);
-					transition: all 200ms ease-out;
-				}
-			}
-
-			input[type='file'] {
-				// color: transparent;
-				font-size: 1.7rem;
-				color: var(--options-color);
-			}
-		}
-
-		// =========================
-		// Image Gallery
-		// =========================
-		.option-image {
-			.option-label {
-				padding-bottom: 14px;
-			}
-
-			.gallery-container {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				gap: 20px;
-
-				.gallery-image-button {
-					border: none;
-					padding: 10px;
-					opacity: .7;
-					transition: opacity 200ms ease-in-out;
+			// Upload Image
+			.option-upload-image {
+				input::file-selector-button {
+					font-size: 16px;
+					font-weight: bold;
+					color: var(--options-color);
+					background-color: #d7e0e8;
+					background-image: linear-gradient(#f1f5fb, #d7e0e8);
+					border: 1px solid var(--options-color-light);
+					padding: 6px 14px;
+					margin: 2px;
 					cursor: pointer;
 
 					&:hover {
-						opacity: 1;
+						box-shadow: 0 0 0 2px var(--options-color-light);
+						transition: all 200ms ease-out;
 					}
 				}
 
-				.gallery-image {
-					width: 100%;
-					pointer-events: none;
+				input[type='file'] {
+					font-size: 1.7rem;
+					color: var(--options-color);
+					max-width: 250px;
 				}
+			}
 
-				.button-black {
-					background-color: black;
-				}
+			// Image Gallery
+			.option-image-gallery {
+				.gallery-container {
+					display: grid;
+					grid-template-columns: repeat(3, 1fr);
+					gap: 10px;
 
-				.gallery-image-1 {
-					padding-left: 6px;
-					padding-right: 6px;
+					.gallery-image-button {
+						border: none;
+						padding: 10px;
+						opacity: .7;
+						transition: opacity 200ms ease-in-out;
+						background-color: black;
+						cursor: pointer;
+
+						&:hover {
+							opacity: 1;
+						}
+					}
+
+					.gallery-image {
+						width: 100%;
+						pointer-events: none;
+					}
+
+					.gallery-image-1 {
+						padding-left: 6px;
+						padding-right: 6px;
+					}
 				}
 			}
 		}
@@ -309,34 +328,9 @@
 		.art-manipulation-section {
 			display: grid;
 			grid-template-columns: 1fr 1fr 1fr .7fr;
-			// grid-template-columns: repeat(4, auto);
-			padding: 0;
-			width: 100%;
-
-			.sub-divider {
-				display: flex;
-
-				&:nth-child(n + 2) {
-					&::before {
-						content: '';
-						height: 100%;
-						width: 4px;
-						background-color: var(--options-color);
-					}
-				}
-			}
 
 			.option-sub-section {
-				width: 100%;
-				display: flex;
-				flex-direction: column;
 				justify-content: space-between;
-				grid-template-rows: 1fr auto;
-				padding: 18px 18px;
-			}
-
-			.option-label {
-				margin-bottom: 12px;
 			}
 
 			.option-button {
@@ -447,21 +441,15 @@
 			text-transform: uppercase;
 			color: var(--options-color);
 			padding: 10px 16px;
-
-			border-radius: 6px;
 			border: 1px solid #a8b6c5;
 			// background-image: linear-gradient(#fff, #ebf0f5);
 			// background-image: linear-gradient(#fff, #d7e0e8);
 			background-color: #d7e0e8;
 			background-image: linear-gradient(#f1f5fb, #d7e0e8);
 
-			svg.share-icon {
-				width: 22px;
-				margin-inline-start: 10px;
-
-				path {
-					fill: var(--options-color)
-				}
+			&:hover {
+				box-shadow: 0 0 0 2px var(--options-color-light);
+				transition: all 200ms ease-out;
 			}
 		}
 	}

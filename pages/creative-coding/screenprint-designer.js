@@ -68,12 +68,6 @@ export default function ScreenprintDesigner() {
 			value: '#4d4b49',
 			isActive: false
 		},
-		// {
-		// 	id: 8,
-		// 	name: 'grey',
-		// 	value: '#bfbebb',
-		// 	isActive: false
-		// },
 		{
 			id: 8,
 			name: 'tan',
@@ -82,6 +76,12 @@ export default function ScreenprintDesigner() {
 		},
 		{
 			id: 9,
+			name: 'grey',
+			value: '#bfbebb',
+			isActive: false
+		},
+		{
+			id: 10,
 			name: 'white',
 			value: '#fff',
 			isActive: false
@@ -792,46 +792,51 @@ export default function ScreenprintDesigner() {
 							</div>
 						</div>
 
-						{/* Option Upload an Image */}
-						<div className="option-section option-upload-image">
-							<label htmlFor="upload-image" className="option-label">Upload in image:</label>
-							<input
-								id="upload-image"
-								onChange={uploadImageClickHandler}
-								type="file"
-								name="custom-image"
-								accept=".png, .jpg, .jpeg, .gif, .webp"/>
-						</div>
-
-						{/* Option Galley Image */}
-						<div className="option-section option-image">
-							<label className="option-label">Choose an image:</label>
-							<div className="gallery-container">
-								<button
-									type="button"
-									className="gallery-image-button button-black"
-									onClick={galleryClickHandler}
-									aria-label="flower design">
-									<img className="gallery-image gallery-image-1" src="/creative-coding-pages/share-card/images/sakura-flower.svg" />
-								</button>
-								<button
-									type="button"
-									className="gallery-image-button button-black"
-									onClick={galleryClickHandler}
-									aria-label="sugar skull design">
-									<img className="gallery-image gallery-image-2" src="/creative-coding-pages/share-card/images/sugar-skull.svg" />
-								</button>
-								<button
-									type="button"
-									className="gallery-image-button button-black"
-									onClick={galleryClickHandler}
-									aria-label="flaming bunny design">
-									<img className="gallery-image gallery-image-3" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
-								</button>
+						<div className="option-section sub-section-container images-section">
+							{/* Option Upload an Image */}
+							<div className="sub-divider">
+								<div className="option-sub-section option-upload-image">
+									<label htmlFor="upload-image" className="option-label">Upload an image:</label>
+									<input
+										id="upload-image"
+										onChange={uploadImageClickHandler}
+										type="file"
+										name="custom-image"
+										accept=".png, .jpg, .jpeg, .gif, .webp"/>
+								</div>
+							</div>
+							{/* Option Galley Image */}
+							<div className="sub-divider">
+								<div className="option-sub-section option-image-gallery">
+									<label className="option-label">Choose an image:</label>
+									<div className="gallery-container">
+										<button
+											type="button"
+											className="gallery-image-button"
+											onClick={galleryClickHandler}
+											aria-label="flower design">
+											<img className="gallery-image gallery-image-1" src="/creative-coding-pages/share-card/images/sakura-flower.svg" />
+										</button>
+										<button
+											type="button"
+											className="gallery-image-button"
+											onClick={galleryClickHandler}
+											aria-label="sugar skull design">
+											<img className="gallery-image gallery-image-2" src="/creative-coding-pages/share-card/images/sugar-skull.svg" />
+										</button>
+										<button
+											type="button"
+											className="gallery-image-button"
+											onClick={galleryClickHandler}
+											aria-label="flaming bunny design">
+											<img className="gallery-image gallery-image-3" src="/creative-coding-pages/share-card/images/flaming-bunny.png" />
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
 
-						<div className="option-section art-manipulation-section">
+						<div className="option-section sub-section-container art-manipulation-section">
 							{/* Option Size */}
 							<div className="sub-divider">
 								<div className="option-sub-section option-size">
@@ -901,7 +906,7 @@ export default function ScreenprintDesigner() {
 							{/* Option Delete */}
 							<div className="sub-divider">
 								<div className="option-sub-section option-delete">
-									<label className="option-label hidden">Delete:</label>
+									<label className="option-label">Delete:</label>
 									<button
 										id="delete"
 										className="option-button"
@@ -933,17 +938,14 @@ export default function ScreenprintDesigner() {
 						</div>
 
 						{/* Share Card Button */}
-						{/* <div className="option-section option-share">
+						<div className="option-section option-share">
 							<button
 								type="button"
 								className="share-button"
 								onClick={shareCardClickHandler}
-							>Create Share Card */}
-								{/* <svg className="share-icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 42 42">
-									<path d="M 35.478516 5.9804688 A 2.0002 2.0002 0 0 0 34.085938 9.4140625 L 35.179688 10.507812 C 23.476587 10.680668 14 20.256715 14 32 A 2.0002 2.0002 0 1 0 18 32 C 18 22.427546 25.627423 14.702715 35.154297 14.517578 L 34.085938 15.585938 A 2.0002 2.0002 0 1 0 36.914062 18.414062 L 41.236328 14.091797 A 2.0002 2.0002 0 0 0 41.228516 10.900391 L 36.914062 6.5859375 A 2.0002 2.0002 0 0 0 35.478516 5.9804688 z M 12.5 6 C 8.9338464 6 6 8.9338464 6 12.5 L 6 35.5 C 6 39.066154 8.9338464 42 12.5 42 L 35.5 42 C 39.066154 42 42 39.066154 42 35.5 L 42 28 A 2.0002 2.0002 0 1 0 38 28 L 38 35.5 C 38 36.903846 36.903846 38 35.5 38 L 12.5 38 C 11.096154 38 10 36.903846 10 35.5 L 10 12.5 C 10 11.096154 11.096154 10 12.5 10 L 20 10 A 2.0002 2.0002 0 1 0 20 6 L 12.5 6 z"></path>
-								</svg> */}
-							{/* </button> */}
-						{/* </div> */}
+							>Create Share Card
+							</button>
+						</div>
 						{/* Share Url Button */}
 						{/* <div className="option-section option-share">
 							<button
