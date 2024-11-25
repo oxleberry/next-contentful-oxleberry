@@ -6,8 +6,11 @@ export default function ShareCard() {
 	// States =================
 	const [colorInput, setColorInput] = useState('#000000');
 	const [textInput, setTextInput] = useState('Welcome!');
-	const [galleryImage, setGalleryImage] = useState('');
 	const [isCustomText, setIsCustomText] = useState(false);
+	const [galleryImagePath, setGalleryImagePath] = useState('');
+	const [galleryImage, setGalleryImage] = useState(null);
+	const [galleryImageWidth, setGalleryImageWidth] = useState(0);
+	const [galleryImageHeight, setGalleryImageHeight] = useState(0);
 
 	const shareFileRef = useRef(null);
 	const shareImageRef = useRef(null);
@@ -71,8 +74,12 @@ export default function ShareCard() {
 	}
 
 	function galleryClickHandler(event) {
+		let image = event.target;
 		let imagePath = event.target.src;
-		setGalleryImage(imagePath);
+		setGalleryImage(image);
+		setGalleryImagePath(imagePath);
+		setGalleryImageWidth(event.target.offsetWidth);
+		setGalleryImageHeight(event.target.offsetHeight);
 	}
 
 	function shareClickHandler() {
@@ -81,12 +88,15 @@ export default function ShareCard() {
 		canvas.width = 436;
 		canvas.height = 604;
 		const context = canvas.getContext('2d');
-		context.fillStyle = '#000000';
+		context.fillStyle = colorInput;
 		context.fillRect(0, 0, 436, 604);
 		shareFileRef.current.prepend(canvas);
 		// draw share image to canvas
 		// shareImageRef.current.crossOrigin = 'anonymous';
-		context.drawImage(shareImageRef.current, 75, 235, 300, 230);
+		if (galleryImage) {
+			let	scale = parseFloat(300 / galleryImageWidth).toFixed(2);
+			context.drawImage(galleryImage, 68, 235, galleryImageWidth * scale, galleryImageHeight * scale);
+		}
 		// draw svg text to canvas
 		let url = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgString);
 		let img = new Image();
@@ -110,7 +120,7 @@ export default function ShareCard() {
 					<section className="share-content-container" style={{background: `${colorInput}`}}>
 						<h2 className="hidden">Share Content</h2>
 							<p className="text-display">{textInput}</p>
-							<div className="image-display" style={{backgroundImage: `url(${galleryImage})`}} />
+							<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
 					</section>
 
 					{/* Option Section */}
