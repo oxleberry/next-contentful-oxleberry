@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
+import html2canvas from '../../components/html2canvas'
 import { useEffect, useState, useRef } from 'react'
 
 export default function ScreenprintDesigner() {
@@ -684,11 +685,16 @@ export default function ScreenprintDesigner() {
 	}
 
 	function shareCardClickHandler() {
-		const canvas = createCanvas();
-		drawImageToCanvas(canvas);
-		drawTextToCanvas(canvas);
+		// NOTE: html2canvas can't bring in filters, also has problem with SVGs
+		html2canvas(document.querySelector("#capture")).then(canvas => {
+			document.body.appendChild(canvas); // view test in browser
+			shareFile(canvas);
+		});
+		// const canvas = createCanvas();
+		// drawImageToCanvas(canvas);
+		// drawTextToCanvas(canvas);
 		// drawSVGToCanvas(canvas); // NOTE: not currently working - shows up on browser, but not showing up on share card
-		shareFile(canvas);
+		// shareFile(canvas);
 	}
 
 	function shareUrlClickHandler() {
@@ -719,6 +725,7 @@ export default function ScreenprintDesigner() {
 					<section className="design-layout-section">
 						<div
 							className="design-layout-container"
+							id="capture"
 							ref={dragContainerRef}
 							onDragOver={event => dragOverHandler(event, false)}
 							onDrop={event => dragDropHandler(event, false)}
@@ -958,15 +965,6 @@ export default function ScreenprintDesigner() {
 							>Create Share Card
 							</button>
 						</div>
-						{/* Share Url Button */}
-						{/* <div className="option-section option-share">
-							<button
-								type="button"
-								className="share-button"
-								onClick={shareUrlClickHandler}
-							>Share Url
-							</button>
-						</div> */}
 					</section>
 
 					<section

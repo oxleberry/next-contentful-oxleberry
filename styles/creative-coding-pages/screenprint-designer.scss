@@ -46,12 +46,13 @@
 	.design-layout-section {
 		display: flex;
 		flex-direction: column;
+		// adding border here to prevent border seen in canvas
+		border: 8px solid var(--options-color);
 
 		.design-layout-container {
 			position: relative;
 			height: 100%;
 			max-width: 100%;
-			border: 8px solid var(--options-color);
 			overflow: hidden;
 		}
 
