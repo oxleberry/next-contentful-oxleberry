@@ -203,50 +203,6 @@ export default function ScreenprintDesigner() {
 	const dragContainerRef = useRef(null);
 	let designRefs = useRef([null]);
 
-	// NOTE: not currently working - shows up on browser, but not showing up on share card
-	const svgString = `
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			xmlns:xlink="http://www.w3.org/1999/xlink"
-			x="0px"
-			y="0px"
-			viewBox="0 0 400 100"
-		>
-
-			<style>
-				.share-container {
-					transform: scale(1);
-				}
-
-				.share-svg-rect {
-					fill: transparent;
-				}
-
-				.share-svg-text {
-					fill: ${textColor};
-					font-size: 42px;
-					font-family: sans-serif;
-				}
-
-				.share-svg-rect-pink {
-					fill: pink;
-				}
-			</style>
-
-			<g class="share-container">
-				<rect class="share-svg-rect" width="400" height="400"></rect>
-				<text
-				class="share-svg-text"
-				x="50%"
-				y="80%"
-				dominant-baseline="middle"
-				text-anchor="middle"
-				>${textInput}</text>
-			</g>
-			<rect class="share-svg-rect-pink" width="100" height="100"></rect>
-		</svg>
-	`
-
 	function garmentStyleHandler(event) {
 		let value = event.target.value;
 		setGarmentStyle(value);
@@ -555,37 +511,16 @@ export default function ScreenprintDesigner() {
 	// =======================================
 	function createCanvas() {
 		const canvas = document.createElement('canvas');
-		canvas.width = 400;
-		canvas.height = 400;
+		canvas.width = 584;
+		canvas.height = 682;
 		const context = canvas.getContext('2d');
 		context.save(); // Save the current state
 		// Clips rounded corners on share card
-		if (roundedCorners) {
-			drawRoundedCorners(canvas);
-		}
 		context.fillStyle = garmentColor;
-		context.fillRect(0, 0, 400, 400);
+		context.fillRect(0, 0, 584, 682);
 		context.restore(); // Restore to the state saved by the most recent call to save()
 		shareFileRef.current.prepend(canvas);
 		return canvas;
-	}
-
-	function drawRoundedCorners(canvas) {
-		const width = 400;
-		const height = 400;
-		const top = 0;
-		const left = 0;
-		const cornerRadius = 40;
-		const context = canvas.getContext('2d');
-		context.beginPath();
-		context.fillStyle = garmentColor;
-		context.moveTo(cornerRadius, 0);
-		context.arcTo(width, top, width, height, cornerRadius);
-		context.arcTo(width, height, left, height, cornerRadius);
-		context.arcTo(left, height, left, top, cornerRadius);
-		context.arcTo(left, top, width, top, cornerRadius);
-		context.closePath();
-		context.clip();
 	}
 
 	function drawImageToCanvas(canvas) {
@@ -594,69 +529,6 @@ export default function ScreenprintDesigner() {
 			const	scale = parseFloat(250 / galleryImageWidth).toFixed(2);
 			context.drawImage(galleryImage, 75, 140, galleryImageWidth * scale, galleryImageHeight * scale);
 		}
-	}
-
-	function drawTextToCanvas(canvas) {
-		const context = canvas.getContext('2d');
-		context.font = "42px Lato";
-		context.fillStyle = textColor;
-		context.textAlign = "center";
-		const x = 200;
-		let y = 90;
-		const lineheight = 46;
-		const lineWidthMax = 20;
-		if (textInput.length > lineWidthMax) {
-			drawWrappedTextLinesToCanvas(x, y, lineheight, lineWidthMax, canvas);
-		} else {
-			context.fillText(textInput, x, y);
-		}
-	}
-
-	function drawWrappedTextLinesToCanvas(x, y, lineheight, lineWidthMax, canvas) {
-		y = y - (lineheight / 2); // start half a line height higher
-		const context = canvas.getContext('2d');
-		const words =  textInput.split(' ');
-		let currentLine = '';
-		let textLines = [];
-		// seperate words into lines of text that will fit
-		for (var i = 0; i < words.length; i++) {
-			const word = words[i];
-			const lineWithNextWord = currentLine + word + ' ';
-			if (lineWithNextWord.length < lineWidthMax) {
-				// current word fits so add it to the currentLine
-				currentLine = lineWithNextWord;
-			} else {
-				// current line is full, add it to textLines array
-				textLines.push(currentLine);
-				// reset check for next line of text
-				currentLine = word + ' ';
-			}
-		}
-		// add remaining text to textLines array
-		textLines.push(currentLine);
-		// draws wrapped lines of text
-		for (let i = 0; i < textLines.length; i++) {
-			context.fillText(textLines[i], x, y + (i * lineheight));
-		}
-	}
-
-	// NOTE: not currently working - shows up on browser, but not showing up on share card
-	function drawSVGToCanvas(canvas) {
-		// version 1
-		const context = canvas.getContext('2d');
-		const url = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgString);
-		const img = new Image();
-		img.onload = () => {
-			URL.revokeObjectURL(url);
-			context.drawImage(img, 0, 0);
-		}
-		img.src = url;
-		// version 2
-		// const blob = new Blob([svgString], {type: 'image/svg+xml'});
-		// const url = URL.createObjectURL(blob);
-		// const img = new Image();
-		// img.onload = () => context.drawImage(img, 0, 0);
-		// img.src = url;
 	}
 
 	function shareFile(canvas) {
@@ -686,28 +558,13 @@ export default function ScreenprintDesigner() {
 
 	function shareCardClickHandler() {
 		// NOTE: html2canvas can't bring in filters, also has problem with SVGs
-		html2canvas(document.querySelector("#capture")).then(canvas => {
-			document.body.appendChild(canvas); // view test in browser
-			shareFile(canvas);
-		});
-		// const canvas = createCanvas();
-		// drawImageToCanvas(canvas);
-		// drawTextToCanvas(canvas);
-		// drawSVGToCanvas(canvas); // NOTE: not currently working - shows up on browser, but not showing up on share card
+		// html2canvas(document.querySelector("#capture")).then(canvas => {
+		// 	document.body.appendChild(canvas); // view test in browser
+		// 	shareFile(canvas);
+		// });
+		const canvas = createCanvas();
+		// drawImageToCanvas(canvas)
 		// shareFile(canvas);
-	}
-
-	function shareUrlClickHandler() {
-		const shareData = {
-			title: "Oxleberry Share Card",
-			url: "share-card",
-		};
-		if (navigator.canShare) {
-			return navigator.share(shareData);
-		} else {
-			const currentUrl = window.location.href;
-			navigator.clipboard.writeText(currentUrl);
-		}
 	}
 
 
@@ -845,8 +702,8 @@ export default function ScreenprintDesigner() {
 												className="gallery-image-button"
 												onClick={galleryClickHandler}
 												aria-label={image.ariaLabel}>
-												<img 
-													className={`gallery-image gallery-image-${image.id}`} 
+												<img
+													className={`gallery-image gallery-image-${image.id}`}
 													src={image.url}/>
 											</button>
 										)}
@@ -962,7 +819,7 @@ export default function ScreenprintDesigner() {
 								type="button"
 								className="share-button"
 								onClick={shareCardClickHandler}
-							>Create Share Card
+							>Share Design
 							</button>
 						</div>
 					</section>
