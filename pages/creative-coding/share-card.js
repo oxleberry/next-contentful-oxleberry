@@ -6,6 +6,7 @@ export default function ShareCard() {
 	// States =================
 	const [colorInput, setColorInput] = useState('#000000');
 	const [textInput, setTextInput] = useState('Welcome!');
+	const [textColor, setTextColor] = useState('#ffffff');
 	const [isCustomText, setIsCustomText] = useState(false);
 	const [galleryImagePath, setGalleryImagePath] = useState('');
 	const [galleryImage, setGalleryImage] = useState(null);
@@ -15,13 +16,11 @@ export default function ShareCard() {
 	const shareFileRef = useRef(null);
 	const shareImageRef = useRef(null);
 
-	let svgTextColor = "#fff";
-
-	// svg text template
+	// svg text template - shows up on browser, but not showing up on share card...?
 	const svgString = `
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
-			class="share-svg"
+			xmlns:xlink="http://www.w3.org/1999/xlink"
 			x="0px"
 			y="0px"
 			viewBox="0 0 436 210"
@@ -37,9 +36,13 @@ export default function ShareCard() {
 				}
 
 				.share-svg-text {
-					fill: ${svgTextColor};
+					fill: ${textColor};
 					font-size: 42px;
 					font-family: sans-serif;
+				}
+
+				.share-svg-rect-pink {
+					fill: pink;
 				}
 			</style>
 
@@ -53,6 +56,7 @@ export default function ShareCard() {
 				text-anchor="middle"
 				>${textInput}</text>
 			</g>
+			<rect class="share-svg-rect-pink" width="100" height="100"></rect>
 		</svg>
 	`
 
@@ -91,20 +95,54 @@ export default function ShareCard() {
 		context.fillStyle = colorInput;
 		context.fillRect(0, 0, 436, 604);
 		shareFileRef.current.prepend(canvas);
-		// draw share image to canvas
-		// shareImageRef.current.crossOrigin = 'anonymous';
+		// drawImageToCanvas
 		if (galleryImage) {
 			let	scale = parseFloat(300 / galleryImageWidth).toFixed(2);
 			context.drawImage(galleryImage, 68, 235, galleryImageWidth * scale, galleryImageHeight * scale);
 		}
-		// draw svg text to canvas
-		let url = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgString);
-		let img = new Image();
-		img.addEventListener('load', event => {
-			context.drawImage(event.target, 0, 0);
+
+		// NOTE: not currently working - shows up on browser, but not showing up on share card
+		// version 1
+		const url = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svgString);
+		const img = new Image();
+		img.onload = () => {
 			URL.revokeObjectURL(url);
-		});
+			context.drawImage(img, 0, 0);
+		}
 		img.src = url;
+		// version 2
+		// const blob = new Blob([svgString], {type: 'image/svg+xml'});
+		// const url = URL.createObjectURL(blob);
+		// const img = new Image();
+		// img.onload = () => context.drawImage(img, 0, 0);
+		// img.src = url;
+
+		// draw text
+		context.font = "42px Lato";
+		context.fillStyle = textColor;
+		context.textAlign = "center";
+		context.fillText(textInput, 218, 200);
+
+		// pngToCanvas
+		const dataUrl = canvas.toDataURL();
+		fetch(dataUrl)
+			.then(res => res.blob())
+			.then(blob => {
+				const file = new File([blob], `oxleberry-share-card.png`, {
+					type: blob.type,
+					lastModified: new Date().getTime()
+				});
+				// shareFile
+				console.log(file);
+				const files = [file];
+				const data = { files };
+				if (navigator.canShare && navigator.canShare({ files })) {
+					return navigator.share(data);
+				}
+			})
+			.catch(() => {
+				console.warn('Sharing failed.');
+			})
 	}
 
 	return (
