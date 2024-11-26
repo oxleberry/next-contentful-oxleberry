@@ -531,12 +531,15 @@ export default function ScreenprintDesigner() {
 		context.drawImage(tee, 0, teeOffsetHeight, teeWidth, teeHeight); // match positioning with site
 	}
 
-	function drawImageToCanvas(canvas) {
-		if (galleryImage) {
+	function drawDesignsToCanvas(canvas) {
+		designRefs.current.map(((designElement, idx) => {
+			const image = designElement.firstElementChild;
+			const imageWidth = designElement.getBoundingClientRect().width;
+			const imageHeight = designElement.getBoundingClientRect().height;
+			const design = designs[idx];
 			const context = canvas.getContext('2d');
-			const	scale = parseFloat(250 / galleryImageWidth).toFixed(2);
-			context.drawImage(galleryImage, 75, 140, galleryImageWidth * scale, galleryImageHeight * scale);
-		}
+			context.drawImage(image, design.posX, design.posY, imageWidth, imageHeight);
+		}))
 	}
 
 	function shareFile(canvas) {
@@ -574,8 +577,9 @@ export default function ScreenprintDesigner() {
 		const canvasHeight = 682;
 		const canvas = createCanvas(canvasWidth, canvasHeight);
 		drawGarmentToCanvas(canvas, canvasHeight);
-		// drawImageToCanvas(canvas);
-		// shareFile(canvas);
+		// share does not yet work on rotated image
+		drawDesignsToCanvas(canvas);
+		shareFile(canvas);
 	}
 
 
