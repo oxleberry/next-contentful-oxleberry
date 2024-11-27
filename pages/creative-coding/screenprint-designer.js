@@ -161,10 +161,17 @@ export default function ScreenprintDesigner() {
 		},
 		{
 			id: 9,
-			name: 'Grayscale',
-			value: 'grayscale(100%)',
+			name: 'Color Burn',
+			value: 'color-burn',
 			isActive: false
 		}
+		// NOTE: grayscale does not work on Safari canvas
+		// {
+		// 	id: 9,
+		// 	name: 'Grayscale',
+		// 	value: 'grayscale(100%)',
+		// 	isActive: false
+		// }
 	]
 
 	// States =================
@@ -185,7 +192,7 @@ export default function ScreenprintDesigner() {
 			width: number
 			rotate: number
 			filter: string
-			grayscale: string
+			grayscale: string // NOTE: grayscale does not work on Safari canvas
 			borderRadius: number
 			dragClass: string, ex: 'draggable', 'no-drag'
 			zIndex: number
@@ -542,6 +549,7 @@ export default function ScreenprintDesigner() {
 			const context = canvas.getContext('2d');
 			context.save();
 			rotateDesign(context, design, imageWidth, imageHeight);
+			applyFilter(context, design);
 			drawRoundedCorners(context, design, imageWidth, imageHeight);
 			context.drawImage(image, design.posX, design.posY, imageWidth, imageHeight);
 			context.restore();
@@ -554,6 +562,12 @@ export default function ScreenprintDesigner() {
 		context.translate(centerX, centerY);
 		context.rotate((design.rotate * Math.PI) / 180);
 		context.translate(-centerX, -centerY);
+	}
+
+	function applyFilter(context, design) {
+		// context.globalCompositeOperation = 'overlay'; // not an exact match
+		// context.filter = "grayscale(1)"; // NOTE: does not work on Safari
+		context.globalCompositeOperation = design.filter;
 	}
 
 	function drawRoundedCorners(context, design, imageWidth, imageHeight) {
