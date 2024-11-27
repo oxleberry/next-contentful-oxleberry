@@ -445,7 +445,7 @@ export default function ScreenprintDesigner() {
 		setDesignZIndex(nextZIndex);
 		// set current design to top z-index
 		// set all other designs to not be draggable
-		setDesigns(designs.map((design, idx) => {
+		const designsByZindexOrder = designs.map((design) => {
 			if (design.id == event.target.id) { // find unique item
 				designFilter = design.filter;
 				designGrayscale = design.grayscale;
@@ -453,7 +453,10 @@ export default function ScreenprintDesigner() {
 			} else {
 				return { ...design, dragClass: 'no-drag' }; // update all other items
 			}
-		}));
+		});
+		// reorder by z-index, for drawing the correct order on to the canvas
+		designsByZindexOrder.sort((a,b) => a.zIndex - b.zIndex);
+		setDesigns(designsByZindexOrder);
 		// update filter buttons
 		if (designGrayscale == "grayscale(100%)") {
 			// set filter buttons to grayscale button
