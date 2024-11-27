@@ -93,13 +93,13 @@ export default function ScreenprintDesigner() {
 		{
 			id: 1,
 			name: 'sakura-flower',
-			url: '/creative-coding-pages/share-card/images/sakura-flower.svg',
+			url: '/creative-coding-pages/share-card/images/sakura-flower.png',
 			ariaLabel: 'flower design',
 		},
 		{
 			id: 2,
 			name: 'sugar-skull',
-			url: '/creative-coding-pages/share-card/images/sugar-skull.svg',
+			url: '/creative-coding-pages/share-card/images/sugar-skull.png',
 			ariaLabel: 'sugar skull design',
 		},
 		{
