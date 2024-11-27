@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
-import html2canvas from '../../components/html2canvas'
+import html2canvas from '../../js/lib/html2canvas'
 import checkChromeBrowser from '../../js/utilities/checkChromeBrowser'
 import { useEffect, useState, useRef } from 'react'
 
 export default function ScreenprintDesigner() {
 	const borderWidth = 8;
-	const seedGarmentStyleData = [
+	const initialGarmentStyleData = [
 		{
 			id: 1,
 			name: 'Adult',
@@ -27,7 +27,7 @@ export default function ScreenprintDesigner() {
 		}
 	]
 
-	const seedGarmentColorData = [
+	const initialGarmentColorData = [
 		{
 			id: 1,
 			name: 'black',
@@ -90,7 +90,7 @@ export default function ScreenprintDesigner() {
 		}
 	]
 
-	const seedGalleryImageData = [
+	const initialGalleryImageData = [
 		{
 			id: 1,
 			name: 'sakura-flower',
@@ -111,7 +111,7 @@ export default function ScreenprintDesigner() {
 		}
 	]
 
-	const seedFilterData = [
+	const initialFilterData = [
 		{
 			id: 1,
 			name: 'None',
@@ -182,7 +182,7 @@ export default function ScreenprintDesigner() {
 	const [curDragElem, setCurDragElem] = useState(null);
 	const [designIdx, setDesignIdx] = useState(-1);
 	const [designZIndex, setDesignZIndex] = useState(-1);
-	const [filterButtons, setFilterButtons] = useState(seedFilterData);
+	const [filterButtons, setFilterButtons] = useState(initialFilterData);
 	const [designs, setDesigns] = useState([]);
 	const [isChromeBrowser, setIsChromeBrowser] = useState(false);
 	/* =========================
@@ -702,7 +702,7 @@ export default function ScreenprintDesigner() {
 						{/* Option - Garment style */}
 						<div className="option-section option-garment-style">
 							<legend className="option-label">Garment style:</legend>
-							{seedGarmentStyleData.map((garment, idx) =>
+							{initialGarmentStyleData.map((garment, idx) =>
 								<div key={idx} className="option-garment">
 									<input
 										id={garment.value}
@@ -721,7 +721,7 @@ export default function ScreenprintDesigner() {
 						{/* Option Pick a Color */}
 						<div className="option-section option-garment-color">
 							<legend className="option-label">Garment color:</legend>
-							{seedGarmentColorData.map((color, idx) =>
+							{initialGarmentColorData.map((color, idx) =>
 								<div key={idx} className="option-color">
 									<input
 										id={`color-${color.name}`}
@@ -767,7 +767,7 @@ export default function ScreenprintDesigner() {
 								<div className="option-sub-section option-image-gallery">
 									<label className="option-label">Choose an image:</label>
 									<div className="gallery-container">
-										{seedGalleryImageData.map((image, idx) =>
+										{initialGalleryImageData.map((image, idx) =>
 											<button
 												key={idx}
 												type="button"
