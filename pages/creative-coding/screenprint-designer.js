@@ -527,7 +527,7 @@ export default function ScreenprintDesigner() {
 		context.fillStyle = garmentColor;
 		context.fillRect(0, 0, width, height);
 		context.restore(); // Restore to the state saved by the most recent call to save()
-		shareFileRef.current.prepend(canvas);
+		// shareFileRef.current.prepend(canvas); // display canvas for testing
 		return canvas;
 	}
 
@@ -537,23 +537,7 @@ export default function ScreenprintDesigner() {
 		const teeHeight = tee.getBoundingClientRect().height;
 		const teeOffsetHeight = ((teeHeight - canvasHeight) / 2) * -1;
 		const context = canvas.getContext('2d');
-		context.drawImage(tee, 0, teeOffsetHeight, teeWidth, teeHeight); // match positioning with site
-	}
-
-	function drawDesignsToCanvas(canvas) {
-		designRefs.current.map(((designElement, idx) => {
-			const image = designElement.firstElementChild;
-			const imageWidth = designElement.getBoundingClientRect().width;
-			const imageHeight = designElement.getBoundingClientRect().height;
-			const design = designs[idx];
-			const context = canvas.getContext('2d');
-			context.save();
-			rotateDesign(context, design, imageWidth, imageHeight);
-			applyFilter(context, design);
-			drawRoundedCorners(context, design, imageWidth, imageHeight);
-			context.drawImage(image, design.posX, design.posY, imageWidth, imageHeight);
-			context.restore();
-		}))
+		context.drawImage(tee, 0, teeOffsetHeight, teeWidth, teeHeight);
 	}
 
 	function rotateDesign(context, design, imageWidth, imageHeight) {
@@ -589,6 +573,22 @@ export default function ScreenprintDesigner() {
 		context.arcTo(left, top, width, top, cornerRadius);
 		context.closePath();
 		context.clip();
+	}
+
+	function drawDesignsToCanvas(canvas) {
+		designRefs.current.map(((designElement, idx) => {
+			const image = designElement.firstElementChild;
+			const imageWidth = designElement.getBoundingClientRect().width;
+			const imageHeight = designElement.getBoundingClientRect().height;
+			const design = designs[idx];
+			const context = canvas.getContext('2d');
+			context.save();
+			rotateDesign(context, design, imageWidth, imageHeight);
+			applyFilter(context, design);
+			drawRoundedCorners(context, design, imageWidth, imageHeight);
+			context.drawImage(image, design.posX, design.posY, imageWidth, imageHeight);
+			context.restore();
+		}))
 	}
 
 	function shareFile(canvas) {
