@@ -91,6 +91,7 @@
 	.options-container {
 		border: 8px solid var(--options-color);
 		display: grid;
+		min-height: 690px;
 
 		.option-section {
 			border-bottom: 4px solid var(--options-color);

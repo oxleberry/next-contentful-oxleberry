@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
 import html2canvas from '../../components/html2canvas'
+import checkChromeBrowser from '../../js/utilities/checkChromeBrowser'
 import { useEffect, useState, useRef } from 'react'
 
 export default function ScreenprintDesigner() {
@@ -183,6 +184,7 @@ export default function ScreenprintDesigner() {
 	const [designZIndex, setDesignZIndex] = useState(-1);
 	const [filterButtons, setFilterButtons] = useState(seedFilterData);
 	const [designs, setDesigns] = useState([]);
+	const [isChromeBrowser, setIsChromeBrowser] = useState(false);
 	/* =========================
 		designs = [{
 			id: number
@@ -631,6 +633,13 @@ export default function ScreenprintDesigner() {
 	}
 
 
+	// Initial Page Load =================
+	useEffect(() => {
+		const isChrome = checkChromeBrowser();
+		setIsChromeBrowser(isChrome);
+	}, []);
+
+
 	return (
 		<>
 			<Head>
@@ -877,14 +886,20 @@ export default function ScreenprintDesigner() {
 						</div>
 
 						{/* Share Card Button */}
-						<div className="option-section option-share">
-							<button
-								type="button"
-								className="share-button"
-								onClick={shareCardClickHandler}
-							>Share Design
-							</button>
-						</div>
+						{/* Do not show on Chrome, share navigator is not supported */}
+						{isChromeBrowser
+						?
+							""
+						:
+							<div className="option-section option-share">
+								<button
+									type="button"
+									className="share-button"
+									onClick={shareCardClickHandler}
+								>Share Design
+								</button>
+							</div>
+						}
 					</section>
 
 					<section
