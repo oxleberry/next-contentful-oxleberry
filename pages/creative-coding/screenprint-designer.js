@@ -170,12 +170,6 @@ export default function ScreenprintDesigner() {
 	// States =================
 	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
 	const [garmentColor, setGarmentColor] = useState('#1d1d1d');
-	const [textInput, setTextInput] = useState('Welcome!');
-	const [textColor, setTextColor] = useState('#eeddb9');
-	const [galleryImage, setGalleryImage] = useState(null);
-	const [galleryImageWidth, setGalleryImageWidth] = useState(0);
-	const [galleryImageHeight, setGalleryImageHeight] = useState(0);
-	const [roundedCorners, setRoundedCorners] = useState(true);
 	const [startCursorPos, setStartCursorPos] = useState({ x: null, y: null});
 	const [curDragElem, setCurDragElem] = useState(null);
 	const [designIdx, setDesignIdx] = useState(-1);
