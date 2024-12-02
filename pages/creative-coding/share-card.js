@@ -3,6 +3,8 @@ import Header from '../../components/Header'
 import { useState, useRef } from 'react'
 
 export default function ShareCard() {
+	const roundedCorners = true;
+
 	// States =================
 	const [colorInput, setColorInput] = useState('#000000');
 	const [textInput, setTextInput] = useState('Welcome!');
@@ -106,10 +108,34 @@ export default function ShareCard() {
 		canvas.width = 400;
 		canvas.height = 400;
 		const context = canvas.getContext('2d');
+		context.save(); // Save the current state
+		// Clips rounded corners on share card
+		if (roundedCorners) {
+			drawRoundedCorners(canvas);
+		}
 		context.fillStyle = colorInput;
 		context.fillRect(0, 0, 400, 400);
+		context.restore(); // Restore to the state saved by the most recent call to save()
 		shareFileRef.current.prepend(canvas);
 		return canvas;
+	}
+
+	function drawRoundedCorners(canvas) {
+		const width = 400;
+		const height = 400;
+		const top = 0;
+		const left = 0;
+		const cornerRadius = 40;
+		const context = canvas.getContext('2d');
+		context.beginPath();
+		context.fillStyle = colorInput;
+		context.moveTo(cornerRadius, 0);
+		context.arcTo(width, top, width, height, cornerRadius);
+		context.arcTo(width, height, left, height, cornerRadius);
+		context.arcTo(left, height, left, top, cornerRadius);
+		context.arcTo(left, top, width, top, cornerRadius);
+		context.closePath();
+		context.clip();
 	}
 
 	function drawImageToCanvas(canvas) {
