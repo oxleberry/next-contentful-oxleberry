@@ -10,9 +10,10 @@
 
 	main {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		grid-template-rows: 1fr 1fr;
-		gap: 20px;
+		justify-content: center;
+		// align-items: center;
+		grid-template-columns: repeat(3, 400px);
+		gap: 48px;
 		max-width: 1400px;
 		margin: 0 auto;
 		padding: 0 20px 50px;
@@ -20,8 +21,7 @@
 
 	section {
 		border: 2px solid #ccc;
-		height: 67vh;
-		// background-color: #f0f2f5;
+		height: 500px;
 	}
 
 	.hidden {
@@ -31,11 +31,18 @@
 	// ========================
 	// Share Content Section
 	// ========================
-	.share-content-container {
-		display: grid;
-		grid-template-rows: 1fr 2fr;
-		gap: 24px;
-		padding: 50px 20px;
+	.share-content-section {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		.share-content-container {
+			display: grid;
+			grid-template-rows: 50px 2fr;
+			gap: 24px;
+			height: 400px;
+			padding: 50px 20px 65px;
+		}
 
 		.text-display {
 			font-size: 42px;
@@ -164,5 +171,10 @@
 	// Canvas Container
 	// =====================
 	.canvas-container {
+		// display: none;
+	}
+
+	canvas {
+		margin-top: 50px;
 	}
 }

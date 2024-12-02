@@ -23,7 +23,7 @@ export default function ShareCard() {
 			xmlns:xlink="http://www.w3.org/1999/xlink"
 			x="0px"
 			y="0px"
-			viewBox="0 0 436 210"
+			viewBox="0 0 400 100"
 		>
 
 			<style>
@@ -47,11 +47,11 @@ export default function ShareCard() {
 			</style>
 
 			<g class="share-container">
-				<rect class="share-svg-rect" width="436" height="604"></rect>
+				<rect class="share-svg-rect" width="400" height="400"></rect>
 				<text
 				class="share-svg-text"
 				x="50%"
-				y="90%"
+				y="80%"
 				dominant-baseline="middle"
 				text-anchor="middle"
 				>${textInput}</text>
@@ -103,11 +103,11 @@ export default function ShareCard() {
 
 	function createCanvas() {
 		const canvas = document.createElement('canvas');
-		canvas.width = 436;
-		canvas.height = 604;
+		canvas.width = 400;
+		canvas.height = 400;
 		const context = canvas.getContext('2d');
 		context.fillStyle = colorInput;
-		context.fillRect(0, 0, 436, 604);
+		context.fillRect(0, 0, 400, 400);
 		shareFileRef.current.prepend(canvas);
 		return canvas;
 	}
@@ -115,8 +115,8 @@ export default function ShareCard() {
 	function drawImageToCanvas(canvas) {
 		if (galleryImage) {
 			const context = canvas.getContext('2d');
-			const	scale = parseFloat(300 / galleryImageWidth).toFixed(2);
-			context.drawImage(galleryImage, 68, 235, galleryImageWidth * scale, galleryImageHeight * scale);
+			const	scale = parseFloat(250 / galleryImageWidth).toFixed(2);
+			context.drawImage(galleryImage, 75, 128, galleryImageWidth * scale, galleryImageHeight * scale);
 		}
 	}
 
@@ -125,7 +125,7 @@ export default function ShareCard() {
 		context.font = "42px Lato";
 		context.fillStyle = textColor;
 		context.textAlign = "center";
-		context.fillText(textInput, 218, 200);
+		context.fillText(textInput, 200, 90);
 	}
 
 	// NOTE: not currently working - shows up on browser, but not showing up on share card
@@ -190,10 +190,12 @@ export default function ShareCard() {
 				<Header headline="Share Card" isSubPage={true}></Header>
 				<main>
 
-					<section className="share-content-container" style={{background: `${colorInput}`}}>
-						<h2 className="hidden">Share Content</h2>
+					<section className="share-content-section">
+						<div className="share-content-container" style={{background: `${colorInput}`}}>
+							<h2 className="hidden">Share Content</h2>
 							<p className="text-display">{textInput}</p>
 							<div className="image-display" style={{backgroundImage: `url(${galleryImagePath})`}} />
+						</div>
 					</section>
 
 					{/* Option Section */}
