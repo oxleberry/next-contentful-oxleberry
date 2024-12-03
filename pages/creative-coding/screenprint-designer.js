@@ -388,6 +388,9 @@ export default function ScreenprintDesigner() {
 				{
 					id: nextId,
 					path: image,
+					// posX: 95,
+					// posY: 70,
+					// width: 90,
 					posX: 175,
 					posY: 130,
 					width: 220,
@@ -795,13 +798,13 @@ export default function ScreenprintDesigner() {
 											className="option-button"
 											onClick={sizeClickHandler}
 											aria-label="decrease art size"
-										>-</button>
+										><span className="minus-icon">-</span></button>
 										<button
 											id="plus"
 											className="option-button"
 											onClick={sizeClickHandler}
 											aria-label="increase art size"
-										>+</button>
+										><span className="plus-icon">+</span></button>
 									</div>
 								</div>
 							</div>
@@ -841,13 +844,13 @@ export default function ScreenprintDesigner() {
 											className="option-button"
 											onClick={roundedCornersClickHandler}
 											aria-label="decrease rounded corners"
-										>-</button>
+										><span className="minus-icon">-</span></button>
 										<button
 											id="increase"
 											className="option-button"
 											onClick={roundedCornersClickHandler}
 											aria-label="increase rounded corners"
-										>+</button>
+										><span className="plus-icon">+</span></button>
 									</div>
 								</div>
 							</div>
