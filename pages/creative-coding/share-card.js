@@ -88,21 +88,6 @@ export default function ShareCard() {
 		setGalleryImageHeight(event.target.offsetHeight);
 	}
 
-	// text test, currently not using
-	function shareTextClickHandler() {
-		if (navigator.canShare) {
-			console.log("Can Share");
-			navigator.share({
-				text: 'Oxleberry share card text',
-				title: 'Oxleberry share card title',
-				url: 'http://oxleberry.com'
-			})
-		} else {
-			console.log("Copy to Clipboard");
-			navigator.clipboard.writeText('Oxleberry share card clipboard')
-		}
-	}
-
 	function createCanvas() {
 		const canvas = document.createElement('canvas');
 		canvas.width = 400;
@@ -198,13 +183,27 @@ export default function ShareCard() {
 			})
 	}
 
-	function shareClickHandler() {
+	function shareCardClickHandler() {
 		const canvas = createCanvas();
 		drawImageToCanvas(canvas);
 		drawTextToCanvas(canvas);
 		// drawSVGToCanvas(canvas); // NOTE: not currently working - shows up on browser, but not showing up on share card
 		shareFile(canvas);
 	}
+
+	function shareUrlClickHandler() {
+		const shareData = {
+			title: "Oxleberry Share Card",
+			url: "share-card",
+		};
+		if (navigator.canShare) {
+			return navigator.share(shareData);
+		} else {
+			const currentUrl = window.location.href;
+			navigator.clipboard.writeText(currentUrl);
+		}
+	}
+
 
 	return (
 		<>
@@ -285,10 +284,18 @@ export default function ShareCard() {
 						<div className="option option-share">
 							<button
 								type="button"
-								className="share-card-button"
-								// onClick={shareTextClickHandler}
-								onClick={shareClickHandler}
+								className="share-button"
+								onClick={shareCardClickHandler}
 							>Create Share Card</button>
+						</div>
+						{/* Share Url Button */}
+						<div className="option option-share">
+							<button
+								type="button"
+								className="share-button"
+								onClick={shareUrlClickHandler}
+							>Share Url
+							</button>
 						</div>
 					</section>
 
