@@ -3,29 +3,28 @@ import Header from '../../components/Header'
 import html2canvas from '../../js/lib/html2canvas'
 import checkChromeBrowser from '../../js/utilities/checkChromeBrowser'
 import { useEffect, useState, useRef } from 'react'
+import { createClient } from 'contentful'
 
-export default function ScreenprintDesigner() {
-	const borderWidth = 8;
-	const initialGarmentStyleData = [
-		{
-			id: 1,
-			name: 'Adult',
-			value: 'adult-tee',
-			isActive: true
-		},
-		{
-			id: 2,
-			name: 'Womens',
-			value: 'womens-tee',
-			isActive: false
-		},
-		{
-			id: 3,
-			name: 'Onesie',
-			value: 'onesie',
-			isActive: false
-		}
-	]
+
+// get CMS content =================
+export async function getStaticProps() {
+	const client = createClient({
+		space: process.env.CONTENTFUL_SPACE_ID,
+		accessToken: process.env.CONTENTFUL_ACCESS_KEY
+	});
+	const res = await client.getEntries({ content_type: 'screenprintDesigner' });
+	return {
+		props: { screenprintDesignerItems: res.items }
+	}
+}
+
+
+export default function ScreenprintDesigner({ screenprintDesignerItems }) {
+	// Assets & CMS Content =================
+	const garmentStylesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'garmentStyles');
+	const garmentStylesData = garmentStylesItems[0].fields.json.garmentStyles;
+	const garmentStylesImages = garmentStylesItems[0].fields.images;
+
 
 	const initialGarmentColorData = [
 		{
@@ -201,7 +200,11 @@ export default function ScreenprintDesigner() {
 		}]
 	========================= */
 
-	// Elements
+	// Variables =================
+	const borderWidth = 8;
+	let currentGarmentImage = garmentStylesImages.filter((item) => item.fields.title == garmentStyle);
+
+	// Elements =================
 	const shareFileRef = useRef(null);
 	const dragContainerRef = useRef(null);
 	let designRefs = useRef([null]);
@@ -664,7 +667,7 @@ export default function ScreenprintDesigner() {
 							style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 						>
 							<h2 className="hidden">Design layout workspace</h2>
-							<img className="tee-image" src={`/creative-coding-pages/share-card/images/${garmentStyle}.png`} alt="screenprint designer workspace"/>
+							<img className="tee-image" src={`https:${currentGarmentImage[0].fields.file.url}`} alt="screenprint designer workspace"/>
 							{designs.map((design, idx) =>
 								<div
 									className={`design-image-wrapper ${design.dragClass}`}
@@ -705,7 +708,7 @@ export default function ScreenprintDesigner() {
 						{/* Option - Garment style */}
 						<div className="option-section option-garment-style">
 							<legend className="option-label">Garment style:</legend>
-							{initialGarmentStyleData.map((garment, idx) =>
+							{garmentStylesData.map((garment, idx) =>
 								<div key={idx} className="option-garment">
 									<input
 										id={garment.value}
