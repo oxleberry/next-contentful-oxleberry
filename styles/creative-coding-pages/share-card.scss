@@ -1,6 +1,6 @@
 @use '../utilities/mixins' as *;
 // @use '../utilities/colors';
-// @use '../utilities/fonts';
+@use '../utilities/fonts';
 
 
 .share-card-page {
@@ -88,10 +88,11 @@
 		}
 
 		.option-label {
+			font-family: fonts.$sans-serif-alt1;
+			font-weight: 500;
 			display: block;
 			font-size: 18px;
 			text-transform: uppercase;
-			font-weight: 400;
 			color: var(--options-color);
 			padding-bottom: 14px;
 		}
@@ -154,9 +155,10 @@
 		}
 
 		.share-button {
+			font-family: fonts.$sans-serif-alt1;
+			font-weight: 800;
 			font-size: 18px;
 			text-transform: uppercase;
-			font-weight: 800;
 			color: var(--options-color);
 			padding: 10px 16px;
 			border-radius: 6px;
