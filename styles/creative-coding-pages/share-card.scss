@@ -80,11 +80,16 @@
 
 		.option {
 			border-bottom: 4px solid var(--options-color);
-			padding: 14px 18px 18px;
+			padding: 18px 18px 18px;
 
 			&:last-of-type {
 				border: none;
 			}
+		}
+
+		.row {
+			display: flex;
+			padding-bottom: 10px;
 		}
 
 		.option-label {
@@ -103,10 +108,11 @@
 		}
 
 		input[type="color"] {
-			width: 116px;
+			width: 40px;
 			height: 40px;
 			border-radius: 3px;
 			margin-left: 14px;
+			margin-top: -8px;
 		}
 
 		// Custom Text
