@@ -9,7 +9,7 @@
 	--options-color-light: #9daec1;
 	--footer-height: 110px;
 	--nav-height: 58px;
-	--header-height: 102px;
+	--header-height: 110px;
 	--not-main-height: calc(var(--footer-height) + var(--nav-height) + var(--header-height));
 
 	main {
@@ -41,21 +41,20 @@
 	.share-content-section {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
 
 		.share-content-container {
 			display: grid;
-			grid-template-rows: 50px 2fr;
-			gap: 24px;
+			grid-template-rows: 72px 1fr;
+			gap: 32px;
 			height: 400px;
-			padding: 50px 20px 65px;
+			padding: 40px 20px 48px;
 			border-radius: 40px;
 		}
 
 		.text-display {
 			font-size: 42px;
 			margin: 0;
-			align-self: flex-end;
+			align-self: center;
 			text-align: center;
 			color: #fff;
 		}
@@ -76,7 +75,6 @@
 	.options-container {
 		border: 8px solid var(--options-color);
 		display: grid;
-		grid-template-rows: repeat(4, auto);
 
 		.option {
 			border-bottom: 4px solid var(--options-color);
@@ -187,9 +185,5 @@
 	// =====================
 	.canvas-container {
 		display: none; // toggle to hide canvas
-	}
-
-	canvas {
-		margin-top: 50px;
 	}
 }
