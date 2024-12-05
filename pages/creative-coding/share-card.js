@@ -144,6 +144,20 @@ export default function ShareCard() {
 		context.fillText(textInput, 200, 90);
 	}
 
+	function drawWrappedTextLinesToCanvas(canvas) {
+		const context = canvas.getContext('2d');
+		context.font = "42px Lato";
+		context.fillStyle = textColor;
+		context.textAlign = "center";
+		const x = 200;
+		const y = 90;
+		const lineheight = 46;
+		const words =  textInput.split(' ');
+		for (var i = 0; i < words.length; i++) {
+			context.fillText(words[i], x, y + (i * lineheight) );
+		}
+	}
+
 	// NOTE: not currently working - shows up on browser, but not showing up on share card
 	function drawSVGToCanvas(canvas) {
 		// version 1
@@ -191,7 +205,8 @@ export default function ShareCard() {
 	function shareCardClickHandler() {
 		const canvas = createCanvas();
 		drawImageToCanvas(canvas);
-		drawTextToCanvas(canvas);
+		// drawTextToCanvas(canvas);
+		drawWrappedTextLinesToCanvas(canvas);
 		// drawSVGToCanvas(canvas); // NOTE: not currently working - shows up on browser, but not showing up on share card
 		shareFile(canvas);
 	}
