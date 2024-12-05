@@ -24,6 +24,8 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	const garmentStylesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'garmentStyles');
 	const garmentStylesData = garmentStylesItems[0].fields.json.garmentStyles;
 	const garmentStylesImages = garmentStylesItems[0].fields.images;
+	const galleryImagesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'galleryImages');
+	const galleryImagesImages = galleryImagesItems[0].fields.images;
 
 
 	const initialGarmentColorData = [
@@ -86,27 +88,6 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 			name: 'white',
 			value: '#fff',
 			isActive: false
-		}
-	]
-
-	const initialGalleryImageData = [
-		{
-			id: 1,
-			name: 'sakura-flower',
-			url: '/creative-coding-pages/share-card/images/sakura-flower.png',
-			ariaLabel: 'flower design',
-		},
-		{
-			id: 2,
-			name: 'sugar-skull',
-			url: '/creative-coding-pages/share-card/images/sugar-skull.png',
-			ariaLabel: 'sugar skull design',
-		},
-		{
-			id: 3,
-			name: 'flaming-bunny',
-			url: '/creative-coding-pages/share-card/images/flaming-bunny.png',
-			ariaLabel: 'flaming bunny design',
 		}
 	]
 
@@ -773,7 +754,7 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 								<div className="option-sub-section option-image-gallery">
 									<label className="option-label">Choose an image:</label>
 									<div className="gallery-container">
-										{initialGalleryImageData.map((image, idx) =>
+										{galleryImagesImages.map((image, idx) =>
 											<button
 												key={idx}
 												type="button"
@@ -781,8 +762,8 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 												onClick={galleryClickHandler}
 												aria-label={image.ariaLabel}>
 												<img
-													className={`gallery-image gallery-image-${image.id}`}
-													src={image.url}/>
+													className={`gallery-image gallery-image-${idx + 1}`}
+													src={`https:${image.fields.file.url}`}/>
 											</button>
 										)}
 									</div>
