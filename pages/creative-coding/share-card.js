@@ -1,8 +1,28 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
 import { useState, useRef } from 'react'
+import { createClient } from 'contentful'
 
-export default function ShareCard() {
+
+// get CMS content =================
+export async function getStaticProps() {
+	const client = createClient({
+		space: process.env.CONTENTFUL_SPACE_ID,
+		accessToken: process.env.CONTENTFUL_ACCESS_KEY
+	});
+	const res = await client.getEntries({ content_type: 'screenprintDesigner' });
+	return {
+		props: { screenprintDesignerItems: res.items }
+	}
+}
+
+
+export default function ShareCard({ screenprintDesignerItems }) {
+	// Assets & CMS Content =================
+	const galleryImagesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'galleryImages');
+	const galleryImagesImages = galleryImagesItems[0].fields.images;
+
+	// Variables =================
 	const roundedCorners = true;
 
 	// States =================
@@ -87,6 +107,7 @@ export default function ShareCard() {
 	function galleryClickHandler(event) {
 		let image = event.target;
 		let imagePath = event.target.src;
+		image.crossOrigin='anonymous';
 		setGalleryImage(image);
 		setGalleryImagePath(imagePath);
 		setGalleryImageWidth(event.target.offsetWidth);
@@ -308,27 +329,18 @@ export default function ShareCard() {
 						<div className="option option-image">
 							<label className="option-label">Choose an image:</label>
 							<div className="gallery-container">
-								<button
-									type="button"
-									className="gallery-image-button button-black"
-									onClick={galleryClickHandler}
-								>
-									<img className="gallery-image" src="/creative-coding-pages/share-card/geo-flower.svg" />
-								</button>
-								<button
-									type="button"
-									className="gallery-image-button button-black"
-									onClick={galleryClickHandler}
-								>
-									<img className="gallery-image" src="/creative-coding-pages/share-card/sugar-skull.svg" />
-								</button>
-								<button
-									type="button"
-									className="gallery-image-button button-black"
-									onClick={galleryClickHandler}
-								>
-									<img className="gallery-image" src="/creative-coding-pages/share-card/flaming-bunny.png" />
-								</button>
+								{galleryImagesImages.map((image, idx) =>
+									<button
+										key={idx}
+										type="button"
+										className="gallery-image-button"
+										onClick={galleryClickHandler}
+										aria-label={image.ariaLabel}>
+										<img
+											className={`gallery-image gallery-image-${idx + 1}`}
+											src={`https:${image.fields.file.url}`}/>
+									</button>
+								)}
 							</div>
 						</div>
 						{/* Share Card Button */}
