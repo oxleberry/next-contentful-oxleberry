@@ -18,7 +18,7 @@
 		align-items: center; // toggle to hide canvas
 		height: calc(100vh - var(--not-main-height));
 		// grid-template-columns: repeat(3, 400px); // toggle to hide canvas
-		grid-template-columns: 400px .6fr; // toggle to hide canvas
+		grid-template-columns: 350px .6fr; // toggle to hide canvas
 		gap: 48px;
 		max-width: 1400px;
 		margin: 0 auto;
@@ -26,7 +26,7 @@
 
 		@include bp(m) {
 			height: auto;
-			grid-template-columns: 400px;
+			grid-template-columns: 350px;
 			padding: 0 50px 50px;
 		}
 	}
@@ -46,7 +46,7 @@
 			display: grid;
 			grid-template-rows: 72px 1fr;
 			gap: 32px;
-			height: 400px;
+			height: 350px;
 			padding: 40px 20px 48px;
 			border-radius: 40px;
 		}

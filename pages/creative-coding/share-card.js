@@ -116,8 +116,8 @@ export default function ShareCard({ screenprintDesignerItems }) {
 
 	function createCanvas() {
 		const canvas = document.createElement('canvas');
-		canvas.width = 400;
-		canvas.height = 400;
+		canvas.width = 350;
+		canvas.height = 350;
 		const context = canvas.getContext('2d');
 		context.save(); // Save the current state
 		// Clips rounded corners on share card
@@ -125,15 +125,15 @@ export default function ShareCard({ screenprintDesignerItems }) {
 			drawRoundedCorners(canvas);
 		}
 		context.fillStyle = backgroundColor;
-		context.fillRect(0, 0, 400, 400);
+		context.fillRect(0, 0, 350, 350);
 		context.restore(); // Restore to the state saved by the most recent call to save()
 		shareFileRef.current.prepend(canvas);
 		return canvas;
 	}
 
 	function drawRoundedCorners(canvas) {
-		const width = 400;
-		const height = 400;
+		const width = 350;
+		const height = 350;
 		const top = 0;
 		const left = 0;
 		const cornerRadius = 40;
