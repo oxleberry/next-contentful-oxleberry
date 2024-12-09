@@ -590,7 +590,7 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 							style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 						>
 							<h2 className="hidden">Design layout workspace</h2>
-							<img className="tee-image" src={`https:${currentGarmentImage[0].fields.file.url}`} alt="screenprint designer workspace"/>
+							<img className="tee-image" src={`https:${currentGarmentImage[0].fields.file.url}`} alt="screenprint designer workspace" crossOrigin='anonymous'/>
 							{designs.map((design, idx) =>
 								<div
 									className={`design-image-wrapper ${design.dragClass}`}
@@ -619,6 +619,7 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 											width: design.width,
 											borderRadius: `${design.borderRadius}px`
 										}}
+										crossOrigin='anonymous'
 									/>
 								</div>
 							)}
