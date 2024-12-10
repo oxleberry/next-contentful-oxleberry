@@ -127,7 +127,7 @@ export default function ShareCard({ screenprintDesignerItems }) {
 		context.fillStyle = backgroundColor;
 		context.fillRect(0, 0, 350, 350);
 		context.restore(); // Restore to the state saved by the most recent call to save()
-		shareFileRef.current.prepend(canvas);
+		// shareFileRef.current.appendChild(canvas); // display canvas for testing
 		return canvas;
 	}
 
@@ -152,8 +152,8 @@ export default function ShareCard({ screenprintDesignerItems }) {
 	function drawImageToCanvas(canvas) {
 		if (galleryImage) {
 			const context = canvas.getContext('2d');
-			const	scale = parseFloat(250 / galleryImageWidth).toFixed(2);
-			context.drawImage(galleryImage, 75, 140, galleryImageWidth * scale, galleryImageHeight * scale);
+			const	scale = parseFloat(160 / galleryImageWidth).toFixed(2);
+			context.drawImage(galleryImage, 96, 150, galleryImageWidth * scale, galleryImageHeight * scale);
 		}
 	}
 
@@ -162,8 +162,8 @@ export default function ShareCard({ screenprintDesignerItems }) {
 		context.font = "42px Lato";
 		context.fillStyle = textColor;
 		context.textAlign = "center";
-		const x = 200;
-		let y = 90;
+		const x = 180;
+		let y = 100;
 		const lineheight = 46;
 		const lineWidthMax = 20;
 		if (textInput.length > lineWidthMax) {
@@ -318,8 +318,8 @@ export default function ShareCard({ screenprintDesignerItems }) {
 								className="custom-text"
 								name="custom-text"
 								type="text"
-								maxLength="34" // max characters for 2 lines of text
-								placeholder="maximum 34 characters"
+								maxLength="32" // max characters for 2 lines of text
+								placeholder="maximum 32 characters"
 								value={textInput}
 								onChange={textInputHandler}
 								onFocus={textFocusHandler}
