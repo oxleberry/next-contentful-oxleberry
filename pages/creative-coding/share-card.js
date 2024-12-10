@@ -153,19 +153,19 @@ export default function ShareCard({ screenprintDesignerItems }) {
 		if (galleryImage) {
 			const context = canvas.getContext('2d');
 			const	scale = parseFloat(160 / galleryImageWidth).toFixed(2);
-			context.drawImage(galleryImage, 96, 150, galleryImageWidth * scale, galleryImageHeight * scale);
+			context.drawImage(galleryImage, 96, 158, galleryImageWidth * scale, galleryImageHeight * scale);
 		}
 	}
 
 	function drawTextToCanvas(canvas) {
 		const context = canvas.getContext('2d');
-		context.font = "42px Lato";
+		context.font = "500 40px Raleway";
 		context.fillStyle = textColor;
 		context.textAlign = "center";
 		const x = 180;
-		let y = 100;
-		const lineheight = 46;
-		const lineWidthMax = 20;
+		let y = 106;
+		const lineheight = 48;
+		const lineWidthMax = 16;
 		if (textInput.length > lineWidthMax) {
 			drawWrappedTextLinesToCanvas(x, y, lineheight, lineWidthMax, canvas);
 		} else {
