@@ -32,8 +32,8 @@ export default function ShareCard({ screenprintDesignerItems }) {
 	const [isCustomText, setIsCustomText] = useState(false);
 	const [galleryImagePath, setGalleryImagePath] = useState(galleryImagesImages[1].fields.file.url);
 	const [galleryImage, setGalleryImage] = useState(null);
-	const [galleryImageWidth, setGalleryImageWidth] = useState(0);
-	const [galleryImageHeight, setGalleryImageHeight] = useState(0);
+	const [galleryImageWidth, setGalleryImageWidth] = useState(71);
+	const [galleryImageHeight, setGalleryImageHeight] = useState(71);
 
 	// Elements
 	const shareFileRef = useRef(null);
@@ -150,11 +150,12 @@ export default function ShareCard({ screenprintDesignerItems }) {
 	}
 
 	function drawImageToCanvas(canvas) {
-		if (galleryImage) {
-			const context = canvas.getContext('2d');
-			const	scale = parseFloat(160 / galleryImageWidth).toFixed(2);
-			context.drawImage(galleryImage, 96, 158, galleryImageWidth * scale, galleryImageHeight * scale);
-		}
+		// set default image
+		const defaultImage = document.querySelector('.gallery-image-2');
+		let image = galleryImage || defaultImage;
+		const context = canvas.getContext('2d');
+		const	scale = parseFloat(160 / galleryImageWidth).toFixed(2);
+		context.drawImage(image, 96, 158, galleryImageWidth * scale, galleryImageHeight * scale);
 	}
 
 	function drawTextToCanvas(canvas) {
@@ -338,7 +339,8 @@ export default function ShareCard({ screenprintDesignerItems }) {
 										aria-label={image.ariaLabel}>
 										<img
 											className={`gallery-image gallery-image-${idx + 1} ${image.fields.title}`}
-											src={`https:${image.fields.file.url}`}/>
+											src={`https:${image.fields.file.url}`}
+											crossOrigin='anonymous'/>
 									</button>
 								)}
 							</div>
