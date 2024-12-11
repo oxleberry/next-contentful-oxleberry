@@ -23,7 +23,7 @@ export default function ShareCard({ screenprintDesignerItems }) {
 	const galleryImagesImages = galleryImagesItems[0].fields.images;
 
 	// Variables =================
-	const roundedCorners = true;
+	const roundedCorners = false;
 
 	// States =================
 	const [backgroundColor, setBackgroundColor] = useState('#f23316');
