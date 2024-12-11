@@ -47,7 +47,7 @@
 			grid-template-rows: 72px 1fr;
 			gap: 32px;
 			height: 350px;
-			padding: 50px 24px 40px;
+			padding: 50px 22px 40px;
 			border-radius: 40px;
 		}
 
@@ -134,9 +134,9 @@
 				border: none;
 				border-radius: 12px;
 				padding: 10px;
-				opacity: .7;
+				opacity: .85;
 				transition: opacity 200ms ease-in-out;
-				background-color: black;
+				background-color: var(--options-color);
 				cursor: pointer;
 
 				&:hover {
@@ -148,8 +148,10 @@
 				width: 100%;
 			}
 
-			.button-black {
-				background-color: black;
+			.sakura-flower,
+			.sakura-flower-white {
+				padding-left: 6px;
+				padding-right: 6px;
 			}
 		}
 

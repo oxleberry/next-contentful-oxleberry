@@ -26,11 +26,11 @@ export default function ShareCard({ screenprintDesignerItems }) {
 	const roundedCorners = true;
 
 	// States =================
-	const [backgroundColor, setBackgroundColor] = useState('#000000');
-	const [textInput, setTextInput] = useState('Welcome!');
-	const [textColor, setTextColor] = useState('#eeddb9');
+	const [backgroundColor, setBackgroundColor] = useState('#f23316');
+	const [textInput, setTextInput] = useState('Happy Holidays!!!');
+	const [textColor, setTextColor] = useState('#fcfcfc');
 	const [isCustomText, setIsCustomText] = useState(false);
-	const [galleryImagePath, setGalleryImagePath] = useState('');
+	const [galleryImagePath, setGalleryImagePath] = useState(galleryImagesImages[1].fields.file.url);
 	const [galleryImage, setGalleryImage] = useState(null);
 	const [galleryImageWidth, setGalleryImageWidth] = useState(0);
 	const [galleryImageHeight, setGalleryImageHeight] = useState(0);
@@ -337,7 +337,7 @@ export default function ShareCard({ screenprintDesignerItems }) {
 										onClick={galleryClickHandler}
 										aria-label={image.ariaLabel}>
 										<img
-											className={`gallery-image gallery-image-${idx + 1}`}
+											className={`gallery-image gallery-image-${idx + 1} ${image.fields.title}`}
 											src={`https:${image.fields.file.url}`}/>
 									</button>
 								)}
