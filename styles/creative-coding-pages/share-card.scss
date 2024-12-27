@@ -16,7 +16,7 @@
 		display: grid;
 		justify-content: center;
 		align-items: center; // toggle to hide canvas
-		height: calc(100vh - var(--not-main-height));
+		min-height: calc(100vh - var(--not-main-height));
 		// grid-template-columns: repeat(3, 350px); // toggle to hide canvas
 		grid-template-columns: 350px .6fr; // toggle to hide canvas
 		gap: 48px;
