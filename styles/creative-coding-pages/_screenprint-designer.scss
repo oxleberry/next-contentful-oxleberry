@@ -1,0 +1,12 @@
+@use '../utilities/mixins' as *;
+// @use '../utilities/colors';
+@use '../utilities/fonts';
+
+
+.screenprint-designer-page {
+	text-align: center;
+
+	h1 {
+		font-family: fonts.$alt-title-for-g;
+	}
+}
