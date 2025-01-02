@@ -24,76 +24,14 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	const garmentStylesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'garmentStyles');
 	const garmentStylesData = garmentStylesItems[0].fields.json.garmentStyles;
 	const garmentStylesImages = garmentStylesItems[0].fields.images;
-	const galleryImagesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'galleryImages');
+	const galleryImagesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'galleryImagesScreenprintDesigner');
 	const galleryImagesImages = galleryImagesItems[0].fields.images;
 	const garmentColorsItems = screenprintDesignerItems.filter((item) => item.fields.id === 'garmentColors');
 	const garmentColorsData = garmentColorsItems[0].fields.json.garmentColors;
 	const currentGarmentColor = garmentColorsData.filter((item) => item.isActive === true);
 	const currentGarmentStyle = garmentStylesData.filter((item) => item.isActive === true);
-
-	const initialFilterData = [
-		{
-			id: 1,
-			name: 'None',
-			value: 'normal',
-			isActive: true
-		},
-		{
-			id: 2,
-			name: 'Lighten',
-			value: 'lighten',
-			isActive: false
-		},
-		{
-			id: 3,
-			name: 'Darken',
-			value: 'darken',
-			isActive: false
-		},
-		{
-			id: 4,
-			name: 'Multiply',
-			value: 'multiply',
-			isActive: false
-		},
-		{
-			id: 5,
-			name: 'Screen',
-			value: 'screen',
-			isActive: false
-		},
-		{
-			id: 6,
-			name: 'Overlay',
-			value: 'overlay',
-			isActive: false
-		},
-		{
-			id: 7,
-			name: 'Hard Light',
-			value: 'hard-light',
-			isActive: false
-		},
-		{
-			id: 8,
-			name: 'Luminosity',
-			value: 'luminosity',
-			isActive: false
-		},
-		{
-			id: 9,
-			name: 'Color Burn',
-			value: 'color-burn',
-			isActive: false
-		}
-		// NOTE: grayscale does not work on Safari canvas
-		// {
-		// 	id: 9,
-		// 	name: 'Grayscale',
-		// 	value: 'grayscale(100%)',
-		// 	isActive: false
-		// }
-	]
+	const filtersItems = screenprintDesignerItems.filter((item) => item.fields.id === 'filters');
+	const filtersData = filtersItems[0].fields.json.filters;
 
 	// States =================
 	const [garmentStyle, setGarmentStyle] = useState(currentGarmentStyle[0].value);
@@ -102,7 +40,7 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	const [curDragElem, setCurDragElem] = useState(null);
 	const [designIdx, setDesignIdx] = useState(-1);
 	const [designZIndex, setDesignZIndex] = useState(-1);
-	const [filterButtons, setFilterButtons] = useState(initialFilterData);
+	const [filterButtons, setFilterButtons] = useState(filtersData);
 	const [designs, setDesigns] = useState([]);
 	const [isChromeBrowser, setIsChromeBrowser] = useState(false);
 	/* =========================
