@@ -483,11 +483,13 @@
 			}
 
 			.minus-icon {
+				pointer-events: none;
 				padding: 0 9px 0;
 			}
 
 			.plus-icon {
 				display: block;
+				pointer-events: none;
 				margin-top: 4px;
 				padding: 0 6px 0;
 
