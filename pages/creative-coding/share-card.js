@@ -19,7 +19,7 @@ export async function getStaticProps() {
 
 export default function ShareCard({ screenprintDesignerItems }) {
 	// Assets & CMS Content =================
-	const galleryImagesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'galleryImages');
+	const galleryImagesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'galleryImagesShareCard');
 	const galleryImagesImages = galleryImagesItems[0].fields.images;
 
 	// Variables =================
