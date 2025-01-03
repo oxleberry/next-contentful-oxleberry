@@ -98,6 +98,7 @@
 			width: 100%;
 			pointer-events: none;
 			display: flex;
+			z-index: z-index.$screenprint-designer-tee-z-index;
 		}
 
 		.design-image-wrapper {

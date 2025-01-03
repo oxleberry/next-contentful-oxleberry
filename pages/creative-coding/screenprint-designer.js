@@ -252,12 +252,12 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 				{
 					id: nextId,
 					path: image,
-					// posX: 95,
-					// posY: 70,
-					// width: 90,
-					posX: 175,
-					posY: 130,
-					width: 220,
+					posX: 95,
+					posY: 70,
+					width: 90,
+					// posX: 175,
+					// posY: 130,
+					// width: 220,
 					rotate: 0,
 					dragClass: 'draggable',
 					filter: 'normal',
@@ -367,6 +367,21 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 		let distanceY = cursorY - startCursorPos.y;
 		curDragElem.style.left = currentDesign.posX + distanceX + 'px';
 		curDragElem.style.top = currentDesign.posY + distanceY + 'px';
+	}
+
+	function touchMoveHandler(event) {
+		if (event.target == null) return;
+		event.preventDefault();
+		let currentDesign = designs.find(design => design.id == event.target.id);
+		if (currentDesign == undefined) return;
+		// calculate new position
+		const touchLocation = event.targetTouches[0];
+		curDragElem.style.left = (touchLocation.clientX - 100) + 'px';
+		curDragElem.style.top = (touchLocation.clientY - 150) + 'px';
+		// let distanceX = touchLocation.clientX - (currentDesign.width);
+		// let distanceY = touchLocation.clientY - (currentDesign.width);
+		// curDragElem.style.left = distanceX + 'px';
+		// curDragElem.style.top = distanceY + 'px';
 	}
 
 	function dragDropHandler(event) {
@@ -525,6 +540,8 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 							ref={dragContainerRef}
 							onDragOver={event => dragOverHandler(event, false)}
 							onDrop={event => dragDropHandler(event, false)}
+							onTouchMove={event => touchMoveHandler(event, false)}
+							onTouchEnd={event => dragDropHandler(event, false)}
 							style={{background: garmentColor, borderWidth: `${borderWidth}px`}}
 						>
 							<h2 className="hidden">Design layout workspace</h2>
@@ -552,6 +569,7 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 										className={`design-image design-${idx} ${design.dragClass}`}
 										draggable
 										onDragStart={event => dragStartHandler(event, false)}
+										onTouchStart={event => dragStartHandler(event, false)}
 										style={{
 											transform: `rotate(${design.rotate}deg)`,
 											width: design.width,
