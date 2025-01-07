@@ -12,23 +12,31 @@
 	--nav-height: 58px;
 	--header-height: 110px;
 	--not-main-height: calc(var(--footer-height) + var(--nav-height) + var(--header-height));
-	$breakpoint-med-large: 1050px;
-	$med-layout-width: 60%;
-	$small-layout-width: 85%;
+	$breakpoint-med-large: 1200px;
+	$large-layout-width: 600px;
+	$med-layout-width: 400px;
+	$small-layout-width: 300px;
 
 	main {
 		display: grid;
 		justify-content: center;
 		min-height: calc(100vh - var(--not-main-height));
-		grid-template-columns: .85fr 1fr;
+		grid-template-columns: $large-layout-width 1fr;
 		gap: 2.2em;
 		max-width: 1400px;
 		margin: 0 auto;
 		padding: 0 20px;
 
+		@media (max-width: $breakpoint-med-large) {
+			height: calc(100vh - var(--not-main-height));
+			grid-template-columns: $med-layout-width 1fr;
+			gap: 1em;
+		}
+
 		@media (orientation: portrait) {
 			gap: 24px;
 			grid-template-columns: 1fr;
+			height: auto;
 		}
 	}
 
@@ -126,7 +134,6 @@
 	.options-container {
 		border: 8px solid var(--options-color);
 		display: grid;
-		min-height: 690px;
 
 		@media (orientation: portrait) {
 			border: 6px solid var(--options-color);

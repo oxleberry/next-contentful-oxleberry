@@ -43,6 +43,9 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	const [filterButtons, setFilterButtons] = useState(filtersData);
 	const [designs, setDesigns] = useState([]);
 	const [isChromeBrowser, setIsChromeBrowser] = useState(false);
+	const [defaultDesignPosX, setDefaultDesignPosX] = useState(95);
+	const [defaultDesignPosY, setDefaultDesignPosY] = useState(70);
+	const [defaultDesignWidth, setDefaultDesignWidth] = useState(90);
 	/* =========================
 		designs = [{
 			id: number
@@ -240,6 +243,23 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 		}));
 	}
 
+	function setDefaultDesignSizeAndPosition() {
+		const viewportWidth = window.innerWidth;
+		if (viewportWidth >= 1200) {
+			setDefaultDesignPosX(175);
+			setDefaultDesignPosY(130);
+			setDefaultDesignWidth(220);
+		} else if (viewportWidth >= 680) {
+			setDefaultDesignPosX(120);
+			setDefaultDesignPosY(95);
+			setDefaultDesignWidth(140);
+		} else {
+			setDefaultDesignPosX(95);
+			setDefaultDesignPosY(70);
+			setDefaultDesignWidth(90);
+		}
+	}
+
 	function setNewDesign(image) {
 		let nextId = designIdx + 1;
 		let nextZIndex = designZIndex + 1;
@@ -252,12 +272,9 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 				{
 					id: nextId,
 					path: image,
-					posX: 95,
-					posY: 70,
-					width: 90,
-					// posX: 175,
-					// posY: 130,
-					// width: 220,
+					posX: defaultDesignPosX,
+					posY: defaultDesignPosY,
+					width: defaultDesignWidth,
 					rotate: 0,
 					dragClass: 'draggable',
 					filter: 'normal',
@@ -519,6 +536,18 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	useEffect(() => {
 		const isChrome = checkChromeBrowser();
 		setIsChromeBrowser(isChrome);
+		setDefaultDesignSizeAndPosition();
+	}, []);
+
+	// ============================
+	// Event Listeners
+	// ============================
+	useEffect(() => {
+		window.addEventListener('resize', setDefaultDesignSizeAndPosition);
+		// clean up function, remove event listener
+		return () => {
+			window.removeEventListener('resize', setDefaultDesignSizeAndPosition);
+		}
 	}, []);
 
 
