@@ -245,11 +245,12 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 
 	function setDefaultDesignSizeAndPosition() {
 		const viewportWidth = window.innerWidth;
-		if (viewportWidth >= 1200) {
+		const viewportHeight = window.innerHeight;
+		if (viewportWidth >= 1200 && viewportHeight >= 900) {
 			setDefaultDesignPosX(175);
 			setDefaultDesignPosY(130);
 			setDefaultDesignWidth(220);
-		} else if (viewportWidth >= 680) {
+		} else if (viewportWidth >= 680 && viewportHeight >= 700) {
 			setDefaultDesignPosX(120);
 			setDefaultDesignPosY(95);
 			setDefaultDesignWidth(140);

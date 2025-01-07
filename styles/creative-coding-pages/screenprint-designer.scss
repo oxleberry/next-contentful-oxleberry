@@ -12,25 +12,37 @@
 	--nav-height: 58px;
 	--header-height: 110px;
 	--not-main-height: calc(var(--footer-height) + var(--nav-height) + var(--header-height));
-	$breakpoint-med-large: 1200px;
-	$large-layout-width: 600px;
-	$med-layout-width: 400px;
-	$small-layout-width: 300px;
+	$breakpoint-width-large-med: 1200px;
+	$breakpoint-height-med: 900px;
+	$breakpoint-height-short: 700px;
+	$design-layout-width-large: 600px;
+	$design-layout-width-med: 400px;
+	$design-layout-width-small: 300px;
 
 	main {
 		display: grid;
 		justify-content: center;
 		min-height: calc(100vh - var(--not-main-height));
-		grid-template-columns: $large-layout-width 1fr;
+		grid-template-columns: $design-layout-width-large 1fr;
 		gap: 2.2em;
 		max-width: 1400px;
 		margin: 0 auto;
 		padding: 0 20px;
 
-		@media (max-width: $breakpoint-med-large) {
-			height: calc(100vh - var(--not-main-height));
-			grid-template-columns: $med-layout-width 1fr;
+		@media (max-width: $breakpoint-width-large-med) {
 			gap: 1em;
+			height: calc(100vh - var(--not-main-height));
+			grid-template-columns: $design-layout-width-med 1fr;
+		}
+
+		@media (max-height: $breakpoint-height-short) {
+			height: 394px;
+			grid-template-columns: $design-layout-width-small max(400px, 700px);
+		}
+
+		@media (min-height: $breakpoint-height-short) and (max-height: $breakpoint-height-med) {
+			height: 516px;
+			grid-template-columns: $design-layout-width-med max(400px, 700px);
 		}
 
 		@media (orientation: portrait) {
@@ -49,7 +61,7 @@
 	}
 
 	// ========================
-	// Share Content Section
+	// Design Layout Section
 	// ========================
 	.design-layout-section {
 		display: flex;
@@ -62,11 +74,11 @@
 			margin: 0 auto;
 			border: 6px solid var(--options-color);
 			position: sticky;
-			width: $med-layout-width;
+			width: $design-layout-width-med;
 			top: 80px;
 
 			@include bp(m) {
-				width: $small-layout-width;
+				width: $design-layout-width-small;
 				top: 100px;
 			}
 
@@ -134,14 +146,27 @@
 	.options-container {
 		border: 8px solid var(--options-color);
 		display: grid;
+		background-color: white;
+
+		@media (max-width: $breakpoint-width-large-med) {
+			overflow-y: scroll;
+			overflow-x: hidden;
+		}
+
+		@media (max-height: $breakpoint-height-med) {
+			overflow-y: scroll;
+			overflow-x: hidden;
+		}
 
 		@media (orientation: portrait) {
 			border: 6px solid var(--options-color);
 			margin: 0 auto;
-			width: $med-layout-width;
+			width: $design-layout-width-med;
+			overflow-y: visible;
+			overflow-x: visible;
 
 			@include bp(m) {
-				width: $small-layout-width;
+				width: $design-layout-width-small;
 			}
 		}
 
@@ -423,7 +448,7 @@
 			display: grid;
 			grid-template-columns: 1fr 1fr 1fr .7fr;
 
-			@media (max-width: $breakpoint-med-large) {
+			@media (max-width: $breakpoint-width-large-med) {
 				grid-template-columns: 1fr 1fr;
 			}
 
@@ -436,14 +461,14 @@
 			}
 
 			.sub-divider {
-				@media (max-width: $breakpoint-med-large) {
+				@media (max-width: $breakpoint-width-large-med) {
 					// adding horizontal lines in-between sections
 					&:not(:nth-child(n + 3)) {
 						border-bottom: 4px solid var(--options-color);
 					}
 				}
 
-				@media (max-width: $breakpoint-med-large) {
+				@media (max-width: $breakpoint-width-large-med) {
 					// hide vertical on 3rd container
 					&:nth-child(n + 3):nth-child(-n + 3) {
 						&::before {
