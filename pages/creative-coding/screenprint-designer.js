@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import Header from '../../components/Header'
-import html2canvas from '../../js/lib/html2canvas'
 import checkChromeBrowser from '../../js/utilities/checkChromeBrowser'
 import { useEffect, useState, useRef } from 'react'
 import { createClient } from 'contentful'
@@ -70,7 +69,6 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	const dragContainerRef = useRef(null);
 	let designRefs = useRef([null]);
 
-
 	// Functions =================
 	function garmentStyleHandler(event) {
 		let value = event.target.value;
@@ -80,6 +78,99 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	function garmentColorHandler(event) {
 		let value = event.target.value;
 		setGarmentColor(value);
+	}
+
+	function getDefaultSpecs(viewportSize) {
+		const posXScale = .305;
+		const posYScale = .25;
+		const widthScale = .33;
+		const posX = viewportSize * posXScale;
+		const posY = viewportSize * posYScale;
+		const width = viewportSize * widthScale;
+		const defaultSpecs = { posX: posX, posY: posY, width: width };
+		return defaultSpecs;
+	}
+
+	function setDefaultDesignSizeAndPosition() {
+		const viewportWidth = window.innerWidth;
+		const viewportHeight = window.innerHeight;
+		const designLayoutWidthLarge = 600;
+		const designLayoutWidthMedium = 400;
+		const designLayoutWidthSmall = 300;
+		let tempDefaultDesignSpecs;
+		let tempCanvasSize;
+		if (viewportWidth >= 1200 && viewportHeight >= 900) {
+			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthLarge);
+			tempCanvasSize = { width: 584, height: 682 } // set canvas size to match design layout
+		} else if (viewportWidth >= 680 && viewportHeight >= 700) {
+			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthMedium);
+			tempCanvasSize = { width: 384, height: 466 } // set canvas size to match design layout
+		} else {
+			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthSmall);
+			tempCanvasSize = { width: 284, height: 345 } // set canvas size to match design layout
+		}
+		setDefaultDesignSpecs(tempDefaultDesignSpecs);
+		setCanvasSize(tempCanvasSize);
+	}
+
+	function setNewDesign(image) {
+		let nextId = designIdx + 1;
+		let nextZIndex = designZIndex + 1;
+		setDesignIdx(nextId);
+		setDesignZIndex(nextZIndex);
+		// add a new design
+		setDesigns(
+			[
+				...designs,
+				{
+					id: nextId,
+					path: image,
+					posX: defaultDesignSpecs.posX,
+					posY: defaultDesignSpecs.posY,
+					width: defaultDesignSpecs.width,
+					rotate: 0,
+					dragClass: 'draggable',
+					filter: 'normal',
+					grayscale: 'initial',
+					borderRadius: 0,
+					zIndex: nextZIndex
+				}
+			]
+		);
+		// clear target element
+		setCurDragElem(null);
+		// reset filter buttons to default filter
+		setFilterButtons(filterButtons.map(filter => {
+			if (filter.value == 'normal') {
+				return { ...filter, isActive: true };
+			} else {
+				return { ...filter, isActive: false };
+			}
+		}));
+	}
+
+	function uploadImageClickHandler(event) {
+		let imageFile;
+		let reader;
+		let uploadImage;
+		imageFile = event.target.files[0];
+		if(!imageFile.type.match('image.*')) {
+			alert("This file is not a unsupported image file");
+			return;
+		}
+		reader = new FileReader();
+		reader.addEventListener('load', (function() {
+			return function(event) {
+				uploadImage = event.target.result;
+				setNewDesign(uploadImage);
+			};
+		})(imageFile), false);
+		reader.readAsDataURL(imageFile);
+	}
+
+	function galleryClickHandler(event) {
+		let galleryImagePath = event.target.firstElementChild.src;
+		setNewDesign(galleryImagePath);
 	}
 
 	function getDesignPosition(design) {
@@ -242,99 +333,6 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 		}));
 	}
 
-	function getDefaultSpecs(viewportSize) {
-		const posXScale = .305;
-		const posYScale = .25;
-		const widthScale = .33;
-		const posX = viewportSize * posXScale;
-		const posY = viewportSize * posYScale;
-		const width = viewportSize * widthScale;
-		const defaultSpecs = { posX: posX, posY: posY, width: width };
-		return defaultSpecs;
-	}
-
-	function setDefaultDesignSizeAndPosition() {
-		const viewportWidth = window.innerWidth;
-		const viewportHeight = window.innerHeight;
-		const designLayoutWidthLarge = 600;
-		const designLayoutWidthMedium = 400;
-		const designLayoutWidthSmall = 300;
-		let tempDefaultDesignSpecs;
-		let tempCanvasSize;
-		if (viewportWidth >= 1200 && viewportHeight >= 900) {
-			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthLarge);
-			tempCanvasSize = { width: 584, height: 682 } // set canvas size to match design layout
-		} else if (viewportWidth >= 680 && viewportHeight >= 700) {
-			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthMedium);
-			tempCanvasSize = { width: 384, height: 466 } // set canvas size to match design layout
-		} else {
-			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthSmall);
-			tempCanvasSize = { width: 284, height: 345 } // set canvas size to match design layout
-		}
-		setDefaultDesignSpecs(tempDefaultDesignSpecs);
-		setCanvasSize(tempCanvasSize);
-	}
-
-	function setNewDesign(image) {
-		let nextId = designIdx + 1;
-		let nextZIndex = designZIndex + 1;
-		setDesignIdx(nextId);
-		setDesignZIndex(nextZIndex);
-		// add a new design
-		setDesigns(
-			[
-				...designs,
-				{
-					id: nextId,
-					path: image,
-					posX: defaultDesignSpecs.posX,
-					posY: defaultDesignSpecs.posY,
-					width: defaultDesignSpecs.width,
-					rotate: 0,
-					dragClass: 'draggable',
-					filter: 'normal',
-					grayscale: 'initial',
-					borderRadius: 0,
-					zIndex: nextZIndex
-				}
-			]
-		);
-		// clear target element
-		setCurDragElem(null);
-		// reset filter buttons to default filter
-		setFilterButtons(filterButtons.map(filter => {
-			if (filter.value == 'normal') {
-				return { ...filter, isActive: true };
-			} else {
-				return { ...filter, isActive: false };
-			}
-		}));
-	}
-
-	function uploadImageClickHandler(event) {
-		let imageFile;
-		let reader;
-		let uploadImage;
-		imageFile = event.target.files[0];
-		if(!imageFile.type.match('image.*')) {
-			alert("This file is not a unsupported image file");
-			return;
-		}
-		reader = new FileReader();
-		reader.addEventListener('load', (function() {
-			return function(event) {
-				uploadImage = event.target.result;
-				setNewDesign(uploadImage);
-			};
-		})(imageFile), false);
-		reader.readAsDataURL(imageFile);
-	}
-
-	function galleryClickHandler(event) {
-		let galleryImagePath = event.target.firstElementChild.src;
-		setNewDesign(galleryImagePath);
-	}
-
 
 	// =======================================
 	// Draggable Image functions
@@ -410,10 +408,6 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 		const touchLocation = event.targetTouches[0];
 		curDragElem.style.left = (touchLocation.clientX - 100) + 'px';
 		curDragElem.style.top = (touchLocation.clientY - 150) + 'px';
-		// let distanceX = touchLocation.clientX - (currentDesign.width);
-		// let distanceY = touchLocation.clientY - (currentDesign.width);
-		// curDragElem.style.left = distanceX + 'px';
-		// curDragElem.style.top = distanceY + 'px';
 	}
 
 	function dragDropHandler(event) {
@@ -532,11 +526,6 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	}
 
 	function shareCardClickHandler() {
-		// NOTE: html2canvas can't bring in filters, also has problem with SVGs
-		// html2canvas(document.querySelector("#capture")).then(canvas => {
-		// 	document.body.appendChild(canvas); // view test in browser
-		// 	shareFile(canvas);
-		// });
 		const canvas = createCanvas();
 		if (designRefs.current[0] !== null) {
 			drawDesignsToCanvas(canvas);
@@ -579,7 +568,6 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 					<section className="design-layout-section">
 						<div
 							className="design-layout-container"
-							id="capture"
 							ref={dragContainerRef}
 							onDragOver={event => dragOverHandler(event, false)}
 							onDrop={event => dragDropHandler(event, false)}
