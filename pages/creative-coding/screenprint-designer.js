@@ -43,9 +43,8 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	const [filterButtons, setFilterButtons] = useState(filtersData);
 	const [designs, setDesigns] = useState([]);
 	const [isChromeBrowser, setIsChromeBrowser] = useState(false);
-	const [defaultDesignPosX, setDefaultDesignPosX] = useState(95);
-	const [defaultDesignPosY, setDefaultDesignPosY] = useState(70);
-	const [defaultDesignWidth, setDefaultDesignWidth] = useState(90);
+	const [canvasSize, setCanvasSize] = useState({});
+	const [defaultDesignSpecs, setDefaultDesignSpecs] = useState({});
 	/* =========================
 		designs = [{
 			id: number
@@ -243,22 +242,37 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 		}));
 	}
 
+	function getDefaultSpecs(viewportSize) {
+		const posXScale = .305;
+		const posYScale = .25;
+		const widthScale = .33;
+		const posX = viewportSize * posXScale;
+		const posY = viewportSize * posYScale;
+		const width = viewportSize * widthScale;
+		const defaultSpecs = { posX: posX, posY: posY, width: width };
+		return defaultSpecs;
+	}
+
 	function setDefaultDesignSizeAndPosition() {
 		const viewportWidth = window.innerWidth;
 		const viewportHeight = window.innerHeight;
+		const designLayoutWidthLarge = 600;
+		const designLayoutWidthMedium = 400;
+		const designLayoutWidthSmall = 300;
+		let tempDefaultDesignSpecs;
+		let tempCanvasSize;
 		if (viewportWidth >= 1200 && viewportHeight >= 900) {
-			setDefaultDesignPosX(175);
-			setDefaultDesignPosY(130);
-			setDefaultDesignWidth(220);
+			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthLarge);
+			tempCanvasSize = { width: 584, height: 682 } // set canvas size to match design layout
 		} else if (viewportWidth >= 680 && viewportHeight >= 700) {
-			setDefaultDesignPosX(120);
-			setDefaultDesignPosY(95);
-			setDefaultDesignWidth(140);
+			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthMedium);
+			tempCanvasSize = { width: 384, height: 466 } // set canvas size to match design layout
 		} else {
-			setDefaultDesignPosX(95);
-			setDefaultDesignPosY(70);
-			setDefaultDesignWidth(90);
+			tempDefaultDesignSpecs = getDefaultSpecs(designLayoutWidthSmall);
+			tempCanvasSize = { width: 284, height: 345 } // set canvas size to match design layout
 		}
+		setDefaultDesignSpecs(tempDefaultDesignSpecs);
+		setCanvasSize(tempCanvasSize);
 	}
 
 	function setNewDesign(image) {
@@ -273,9 +287,9 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 				{
 					id: nextId,
 					path: image,
-					posX: defaultDesignPosX,
-					posY: defaultDesignPosY,
-					width: defaultDesignWidth,
+					posX: defaultDesignSpecs.posX,
+					posY: defaultDesignSpecs.posY,
+					width: defaultDesignSpecs.width,
 					rotate: 0,
 					dragClass: 'draggable',
 					filter: 'normal',
@@ -420,26 +434,25 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	// =======================================
 	// Share Card functions
 	// =======================================
-	function createCanvas(width, height) {
+	function createCanvas() {
 		const canvas = document.createElement('canvas');
-		canvas.width = width;
-		canvas.height = height;
+		canvas.width = canvasSize.width;
+		canvas.height = canvasSize.height;
 		const context = canvas.getContext('2d');
 		context.save(); // Save the current state
 		context.fillStyle = garmentColor;
-		context.fillRect(0, 0, width, height);
+		context.fillRect(0, 0, canvasSize.width, canvasSize.height);
 		context.restore(); // Restore to the state saved by the most recent call to save()
 		// shareFileRef.current.prepend(canvas); // display canvas for testing
 		return canvas;
 	}
 
-	function drawGarmentToCanvas(canvas, canvasHeight) {
+	function drawGarmentToCanvas(canvas) {
 		const tee = document.querySelector(".tee-image");
 		const teeWidth = tee.getBoundingClientRect().width;
 		const teeHeight = tee.getBoundingClientRect().height;
-		const teeOffsetHeight = ((teeHeight - canvasHeight) / 2) * -1;
 		const context = canvas.getContext('2d');
-		context.drawImage(tee, 0, teeOffsetHeight, teeWidth, teeHeight);
+		context.drawImage(tee, 0, 0, teeWidth, teeHeight);
 	}
 
 	function rotateDesign(context, design, imageWidth, imageHeight) {
@@ -524,11 +537,11 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 		// 	document.body.appendChild(canvas); // view test in browser
 		// 	shareFile(canvas);
 		// });
-		const canvasWidth = 584;
-		const canvasHeight = 682;
-		const canvas = createCanvas(canvasWidth, canvasHeight);
-		drawDesignsToCanvas(canvas);
-		drawGarmentToCanvas(canvas, canvasHeight);
+		const canvas = createCanvas();
+		if (designRefs.current[0] !== null) {
+			drawDesignsToCanvas(canvas);
+		};
+		drawGarmentToCanvas(canvas);
 		shareFile(canvas);
 	}
 
