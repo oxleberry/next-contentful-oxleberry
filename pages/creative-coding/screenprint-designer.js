@@ -118,7 +118,7 @@ export default function ScreenprintDesigner() {
 
 	// Elements
 	const dragContainerRef = useRef(null);
-	const dragArtImageRef = useRef(null);
+	let designRefs = useRef([]);
 
 	// Functions =================
 	function garmentStyleHandler(event) {
@@ -135,7 +135,7 @@ export default function ScreenprintDesigner() {
 		let imagePath = event.target.src;
 		let nextId = designIdx + 1;
 		setDesignIdx(nextId);
-		// add new design
+		// add a new design
 		setDesigns(
 			[
 				...designs,
@@ -149,21 +149,30 @@ export default function ScreenprintDesigner() {
 				}
 			]
 		);
+		// clear target element
+		setCurDragElem(null);
 	}
 
 	function sizeClickHandler(event) {
-		if (curDragElem == null) return;
+		let currentDesign;
+		if (curDragElem == null) {
+			// if design has not been dragged, use most recent picked image
+			let recentDesignAdded = designRefs.current[designRefs.current.length - 1];
+			currentDesign = recentDesignAdded;
+		} else {
+			currentDesign = curDragElem;
+		}
 		let increment = 30;
 		let updateWidth;
 		// increment based on button clicked
 		if (event.target.id == "plus") {
-			updateWidth = curDragElem.width + increment;
+			updateWidth = currentDesign.width + increment;
 		} else if (event.target.id == "minus") {
-			updateWidth = curDragElem.width - increment;
+			updateWidth = currentDesign.width - increment;
 		}
 		// update width of current design
 		setDesigns(designs.map(design => {
-			if (design.id == curDragElem.id) {
+			if (design.id == currentDesign.id) {
 				return { ...design, width: updateWidth };
 			} else {
 				return design;
@@ -223,8 +232,6 @@ export default function ScreenprintDesigner() {
 				return { ...design, dragClass: 'draggable' }; // update all other items
 			}
 		}));
-		// clear target element
-		// setCurDragElem(null);
 	}
 
 	return (
@@ -255,7 +262,7 @@ export default function ScreenprintDesigner() {
 									key={idx}
 									id={idx}
 									className={`design-image design-${idx} ${design.dragClass}`}
-									ref={dragArtImageRef}
+									ref={(el) => (designRefs.current[idx] = el)}
 									draggable
 									onDragStart={event => dragStartHandler(event, false)}
 									style={{left: design.posX, top: design.posY, width: design.width}}
