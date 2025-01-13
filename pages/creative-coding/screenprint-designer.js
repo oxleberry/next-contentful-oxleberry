@@ -119,6 +119,7 @@ export default function ScreenprintDesigner() {
 			posX: number
 			posY: number
 			width: number
+			rotate: number
 			dragClass: string, ex: 'draggable', 'no-drag'
 		}]
 	========================= */
@@ -155,6 +156,7 @@ export default function ScreenprintDesigner() {
 					posX: 175,
 					posY: 130,
 					width: 220,
+					rotate: 0,
 					dragClass: 'draggable'
 				}
 			]
@@ -209,6 +211,35 @@ export default function ScreenprintDesigner() {
 	}
 
 	function rotateClickHandler(event) {
+		let currentDesign;
+		if (curDragElem == null) {
+			// if design has not been dragged, use most recent picked image
+			let recentDesignAdded = designRefs.current[designRefs.current.length - 1];
+			currentDesign = recentDesignAdded;
+		} else {
+			currentDesign = curDragElem;
+		}
+		let increment = 15;
+		// update rotate value of current design
+		if (event.target.id == "rotate-left") {
+			setDesigns(designs.map(design => {
+				if (design.id == currentDesign.id) {
+					let updateRotate = design.rotate - increment;
+					return { ...design, rotate: updateRotate };
+				} else {
+					return design;
+				}
+			}));
+		} else if (event.target.id == "rotate-right") {
+			setDesigns(designs.map(design => {
+				if (design.id == currentDesign.id) {
+					let updateRotate = design.rotate + increment;
+					return { ...design, rotate: updateRotate };
+				} else {
+					return design;
+				}
+			}));
+		}
 	}
 
 	// =======================================
@@ -291,7 +322,7 @@ export default function ScreenprintDesigner() {
 									ref={(el) => (designRefs.current[idx] = el)}
 									draggable
 									onDragStart={event => dragStartHandler(event, false)}
-									style={{left: design.posX, top: design.posY, width: design.width}}
+									style={{left: design.posX, top: design.posY, width: design.width, transform: `rotate(${design.rotate}deg)`}}
 								/>
 							)}
 						</div>
