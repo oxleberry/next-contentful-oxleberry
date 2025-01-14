@@ -111,6 +111,7 @@ export default function ScreenprintDesigner() {
 	const [startCursorPos, setStartCursorPos] = useState({ x: null, y: null});
 	const [curDragElem, setCurDragElem] = useState(null);
 	const [designIdx, setDesignIdx] = useState(-1);
+	const [designZIndex, setDesignZIndex] = useState(-1);
 	const [designs, setDesigns] = useState([]);
 	/* =========================
 		designs = [{
@@ -121,6 +122,7 @@ export default function ScreenprintDesigner() {
 			width: number
 			rotate: number
 			dragClass: string, ex: 'draggable', 'no-drag'
+			zIndex: number
 		}]
 	========================= */
 
@@ -145,7 +147,9 @@ export default function ScreenprintDesigner() {
 	function galleryClickHandler(event) {
 		let imagePath = event.target.src;
 		let nextId = designIdx + 1;
+		let nextZIndex = designZIndex + 1;
 		setDesignIdx(nextId);
+		setDesignZIndex(nextZIndex);
 		// add a new design
 		setDesigns(
 			[
@@ -157,7 +161,8 @@ export default function ScreenprintDesigner() {
 					posY: 130,
 					width: 220,
 					rotate: 0,
-					dragClass: 'draggable'
+					dragClass: 'draggable',
+					zIndex: nextZIndex
 				}
 			]
 		);
@@ -255,10 +260,13 @@ export default function ScreenprintDesigner() {
 			x: event.clientX,
 			y: event.clientY
 		});
+		let nextZIndex = designZIndex + 1;
+		setDesignZIndex(nextZIndex);
+		// set current design to top z-index
 		// set all other designs to not be draggable
 		setDesigns(designs.map(design => {
 			if (design.id == event.target.id) { // find unique item
-				return design; // no changes to target item
+				return { ...design, zIndex: nextZIndex }; // update current design
 			} else {
 				return { ...design, dragClass: 'no-drag' }; // update all other items
 			}
@@ -321,7 +329,7 @@ export default function ScreenprintDesigner() {
 									id={idx}
 									draggable
 									ref={(el) => (designRefs.current[idx] = el)}
-									style={{left: design.posX, top: design.posY, width: design.width}}
+									style={{left: design.posX, top: design.posY, width: design.width, zIndex: design.zIndex}}
 									>
 									<img
 										src={design.path}
