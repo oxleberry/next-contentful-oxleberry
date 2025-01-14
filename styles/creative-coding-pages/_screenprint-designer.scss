@@ -1,6 +1,7 @@
 @use '../utilities/mixins' as *;
 // @use '../utilities/colors';
 @use '../utilities/fonts';
+@use '../utilities/z-index';
 
 
 .screenprint-designer-page {
@@ -56,7 +57,7 @@
 			width: 100%;
 			pointer-events: none;
 			display: flex;
-			z-index: 1000;
+			z-index: z-index.$screenprint-designer-tee-z-index;
 		}
 
 		.design-image-wrapper {
