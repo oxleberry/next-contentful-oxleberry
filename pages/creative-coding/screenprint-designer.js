@@ -472,6 +472,14 @@ export default function ScreenprintDesigner() {
 		}));
 	}
 
+
+	// =======================================
+	// Share Card functions
+	// =======================================
+	function shareCardClickHandler() {
+		console.log('SHARE CARD');
+	}
+
 	return (
 		<>
 			<Head>
@@ -703,6 +711,16 @@ export default function ScreenprintDesigner() {
 									</button>
 								)}
 							</div>
+						</div>
+
+						{/* Share Card Button */}
+						<div className="option-section option-share">
+							<button
+								type="button"
+								className="share-button"
+								onClick={shareCardClickHandler}
+							>Create Share Card
+							</button>
 						</div>
 					</section>
 
