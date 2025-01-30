@@ -27,27 +27,8 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	const garmentColorsData = garmentColorsItems[0].fields.json.garmentColors;
 	const currentGarmentColor = garmentColorsData.filter((item) => item.isActive === true);
 	const currentGarmentStyle = garmentStylesData.filter((item) => item.isActive === true);
-
-	const initialGalleryImageData = [
-		{
-			id: 1,
-			name: 'sakura-flower',
-			url: '/creative-coding-pages/screenprint-designer/sakura-flower.png',
-			ariaLabel: 'flower design',
-		},
-		{
-			id: 2,
-			name: 'sugar-skull',
-			url: '/creative-coding-pages/screenprint-designer/sugar-skull.png',
-			ariaLabel: 'sugar skull design',
-		},
-		{
-			id: 3,
-			name: 'flaming-bunny',
-			url: '/creative-coding-pages/screenprint-designer/flaming-bunny.png',
-			ariaLabel: 'flaming bunny design',
-		}
-	]
+	const galleryItems = screenprintDesignerItems.filter((item) => item.fields.id === 'galleryImagesScreenprintDesigner');
+	const galleryImages = galleryItems[0].fields.images;
 
 	const initialFilterData = [
 		{
@@ -630,7 +611,7 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 								<div className="option-sub-section option-image-gallery">
 									<label className="option-label">Choose an image:</label>
 									<div className="gallery-container">
-										{initialGalleryImageData.map((image, idx) =>
+										{galleryImages.map((image, idx) =>
 											<button
 												key={idx}
 												type="button"
@@ -638,8 +619,8 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 												onClick={galleryClickHandler}
 												aria-label={image.ariaLabel}>
 												<img
-													className={`gallery-image gallery-image-${image.id}`}
-													src={image.url}/>
+													className={`gallery-image gallery-image-${idx + 1}`}
+													src={`https:${image.fields.file.url}`}/>
 											</button>
 										)}
 									</div>
