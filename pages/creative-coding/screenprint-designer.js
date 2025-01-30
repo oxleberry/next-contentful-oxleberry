@@ -384,6 +384,7 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 			const context = canvas.getContext('2d');
 			context.save();
 			rotateDesign(context, design, imageWidth, imageHeight);
+			applyFilter(context, design);
 			drawRoundedCorners(context, design, imageWidth, imageHeight);
 			context.drawImage(image, design.posX, design.posY, imageWidth, imageHeight);
 			context.restore();
@@ -396,6 +397,12 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 		context.translate(centerX, centerY);
 		context.rotate((design.rotate * Math.PI) / 180);
 		context.translate(-centerX, -centerY);
+	}
+
+	function applyFilter(context, design) {
+		// context.globalCompositeOperation = 'overlay'; // not an exact match
+		// context.filter = "grayscale(1)"; // NOTE: does not work on Safari
+		context.globalCompositeOperation = design.filter;
 	}
 
 	function drawRoundedCorners(context, design, imageWidth, imageHeight) {
