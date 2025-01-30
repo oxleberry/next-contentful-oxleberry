@@ -23,69 +23,10 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	const garmentStylesItems = screenprintDesignerItems.filter((item) => item.fields.id === 'garmentStyles');
 	const garmentStylesData = garmentStylesItems[0].fields.json.garmentStyles;
 	const garmentStylesImages = garmentStylesItems[0].fields.images;
-
-	const initialGarmentColorData = [
-		{
-			id: 1,
-			name: 'black',
-			value: '#1d1d1d',
-			isActive: true
-		},
-		{
-			id: 2,
-			name: 'red',
-			value: '#d41b02',
-			isActive: false
-		},
-		{
-			id: 3,
-			name: 'gold',
-			value: '#ffaa00',
-			isActive: false
-		},
-		{
-			id: 4,
-			name: 'olive',
-			value: '#5f6e1f',
-			isActive: false
-		},
-		{
-			id: 5,
-			name: 'navy',
-			value: '#022c59',
-			isActive: false
-		},
-		{
-			id: 6,
-			name: 'pink',
-			value: '#ffade2',
-			isActive: false
-		},
-		{
-			id: 7,
-			name: 'charcoal',
-			value: '#4d4b49',
-			isActive: false
-		},
-		{
-			id: 8,
-			name: 'tan',
-			value: '#cbb699',
-			isActive: false
-		},
-		{
-			id: 9,
-			name: 'grey',
-			value: '#bfbebb',
-			isActive: false
-		},
-		{
-			id: 10,
-			name: 'white',
-			value: '#fff',
-			isActive: false
-		}
-	]
+	const garmentColorsItems = screenprintDesignerItems.filter((item) => item.fields.id === 'garmentColors');
+	const garmentColorsData = garmentColorsItems[0].fields.json.garmentColors;
+	const currentGarmentColor = garmentColorsData.filter((item) => item.isActive === true);
+	const currentGarmentStyle = garmentStylesData.filter((item) => item.isActive === true);
 
 	const initialGalleryImageData = [
 		{
@@ -166,8 +107,8 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	]
 
 	// States =================
-	const [garmentStyle, setGarmentStyle] = useState('adult-tee');
-	const [garmentColor, setGarmentColor] = useState('#1d1d1d');
+	const [garmentStyle, setGarmentStyle] = useState(currentGarmentStyle[0].value);
+	const [garmentColor, setGarmentColor] = useState(currentGarmentColor[0].value);
 	const [startCursorPos, setStartCursorPos] = useState({ x: null, y: null});
 	const [curDragElem, setCurDragElem] = useState(null);
 	const [designIdx, setDesignIdx] = useState(-1);
@@ -643,7 +584,7 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 						{/* Option - Garment Color */}
 						<div className="option-section option-garment-color">
 							<legend className="option-label">Garment color:</legend>
-							{initialGarmentColorData.map((color, idx) =>
+							{garmentColorsData.map((color, idx) =>
 								<div key={idx} className="option-color">
 									<input
 										id={`color-${color.name}`}
