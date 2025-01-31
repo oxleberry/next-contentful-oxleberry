@@ -41,6 +41,7 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	const [designZIndex, setDesignZIndex] = useState(-1);
 	const [filterButtons, setFilterButtons] = useState(filtersData);
 	const [isChromeBrowser, setIsChromeBrowser] = useState(false);
+	const [defaultDesignSpecs, setDefaultDesignSpecs] = useState({});
 	const [designs, setDesigns] = useState([]);
 	/* =========================
 		designs = [{
@@ -77,6 +78,17 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 		setGarmentColor(value);
 	}
 
+	function setDefaultDesignSizeAndPosition() {
+		const viewportWidth = window.innerWidth;
+		if (viewportWidth >= 1200) {
+			setDefaultDesignSpecs({ posX: 175, posY: 130, width: 220 });
+		} else if (viewportWidth >= 680) {
+			setDefaultDesignSpecs({ posX: 120, posY: 95, width: 140});
+		} else {
+			setDefaultDesignSpecs({ posX: 95, posY: 70, width: 90});
+		}
+	}
+
 	function setNewDesign(image) {
 		let nextId = designIdx + 1;
 		let nextZIndex = designZIndex + 1;
@@ -89,9 +101,9 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 				{
 					id: nextId,
 					path: image,
-					posX: 175,
-					posY: 130,
-					width: 220,
+					posX: defaultDesignSpecs.posX,
+					posY: defaultDesignSpecs.posY,
+					width: defaultDesignSpecs.width,
 					rotate: 0,
 					borderRadius: 0,
 					filter: 'normal',
@@ -478,6 +490,18 @@ export default function ScreenprintDesigner({ screenprintDesignerItems }) {
 	useEffect(() => {
 		const isChrome = checkChromeBrowser();
 		setIsChromeBrowser(isChrome);
+		setDefaultDesignSizeAndPosition();
+	}, []);
+
+	// ============================
+	// Event Listeners
+	// ============================
+	useEffect(() => {
+		window.addEventListener('resize', setDefaultDesignSizeAndPosition);
+		// clean up function, remove event listener
+		return () => {
+			window.removeEventListener('resize', setDefaultDesignSizeAndPosition);
+		}
 	}, []);
 
 

@@ -31,9 +31,16 @@
 		margin: 0 auto;
 		padding: 0 20px;
 
+		@media (max-width: $breakpoint-width-large-med) {
+			grid-template-columns: $design-layout-width-med 1fr;
+			gap: 1em;
+			height: calc(100vh - var(--not-main-height));
+		}
+
 		@media (orientation: portrait) {
-			gap: 24px;
 			grid-template-columns: 1fr;
+			gap: 24px;
+			height: auto;
 		}
 	}
 
