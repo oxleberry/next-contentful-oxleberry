@@ -215,7 +215,9 @@ class ControlButton extends Component {
 			<button id={`${this.props.player}-${this.props.direction}`}
 				className={`control control-${this.props.direction}${this.state.isPressed? ' is-pressed': ''}`}
 				onMouseDown={this.mousePressed}
-				onMouseUp={this.mouseReleased}>
+				onMouseUp={this.mouseReleased}
+				onTouchStart={this.mousePressed}
+				onTouchEnd={this.mouseReleased}>
 				<img className="arrow" src={this.props.image} />{this.state.age}
 			</button>
 		);
