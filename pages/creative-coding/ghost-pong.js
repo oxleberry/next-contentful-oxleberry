@@ -279,7 +279,7 @@ class GhostPong extends React.Component {
 		this.arrowUp = this.arrowImageUp[0].fields.assets[0].fields.file.url;
 		this.audioPopAsset = ghostPongItems.filter((item) => item.fields.assetsId === 'audioPop');
 		this.audioPopPath = this.audioPopAsset[0].fields.assets[0].fields.file.url;
-		this.audioScoreAsset = ghostPongItems.filter((item) => item.fields.assetsId === 'audioScore');
+		this.audioScoreAsset = ghostPongItems.filter((item) => item.fields.assetsId === 'audioScore3');
 		this.audioScorePath = this.audioScoreAsset[0].fields.assets[0].fields.file.url;
 
 		this.paddle = {
