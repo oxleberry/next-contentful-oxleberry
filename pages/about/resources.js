@@ -34,8 +34,8 @@ export default function Images({ resources }) {
 				{resources.map ((item, idx) => {
 					const { id, title, images, url } = item.fields;
 					return (
-						<div className={`resource-container resource-container-${id}`}>
-							<Link key={idx} href={url}>
+						<div key={idx} className={`resource-container resource-container-${id}`}>
+							<Link href={url}>
 								<a className={`link-${id}`}><h2>{title}</h2></a>
 							</Link>
 							<div className="images-container">
