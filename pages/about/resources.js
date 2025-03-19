@@ -21,7 +21,7 @@ export async function getStaticProps() {
 
 
 export default function Images({ resources }) {
-	const { id, title, images, url } = resources[0].fields;
+	resources.sort((a, b) => a.fields.order - b.fields.order);
 
 	return (
 		<>
@@ -31,19 +31,26 @@ export default function Images({ resources }) {
 			</Head>
 			<main className="page-backboard resource-page">
 				<Header headline="Resources" isSubPage={true}></Header>
-				<Link href={url}>
-					<a className={`link-${id}`}><h2>{title}</h2></a>
-				</Link>
-				<div className={`images-container images-container-${id}`}>
-					{images.map((image, idx) => {
-						return (
-							<picture key={idx} className={`img-${idx + 1}`}>
-								<source srcSet={image.fields.file.url} />
-								<img src={image.fields.file.url} alt={image.fields.description} />
-							</picture>
-						)
-					})}
-				</div>
+				{resources.map ((item, idx) => {
+					const { id, title, images, url } = item.fields;
+					return (
+						<div className={`resource-container resource-container-${id}`}>
+							<Link key={idx} href={url}>
+								<a className={`link-${id}`}><h2>{title}</h2></a>
+							</Link>
+							<div className="images-container">
+								{images.map((image, idx) => {
+									return (
+										<picture key={idx} className={`img-${idx + 1}`}>
+											<source srcSet={image.fields.file.url} />
+											<img src={image.fields.file.url} alt={image.fields.description} />
+										</picture>
+									)
+								})}
+							</div>
+						</div>
+					)
+				})}
 			</main>
 		</>
 	);

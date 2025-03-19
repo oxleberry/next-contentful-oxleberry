@@ -3,6 +3,10 @@
 // @use '../utilities/fonts';
 
 .resource-page {
+	.resource-container {
+		border-top: 2px solid colors.$off-white;
+	}
+
 	h2 {
 		display: inline-block;
 		transition: all 2000ms ease;
@@ -38,5 +42,15 @@
 		display: grid;
 		width: 100%;
 		margin: 0 auto;
+	}
+
+
+	// =====================================
+	/* Override Styles */
+	// =====================================
+	.resource-container-sprite-sheet {
+		.images-container {
+			grid-template-columns: 1fr;
+		}
 	}
 }
