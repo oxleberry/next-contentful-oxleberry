@@ -48,6 +48,13 @@
 	// =====================================
 	/* Override Styles */
 	// =====================================
+	.resource-container-separation-breakdown {
+		.images-container {
+			background-color: black;
+			grid-template-columns: repeat(6, 1fr);
+		}
+	}
+
 	.resource-container-sprite-sheet {
 		.images-container {
 			grid-template-columns: 1fr;
