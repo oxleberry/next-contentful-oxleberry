@@ -22,8 +22,7 @@
 		display: grid;
 		grid-template-columns: repeat(4, 1fr);
 		gap: 8px;
-		margin: 0 auto;
-		padding-bottom: 20px;
+		margin: 0 auto 20px;
 
 		@include bp(l) {
 			grid-template-columns: repeat(3, 1fr);
@@ -48,6 +47,61 @@
 	// =====================================
 	/* Override Styles */
 	// =====================================
+	.resource-container-email-template {
+		.images-container {
+			background-color: black;
+			grid-template-columns: 1fr repeat(10, .04fr);
+			gap: 20px;
+			padding-right: 20px;
+
+			@include bp(m) {
+				gap: 10px;
+				padding-right: 10px;
+			}
+		}
+
+		.img-1 {
+			grid-row-start: 1;
+			grid-row-end: span 2;
+		}
+
+		.img-2,
+		.img-3 {
+			grid-column-end: span 5;
+			align-self: flex-end;
+		}
+
+		.img-2 {
+			padding-left: 30px;
+
+			@include bp(m) {
+				padding-left: 10px;
+			}
+		}
+
+		.img-3 {
+			padding-right: 30px;
+
+			@include bp(m) {
+				padding-right: 10px;
+			}
+		}
+
+		.img-4,
+		.img-5,
+		.img-6,
+		.img-7,
+		.img-8 {
+			grid-row-start: 2;
+			grid-column-end: span 2;
+			margin: 12px;
+
+			@include bp(m) {
+				margin: 2px;
+			}
+		}
+	}
+
 	.resource-container-separation-breakdown {
 		.images-container {
 			background-color: black;
