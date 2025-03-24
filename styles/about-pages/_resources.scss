@@ -12,6 +12,21 @@
 		transition: all 2000ms ease;
 	}
 
+	// animated underline
+	h2::after {
+		content: '';
+		width: 0px;
+		height: 2px;
+		display: block;
+		background: colors.$text;
+		opacity: .5;
+		transition: all 400ms ease-in-out;
+	}
+
+	h2:hover::after {
+		width: 100%;
+	}
+
 	a {
 		&:hover {
 			text-decoration: underline;
