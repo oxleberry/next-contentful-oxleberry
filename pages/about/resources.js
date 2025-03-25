@@ -32,22 +32,30 @@ export default function Images({ resources }) {
 			<main className="page-backboard resource-page">
 				<Header headline="Resources" isSubPage={true}></Header>
 				{resources.map ((item, idx) => {
-					const { id, title, images, url } = item.fields;
+					const { id, title, images, audioFiles, url } = item.fields;
 					return (
 						<div key={idx} className={`resource-container resource-container-${id}`}>
 							<Link href={url}>
 								<a className={`link-${id}`}><h2>{title}</h2></a>
 							</Link>
-							<div className="images-container">
-								{images.map((image, idx) => {
-									return (
-										<picture key={idx} className={`img-${idx + 1}`}>
-											<source srcSet={image.fields.file.url} />
-											<img src={image.fields.file.url} alt={image.fields.description} />
-										</picture>
-									)
-								})}
-							</div>
+							{images ?
+								<div className="images-container">
+									{images.map((image, idx) => {
+										return (
+											<picture key={idx} className={`img-${idx + 1}`}>
+												<source srcSet={image.fields.file.url} />
+												<img src={image.fields.file.url} alt={image.fields.description} />
+											</picture>
+										)
+									})}
+								</div>
+							: null}
+							{audioFiles ?
+								<div className="audio-container">
+									<span>Audio files</span>
+									{audioFiles.map((audio, idx) => <audio key={idx} src={audio.fields.file.url}></audio>)}
+								</div>
+							: null}
 						</div>
 					)
 				})}
