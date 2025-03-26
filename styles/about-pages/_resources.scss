@@ -3,6 +3,10 @@
 // @use '../utilities/fonts';
 
 .resource-page {
+	h1 {
+		margin-top: 0;
+	}
+
 	.resource-container {
 		border-top: 2px solid colors.$off-white;
 	}
@@ -62,6 +66,12 @@
 	// =====================================
 	/* Override Styles */
 	// =====================================
+	.resource-container-css-grid-layout {
+		.images-container {
+			grid-template-columns: repeat(5, 1fr);
+		}
+	}
+
 	.resource-container-email-template {
 		.images-container {
 			background-color: black;
@@ -117,10 +127,29 @@
 		}
 	}
 
+	.resource-container-randoms {
+		.img-1 img {
+			object-fit: cover;
+			height: 100%;
+		}
+
+		.img-3 img {
+			display: inline-block;
+			max-width: 60px;
+		}
+	}
+
 	.resource-container-separation-breakdown {
 		.images-container {
 			background-color: black;
 			grid-template-columns: repeat(6, 1fr);
+		}
+	}
+
+	.resource-container-slideshow {
+		img {
+			object-fit: cover;
+			height: 100%;
 		}
 	}
 
