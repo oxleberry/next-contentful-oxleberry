@@ -219,6 +219,16 @@ class FloatingGhost extends React.Component {
 			this.gameBoard.width / 2,
 			this.gameBoard.height / 2
 		);
+
+		// Event Listener for Fullscreen Canvas for desktop only
+		let canvas = document.querySelector('.p5Canvas');
+		canvas.addEventListener('dblclick', () => {
+			if (!document.fullscreenElement) {
+				canvas.requestFullscreen();
+			} else {
+				document.exitFullscreen();
+			}
+		});
 	}
 
 	draw = p5 => {
