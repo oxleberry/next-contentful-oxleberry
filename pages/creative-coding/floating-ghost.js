@@ -40,12 +40,11 @@ class GameBoard {
 		p5.background(0); // black
 		p5.stroke(30); // soft black
 		p5.strokeWeight (4);
-		p5.line (p5.width / 2, 0, p5.width / 2, p5.height);
 	}
 
 	drawGameBoardBorder(p5) {
 		p5.noFill (0);
-		p5.stroke (90); // grey
+		p5.stroke (60); // grey
 		p5.strokeWeight (this.stroke * 2);
 		p5.rect(p5.width / 2, p5.height / 2, this.width, this.height);
 	}
@@ -183,7 +182,7 @@ class FloatingGhost extends React.Component {
 		let boardHeight = 280;
 		// set gameboard size on larger viewports
 		if (window.innerWidth > 800) {
-			boardWidth = 600;
+			boardWidth = 640;
 			boardHeight = 400;
 		}
 		this.gameBoard = new GameBoard(boardWidth, boardHeight);
