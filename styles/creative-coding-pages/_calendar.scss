@@ -4,5 +4,11 @@
 
 
 .calendar-page {
-	text-align: center;
+	.day {
+		margin: 0 auto;
+		width: 142px;
+		height: 142px;
+		box-shadow: 0px 0px 3px #ddb110;
+		padding: 10px;
+	}
 }
