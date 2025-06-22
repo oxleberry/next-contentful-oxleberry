@@ -4,9 +4,44 @@
 
 
 .calendar-page {
+	/* ==================== */
+	/* Calendar */
+	/* ==================== */
+
+	.calendar-container {
+		--day-width: calc(100% / 7);
+
+		padding: 0 50px 50px;
+	}
+
+	.calendar-header {
+		max-width: 100%;
+		display: flex;
+		justify-content: space-between;
+		margin: 0 auto;
+		padding: 10px;
+	}
+
+	.weekdays {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		margin: 0 auto;
+	}
+
+	.month-label {
+		font-size: 26px;
+		font-family: sans-serif;
+	}
+
+	.weekday-label {
+		width: var(--day-width);
+		padding: 10px;
+	}
+
 	.day {
 		margin: 0 auto;
-		width: 142px;
+		width: var(--day-width);
 		height: 142px;
 		box-shadow: 0px 0px 3px #ddb110;
 		padding: 10px;
