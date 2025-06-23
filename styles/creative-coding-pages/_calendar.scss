@@ -46,4 +46,27 @@
 		box-shadow: 0px 0px 3px #ddb110;
 		padding: 10px;
 	}
+
+	/* ==================== */
+	/* Buttons */
+	/* ==================== */
+
+	button {
+		width: 75px;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+		padding: 5px;
+		margin-inline-end: 8px;
+
+		&:last-of-type {
+			margin-inline-end: 0;
+		}
+	}
+
+	.back-button,
+	.next-button {
+		background-color:#fff;
+		box-shadow: 0px 0px 2px black;
+	}
 }

@@ -1,3 +1,4 @@
+import { useEffect, useState, useRef } from 'react';
 import Head from 'next/head';
 import Header from '../../../components/Header';
 import { Day } from './Day/Day';
@@ -6,7 +7,10 @@ import { useDate } from './hooks/useDate';
 
 
 export default function calendar() {
-	const { dateDisplay } = useDate();
+	// States =================
+	const [nav, setNav] = useState(0);
+
+	const { dateDisplay } = useDate(nav);
 
 	return (
 		<>
@@ -18,7 +22,11 @@ export default function calendar() {
 				<Header headline="Calendar" isSubPage={true}></Header>
 
 				<div className="calendar-container">
-					<CalendarHeader dateDisplay={dateDisplay}/>
+					<CalendarHeader 
+						dateDisplay={dateDisplay}
+						onNext={() => setNav(nav + 1)}
+						onBack={() => setNav(nav - 1)}
+					/>
 
 					<div className="weekdays">
 						<div className="weekday-label">Sunday</div>
