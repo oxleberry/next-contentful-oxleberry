@@ -57,3 +57,5 @@ export const useDate = (nav) => {
 		dateDisplay,
 	};
 };
+
+export default useDate;

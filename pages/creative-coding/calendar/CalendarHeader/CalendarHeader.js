@@ -9,3 +9,5 @@ export const CalendarHeader = ({ onNext, onBack, dateDisplay }) => {
 		</div>
 	);
 }
+
+export default CalendarHeader;

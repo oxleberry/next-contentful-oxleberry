@@ -7,3 +7,5 @@ export const Day = ({ day, onClick }) => {
 		</div>
 	);
 };
+
+export default Day;
