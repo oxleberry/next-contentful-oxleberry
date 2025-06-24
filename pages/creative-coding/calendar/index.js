@@ -1,16 +1,17 @@
 import { useEffect, useState, useRef } from 'react';
 import Head from 'next/head';
 import Header from '../../../components/Header';
-import { Day } from './Day/Day';
 import { CalendarHeader } from './CalendarHeader/CalendarHeader';
+import { Day } from './Day/Day';
 import { useDate } from './hooks/useDate';
 
 
-export default function calendar() {
+export default function Calendar() {
 	// States =================
 	const [nav, setNav] = useState(0);
 
-	const { dateDisplay } = useDate(nav);
+	const { days, dateDisplay } = useDate( nav);
+
 
 	return (
 		<>
@@ -22,7 +23,7 @@ export default function calendar() {
 				<Header headline="Calendar" isSubPage={true}></Header>
 
 				<div className="calendar-container">
-					<CalendarHeader 
+					<CalendarHeader
 						dateDisplay={dateDisplay}
 						onNext={() => setNav(nav + 1)}
 						onBack={() => setNav(nav - 1)}
@@ -38,7 +39,14 @@ export default function calendar() {
 						<div className="weekday-label">Saturday</div>
 					</div>
 
-					<Day day="25"/>
+					<div className="calendar">
+						{days.map((d, index) => (
+							<Day
+								key={index}
+								day={d}
+							/>
+						))}
+					</div>
 				</div>
 			</main>
 		</>

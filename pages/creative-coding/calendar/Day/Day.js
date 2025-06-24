@@ -1,5 +1,9 @@
-export const Day = (props) => {
+export const Day = ({ day, onClick }) => {
+	const className = `day${day.value === 'blank-days' ? ' blank-days' : ''}`;
+
 	return (
-		<div className="day">{props.day}</div>
+		<div onClick={onClick} className={className}>
+			{day.value === 'blank-days' ? '' : day.value}
+		</div>
 	);
-}
+};
