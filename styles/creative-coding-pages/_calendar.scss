@@ -63,6 +63,10 @@
 		}
 	}
 
+	.day + .current-day {
+		background-color:#ddb11030;
+	}
+
 	.blank-days {
 		cursor: default;
 		box-shadow: none;
