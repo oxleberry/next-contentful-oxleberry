@@ -102,6 +102,7 @@
 	}
 
 	.cancel-button {
+		// background-color: #c7c7c7;
 		background-color: #d9cec2;
 	}
 
@@ -136,5 +137,20 @@
 		text-transform: uppercase;
 		font-weight: 800;
 		font-size: 20px;
+	}
+
+	.input-text-field {
+		width: 100%;
+		margin-bottom: 10px;
+		border-radius: 3px;
+		outline: none;
+		border: none;
+		box-shadow: 0px 0px 3px gray;
+		padding: 12px;
+		margin-top: 4px;
+	}
+
+	input:last-of-type {
+		margin-bottom: 25px;
 	}
 }
