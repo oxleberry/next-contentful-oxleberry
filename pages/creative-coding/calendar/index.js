@@ -3,12 +3,14 @@ import Head from 'next/head';
 import Header from '../../../components/Header';
 import { CalendarHeader } from './CalendarHeader/CalendarHeader';
 import { Day } from './Day/Day';
+import { NewEventModal } from './NewEventModal/NewEventModal';
 import { useDate } from './hooks/useDate';
 
 
 export default function Calendar() {
 	// States =================
 	const [nav, setNav] = useState(0);
+	const [clicked, setClicked] = useState();
 
 	const { days, dateDisplay } = useDate( nav);
 
@@ -44,10 +46,19 @@ export default function Calendar() {
 							<Day
 								key={index}
 								day={d}
+								onClick={() => {
+									if (d.value !== 'blank-days') { setClicked(d.date) }
+								}}
 							/>
 						))}
 					</div>
 				</div>
+
+				{ clicked &&
+					<NewEventModal
+						onClose={() => setClicked(null)}
+					/>
+				}
 			</main>
 		</>
 	);

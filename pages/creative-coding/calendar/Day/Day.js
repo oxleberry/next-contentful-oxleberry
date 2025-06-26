@@ -4,6 +4,7 @@ export const Day = ({ day, onClick }) => {
 	return (
 		<div onClick={onClick} className={className}>
 			{day.value === 'blank-days' ? '' : day.value}
+			{day.event && <div className='event'>{day.event.title}</div>}
 		</div>
 	);
 };
