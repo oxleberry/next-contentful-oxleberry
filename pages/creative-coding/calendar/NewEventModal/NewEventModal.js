@@ -3,6 +3,7 @@ import { useState } from 'react';
 export const NewEventModal = ({ onSave, onClose }) => {
 	// States =================
 	const [title, setTitle] = useState('Event');
+	const [numDays, setNumDays] = useState(1);
 
 	return(
 		<>
@@ -18,10 +19,22 @@ export const NewEventModal = ({ onSave, onClose }) => {
 					onChange={e => setTitle(e.target.value)}
 				/>
 
+				<label htmlFor="event-num-days">Duration:</label>
+				<input
+					id="event-num-days"
+					className="input-text-field"
+					name="event-num-days"
+					onChange={e => setNumDays(e.target.value)}
+					type="number"
+					value={numDays}
+					min="1"
+					max="7"
+				/>
+
 				<button
 					className="save-button"
 					onClick={() => {
-						onSave(title);
+						onSave(title, numDays);
 					}}>
 					Save
 				</button>

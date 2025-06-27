@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
+
 import Head from 'next/head';
 import Header from '../../../components/Header';
 import { CalendarHeader } from './CalendarHeader/CalendarHeader';
@@ -59,8 +60,8 @@ export default function Calendar() {
 				{ clicked &&
 					<NewEventModal
 						onClose={() => setClicked(null)}
-						onSave={title => {
-							setEvents([ ...events, { title, date: clicked }]);
+						onSave={(title, numDays) => {
+							setEvents([ ...events, { title, numDays, date: clicked }]);
 							setClicked(null);
 						}}
 					/>
