@@ -11,9 +11,11 @@ export default function Calendar() {
 	// States =================
 	const [nav, setNav] = useState(0);
 	const [clicked, setClicked] = useState();
+	const [events, setEvents] = useState([]);
 
-	const { days, dateDisplay } = useDate( nav);
+	const { days, dateDisplay } = useDate(events, nav);
 
+	console.log('events', events);
 
 	return (
 		<>
@@ -57,6 +59,10 @@ export default function Calendar() {
 				{ clicked &&
 					<NewEventModal
 						onClose={() => setClicked(null)}
+						onSave={title => {
+							setEvents([ ...events, { title, date: clicked }]);
+							setClicked(null);
+						}}
 					/>
 				}
 			</main>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const NewEventModal = ({ onClose }) => {
+export const NewEventModal = ({ onSave, onClose }) => {
 	// States =================
 	const [title, setTitle] = useState('Event');
 
@@ -19,8 +19,17 @@ export const NewEventModal = ({ onClose }) => {
 				/>
 
 				<button
-					onClick={onClose}
-					className="cancel-button">Cancel
+					className="save-button"
+					onClick={() => {
+						onSave(title);
+					}}>
+					Save
+				</button>
+
+				<button
+					className="cancel-button"
+					onClick={onClose}>
+					Cancel
 				</button>
 			</div>
 
