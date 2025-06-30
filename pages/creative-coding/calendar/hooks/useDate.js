@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 export const useDate = (events, nav) => {
 	const [dateDisplay, setDateDisplay] = useState('');
 	const [days, setDays] = useState([]);
+	const [dayEvents, setDayEvents] = useState([]);
 
-	const eventForDate = date => events.find(e => e.date === date);
+	const eventsForDate = date => events.filter(e => e.date === date);
 
 	useEffect(() => {
 		const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -38,11 +39,12 @@ export const useDate = (events, nav) => {
 			if (i > paddingDays) {
 				daysArr.push({
 					value: i - paddingDays,
-					event: eventForDate(dayString),
+					event: eventsForDate(dayString),
 					isCurrentDay: i - paddingDays === day && nav === 0,
 					date: dayString,
 				});
 			} else {
+				setDayEvents(null);
 				daysArr.push({
 					value: 'blank-days',
 					event: null,
@@ -53,7 +55,6 @@ export const useDate = (events, nav) => {
 		}
 
 		setDays(daysArr);
-		console.log('daysArr', daysArr);
 	}, [events, nav]);
 
 	return {
