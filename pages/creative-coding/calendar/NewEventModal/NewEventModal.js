@@ -4,6 +4,7 @@ export const NewEventModal = ({ onSave, onClose }) => {
 	// States =================
 	const [title, setTitle] = useState('Event');
 	const [numDays, setNumDays] = useState(1);
+	const [order, setOrder] = useState(1);
 
 	return(
 		<>
@@ -31,10 +32,22 @@ export const NewEventModal = ({ onSave, onClose }) => {
 					max="7"
 				/>
 
+				<label htmlFor="event-order">Order #:</label>
+				<input
+					id="event-order"
+					className="input-text-field"
+					name="event-order"
+					onChange={e => setOrder(e.target.value)}
+					type="number"
+					value={order}
+					min="1"
+					max="4"
+				/>
+
 				<button
 					className="save-button"
 					onClick={() => {
-						onSave(title, numDays);
+						onSave(title, numDays, order);
 					}}>
 					Save
 				</button>

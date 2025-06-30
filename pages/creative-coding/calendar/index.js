@@ -60,8 +60,8 @@ export default function Calendar() {
 				{ clicked &&
 					<NewEventModal
 						onClose={() => setClicked(null)}
-						onSave={(title, numDays) => {
-							setEvents([ ...events, { title, numDays, date: clicked }]);
+						onSave={(title, numDays, order) => {
+							setEvents([ ...events, { title, numDays, order, date: clicked }]);
 							setClicked(null);
 						}}
 					/>
