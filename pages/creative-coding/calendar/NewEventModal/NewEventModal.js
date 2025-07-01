@@ -1,18 +1,38 @@
 import { useState } from 'react';
 
 export const NewEventModal = ({ onSave, onClose }) => {
+	const colorOptions = [
+		{
+			id: 'purple',
+			name: 'Purple',
+			hexCode: '#b188b5',
+			isActive: true
+		},
+		{
+			id: 'blue',
+			name: 'Blue',
+			hexCode: '#1a759f',
+			isActive: false
+		},
+		{
+			id: 'green',
+			name: 'Green',
+			hexCode: '#a7b300',
+			isActive: false
+		},
+		{
+			id: 'orange',
+			name: 'Orange',
+			hexCode: '#d48844',
+			isActive: false
+		}
+	]
+
 	// States =================
 	const [title, setTitle] = useState('Event');
 	const [numDays, setNumDays] = useState(1);
 	const [order, setOrder] = useState(1);
 	const [color, setColor] = useState('#b188b5');
-
-	// Functions =================
-	function colorValueHandler(event) {
-		let value = event.target.value;
-		setColor(value);
-		console.log('color', color);
-	}
 
 	return(
 		<>
@@ -53,63 +73,23 @@ export const NewEventModal = ({ onSave, onClose }) => {
 				/>
 
 				<div className="color-selection-label">Color:</div>
-				<div className="color-selection">
-					<label
-						className="label-purple"
-						htmlFor="#b188b5">
-						<span className="swatch">Purple</span>
-					</label>
-					<input
-						type="radio"
-						id="event-color-purple"
-						name="event-color"
-						value="#b188b5"
-						defaultChecked="true"
-						onChange={colorValueHandler}
-					/>
-				</div>
-				<div className="color-selection">
-					<label
-						className="label-blue"
-						htmlFor="#1a759f">
-						<span className="swatch">Blue</span>
-					</label>
-					<input
-						type="radio"
-						id="event-color-blue"
-						name="event-color"
-						value="#1a759f"
-						onChange={colorValueHandler}
-					/>
-				</div>
-				<div className="color-selection">
-					<label
-						className="label-green"
-						htmlFor="#a7b300">
-						<span className="swatch">Green</span>
-					</label>
-					<input
-						type="radio"
-						id="event-color-green"
-						name="event-color"
-						value="#a7b300"
-						onChange={colorValueHandler}
-					/>
-				</div>
-				<div className="color-selection">
-					<label
-						className="label-orange"
-						htmlFor="#d48844">
-						<span className="swatch">Orange</span>
-					</label>
-					<input
-						type="radio"
-						id="event-color-orange"
-						name="event-color"
-						value="#d48844"
-						onChange={colorValueHandler}
-					/>
-				</div>
+				{colorOptions.map((option, idx) =>
+					<div key={idx} className="color-selection">
+						<label
+							className={`label-${option.id}`}
+							htmlFor={option.hexCode}>
+							<span className="swatch">{option.name}</span>
+						</label>
+						<input
+							type="radio"
+							id={`event-color-${option.id}`}
+							name="event-color"
+							value={option.hexCode}
+							defaultChecked={option.isActive}
+							onChange={e => setColor(e.target.value)}
+						/>
+					</div>
+				)}
 
 				<button
 					className="save-button"
