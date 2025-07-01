@@ -4,12 +4,16 @@
 
 
 .calendar-page {
+	--color-purple: #b188b5;
+	--color-blue: #1a759f;
+	--color-green: #a7b300;
+	--color-orange: #d48844;
+
 	position: relative;
 
 	/* ==================== */
 	/* Calendar */
 	/* ==================== */
-
 	.calendar-container {
 		--day-width: calc(100% / 7);
 
@@ -98,7 +102,6 @@
 	/* ==================== */
 	/* Buttons */
 	/* ==================== */
-
 	button {
 		width: 75px;
 		border: none;
@@ -129,7 +132,6 @@
 	/* ==================== */
 	/* Modals */
 	/* ==================== */
-
 	.new-event-modal {
 		z-index: 20;
 		padding: 25px;
@@ -170,7 +172,60 @@
 		margin-top: 4px;
 	}
 
-	input:last-of-type {
-		margin-bottom: 25px;
+	.color-selection-label {
+		margin-bottom: 6px;
+	}
+
+	.color-selection {
+		display: flex;
+		flex-direction: row-reverse;
+		justify-content: flex-end;
+		align-items: flex-start;
+		margin-bottom: 6px;
+
+		&:last-of-type {
+			margin-bottom: 25px;
+		}
+	}
+
+	.swatch {
+		display: flex;
+		font-weight: 600;
+
+		&::before {
+			content: '';
+			width: 20px;
+			height: 20px;
+			margin-left: 6px;
+			margin-right: 5px;
+		}
+	}
+
+	.label-purple {
+		color: var(--color-purple);
+		.swatch::before {
+			background-color: var(--color-purple);
+		}
+	}
+
+	.label-blue {
+		color: var(--color-blue);
+		.swatch::before {
+			background-color: var(--color-blue);
+		}
+	}
+
+	.label-green {
+		color: var(--color-green);
+		.swatch::before {
+			background-color: var(--color-green);
+		}
+	}
+
+	.label-orange {
+		color: var(--color-orange);
+		.swatch::before {
+			background-color: var(--color-orange);
+		}
 	}
 }

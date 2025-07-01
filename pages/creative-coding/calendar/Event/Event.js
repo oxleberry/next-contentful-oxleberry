@@ -1,5 +1,5 @@
 export const Event = (props) => {
-	const { title, numDays, order } = props.event;
+	const { title, numDays, order, color } = props.event;
 	const eventWidth = `${numDays * 100}%`;
 	const eventMarginTop = `${(order - 1) * 25 + 26}px`;
 	console.log('props', props);
@@ -9,7 +9,8 @@ export const Event = (props) => {
 			className='event'
 			style={{
 				width: eventWidth,
-				marginTop: eventMarginTop
+				marginTop: eventMarginTop,
+				backgroundColor: color
 			}}>
 			{title}
 		</div>
