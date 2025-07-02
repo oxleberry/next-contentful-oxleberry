@@ -1,38 +1,34 @@
 import { useState } from 'react';
 
-export const NewEventModal = ({ onSave, onClose }) => {
+export const NewEventModal = ({ data, onSave, onClose }) => {
 	const colorOptions = [
 		{
 			id: 'purple',
 			name: 'Purple',
-			hexCode: '#b188b5',
-			isActive: true
+			hexCode: '#b188b5'
 		},
 		{
 			id: 'blue',
 			name: 'Blue',
-			hexCode: '#1a759f',
-			isActive: false
+			hexCode: '#1a759f'
 		},
 		{
 			id: 'green',
 			name: 'Green',
-			hexCode: '#a7b300',
-			isActive: false
+			hexCode: '#a7b300'
 		},
 		{
 			id: 'orange',
 			name: 'Orange',
-			hexCode: '#d48844',
-			isActive: false
+			hexCode: '#d48844'
 		}
 	]
 
 	// States =================
-	const [title, setTitle] = useState('Event');
-	const [numDays, setNumDays] = useState(1);
-	const [order, setOrder] = useState(1);
-	const [color, setColor] = useState('#b188b5');
+	const [title, setTitle] = useState(data.title || 'Event');
+	const [numDays, setNumDays] = useState(data.numDays || 1);
+	const [order, setOrder] = useState(data.order || 1);
+	const [color, setColor] = useState(data.color || colorOptions[0].hexCode);
 
 	return(
 		<>
@@ -85,7 +81,7 @@ export const NewEventModal = ({ onSave, onClose }) => {
 							id={`event-color-${option.id}`}
 							name="event-color"
 							value={option.hexCode}
-							defaultChecked={option.isActive}
+							checked={color === option.hexCode}
 							onChange={e => setColor(e.target.value)}
 						/>
 					</div>
