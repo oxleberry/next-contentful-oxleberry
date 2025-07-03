@@ -156,9 +156,16 @@
 	}
 
 	.modal-headline {
+		display: inline-block;
 		text-transform: uppercase;
 		font-weight: 800;
 		font-size: 20px;
+		width: 70%;
+		margin-right: 10px;
+	}
+
+	.inline-row {
+		display: inline-flex;
 	}
 
 	.input-text-field {

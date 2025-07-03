@@ -1,8 +1,9 @@
-export const Event = (props) => {
-	const { title, numDays, order, color } = props.event;
+export const Event = ({ event }) => {
+	const { title, numDays, order, color, isCentered } = event;
 	const eventWidth = `${numDays * 100}%`;
 	const eventMarginTop = `${(order - 1) * 25 + 26}px`;
-	console.log('props', props);
+	const eventTextAlignment = isCentered ? 'center' : 'start';
+	const paddingLeft = isCentered ? '3px' : '12px';
 
 	return (
 		<div
@@ -10,7 +11,9 @@ export const Event = (props) => {
 			style={{
 				width: eventWidth,
 				marginTop: eventMarginTop,
-				backgroundColor: color
+				backgroundColor: color,
+				textAlign: eventTextAlignment,
+				paddingLeft: paddingLeft
 			}}>
 			{title}
 		</div>

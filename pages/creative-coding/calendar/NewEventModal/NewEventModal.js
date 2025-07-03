@@ -29,11 +29,22 @@ export const NewEventModal = ({ data, onSave, onClose }) => {
 	const [numDays, setNumDays] = useState(data.numDays || 1);
 	const [order, setOrder] = useState(data.order || 1);
 	const [color, setColor] = useState(data.color || colorOptions[0].hexCode);
+	const [isCentered, setIsCentered] = useState(data.isCentered || false);
 
 	return(
 		<>
 			<div className="new-event-modal">
 				<p className="modal-headline">New Event</p>
+
+				<div className="inline-row">
+					<span>Center</span>
+					<input
+						id="event-center"
+						type="checkbox"
+						checked={isCentered}
+						onChange={e => setIsCentered(e.target.checked)}
+					/>
+				</div>
 
 				<label htmlFor="event-title">Event name:</label>
 				<input
@@ -90,7 +101,7 @@ export const NewEventModal = ({ data, onSave, onClose }) => {
 				<button
 					className="save-button"
 					onClick={() => {
-						onSave(title, numDays, order, color);
+						onSave(title, numDays, order, color, isCentered);
 					}}>
 					Save
 				</button>

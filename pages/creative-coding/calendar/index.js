@@ -62,10 +62,10 @@ export default function Calendar() {
 					<NewEventModal
 						data={lastEventCreated}
 						onClose={() => setClicked(null)}
-						onSave={(title, numDays, order, color) => {
-							setEvents([ ...events, { title, numDays, order, color, date: clicked }]);
+						onSave={(title, numDays, order, color, isCentered) => {
+							setEvents([ ...events, { title, numDays, order, color, isCentered, date: clicked }]);
 							setClicked(null);
-							setLastEventCreated({ title, numDays, order, color });
+							setLastEventCreated({ title, numDays, order, color, isCentered });
 						}}
 					/>
 				}
