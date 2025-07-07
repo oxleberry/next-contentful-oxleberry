@@ -121,7 +121,8 @@
 		box-shadow: 0px 0px 2px black;
 	}
 
-	.save-button {
+	.save-button,
+	.update-button {
 		background-color: #ddb110c7;
 	}
 
@@ -132,7 +133,8 @@
 	/* ==================== */
 	/* Modals */
 	/* ==================== */
-	.new-event-modal {
+	.new-event-modal,
+	.update-delete-event-modal {
 		z-index: 20;
 		padding: 25px;
 		background-color: #fff;

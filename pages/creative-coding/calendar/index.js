@@ -5,6 +5,7 @@ import Header from '../../../components/Header';
 import { CalendarHeader } from './CalendarHeader/CalendarHeader';
 import { Day } from './Day/Day';
 import { NewEventModal } from './NewEventModal/NewEventModal';
+import { UpdateDeleteEventModal } from './UpdateDeleteEventModal/UpdateDeleteEventModal';
 import { useDate } from './hooks/useDate';
 
 
@@ -12,6 +13,7 @@ export default function Calendar() {
 	// States =================
 	const [nav, setNav] = useState(0);
 	const [clicked, setClicked] = useState();
+	const [clickedEvent, setClickedEvent] = useState(false);
 	const [events, setEvents] = useState([]);
 	const [lastEventCreated, setLastEventCreated] = useState({});
 
@@ -53,6 +55,7 @@ export default function Calendar() {
 								onClick={() => {
 									if (d.value !== 'blank-days') { setClicked(d.date) }
 								}}
+								triggerUpdateModal={ setClickedEvent }
 							/>
 						))}
 					</div>
@@ -67,6 +70,12 @@ export default function Calendar() {
 							setClicked(null);
 							setLastEventCreated({ title, numDays, order, color, isCentered });
 						}}
+					/>
+				}
+
+				{ clickedEvent &&
+					<UpdateDeleteEventModal
+						onClose={() => setClickedEvent(false)}
 					/>
 				}
 			</main>
