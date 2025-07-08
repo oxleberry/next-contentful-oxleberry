@@ -16,6 +16,7 @@ export default function Calendar() {
 	const [clickedEvent, setClickedEvent] = useState(false);
 	const [events, setEvents] = useState([]);
 	const [lastEventCreated, setLastEventCreated] = useState({});
+	const [lastEventClicked, setLastEventClicked] = useState({});
 
 	const { days, dateDisplay } = useDate(events, nav);
 
@@ -56,6 +57,7 @@ export default function Calendar() {
 									if (d.value !== 'blank-days') { setClicked(d.date) }
 								}}
 								triggerUpdateModal={ setClickedEvent }
+								setLastEventClicked={ setLastEventClicked }
 							/>
 						))}
 					</div>
@@ -75,6 +77,7 @@ export default function Calendar() {
 
 				{ clickedEvent &&
 					<UpdateDeleteEventModal
+						data={lastEventClicked}
 						onClose={() => setClickedEvent(false)}
 					/>
 				}

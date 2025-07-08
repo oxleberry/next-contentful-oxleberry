@@ -1,4 +1,4 @@
-export const Event = ({ event, triggerUpdateModal }) => {
+export const Event = ({ event, triggerUpdateModal, setLastEventClicked }) => {
 	const { title, numDays, order, color, isCentered } = event;
 	const eventWidth = `${numDays * 100}%`;
 	const eventMarginTop = `${(order - 1) * 25 + 26}px`;
@@ -18,6 +18,9 @@ export const Event = ({ event, triggerUpdateModal }) => {
 			onClick={(e) => {
 				e.stopPropagation();
 				triggerUpdateModal(() => true );
+				setLastEventClicked(() => {
+					return title;
+				})
 			}}>
 			{title}
 		</div>

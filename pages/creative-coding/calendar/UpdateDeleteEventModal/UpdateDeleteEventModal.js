@@ -1,9 +1,26 @@
-export const UpdateDeleteEventModal = ({ onClose }) => {
+import { useState } from 'react';
+
+export const UpdateDeleteEventModal = ({ data, onClose }) => {
+	// States =================
+	const [title, setTitle] = useState(data || 'Event');
 
 	return(
 		<>
 			<div className="update-delete-event-modal">
 				<p className="modal-headline">Update Event</p>
+
+				<div className="inline-row">
+					<span>Center</span>
+				</div>
+
+				<label htmlFor="event-title">Rename:</label>
+				<input
+					id="event-title"
+					className="input-text-field"
+					name="event-title"
+					value={title}
+					onChange={e => setTitle(e.target.value)}
+				/>
 
 				<button
 					className="cancel-button"

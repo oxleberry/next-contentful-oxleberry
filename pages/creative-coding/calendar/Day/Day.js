@@ -1,6 +1,6 @@
 import { Event } from '../Event/Event';
 
-export const Day = ({ day, onClick, triggerUpdateModal }) => {
+export const Day = ({ day, onClick, triggerUpdateModal, setLastEventClicked }) => {
 	const className = `day${day.value === 'blank-days' ? ' blank-days' : ''}${day.isCurrentDay ? ' current-day' : ''}`;
 
 	return (
@@ -11,6 +11,7 @@ export const Day = ({ day, onClick, triggerUpdateModal }) => {
 					key={idx}
 					event={event}
 					triggerUpdateModal={triggerUpdateModal}
+					setLastEventClicked={setLastEventClicked}
 				/>
 			)}
 		</div>
