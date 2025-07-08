@@ -12,7 +12,7 @@ import { useDate } from './hooks/useDate';
 export default function Calendar() {
 	// States =================
 	const [nav, setNav] = useState(0);
-	const [clicked, setClicked] = useState();
+	const [clickedDay, setClickedDay] = useState(null);
 	const [clickedEvent, setClickedEvent] = useState(false);
 	const [events, setEvents] = useState([]);
 	const [lastEventCreated, setLastEventCreated] = useState({});
@@ -54,7 +54,7 @@ export default function Calendar() {
 								key={index}
 								day={d}
 								onClick={() => {
-									if (d.value !== 'blank-days') { setClicked(d.date) }
+									if (d.value !== 'blank-days') { setClickedDay(d.date) }
 								}}
 								triggerUpdateModal={ setClickedEvent }
 								setLastEventClicked={ setLastEventClicked }
@@ -63,13 +63,13 @@ export default function Calendar() {
 					</div>
 				</div>
 
-				{ clicked &&
+				{ clickedDay &&
 					<NewEventModal
 						data={lastEventCreated}
-						onClose={() => setClicked(null)}
+						onClose={() => setClickedDay(null)}
 						onSave={(title, numDays, order, color, isCentered) => {
-							setEvents([ ...events, { title, numDays, order, color, isCentered, date: clicked }]);
-							setClicked(null);
+							setEvents([ ...events, { id:`${clickedDay}-${order}`, title, numDays, order, color, isCentered, date: clickedDay }]);
+							setClickedDay(null);
 							setLastEventCreated({ title, numDays, order, color, isCentered });
 						}}
 					/>
@@ -78,6 +78,18 @@ export default function Calendar() {
 				{ clickedEvent &&
 					<UpdateDeleteEventModal
 						data={lastEventClicked}
+						onUpdate={(title) => {
+							const updatedEvents = events.map(event => {
+								if (event.id === lastEventClicked.id) {
+									console.log('title', title);
+									return { ...event, title };
+								} else {
+									return event; // no changes to these item
+								}
+							});
+							setEvents(updatedEvents);
+							setClickedEvent(false);
+						}}
 						onClose={() => setClickedEvent(false)}
 					/>
 				}
