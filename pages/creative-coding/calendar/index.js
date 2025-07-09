@@ -90,6 +90,10 @@ export default function Calendar() {
 							setEvents(updatedEvents);
 							setClickedEvent(false);
 						}}
+						onDelete={() => {
+							setEvents(events.filter(event => event.id !== lastEventClicked.id));
+							setClickedEvent(false);
+						}}
 						onClose={() => setClickedEvent(false)}
 					/>
 				}

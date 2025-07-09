@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const UpdateDeleteEventModal = ({ data, onUpdate, onClose }) => {
+export const UpdateDeleteEventModal = ({ data, onUpdate, onDelete, onClose }) => {
 	// States =================
 	const [title, setTitle] = useState(data.title || 'Event');
 
@@ -28,6 +28,12 @@ export const UpdateDeleteEventModal = ({ data, onUpdate, onClose }) => {
 						onUpdate(title);
 					}}>
 					Update
+				</button>
+
+				<button
+					className="delete-button"
+					onClick={onDelete}>
+					Delete
 				</button>
 
 				<button
