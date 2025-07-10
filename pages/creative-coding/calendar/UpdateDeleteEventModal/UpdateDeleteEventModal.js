@@ -3,6 +3,8 @@ import { useState } from 'react';
 export const UpdateDeleteEventModal = ({ data, onUpdate, onDelete, onClose }) => {
 	// States =================
 	const [title, setTitle] = useState(data.title || 'Event');
+	const [numDays, setNumDays] = useState(data.numDays || 1);
+	const [order, setOrder] = useState(data.order || 1);
 
 	return(
 		<>
@@ -22,10 +24,34 @@ export const UpdateDeleteEventModal = ({ data, onUpdate, onDelete, onClose }) =>
 					onChange={e => setTitle(e.target.value)}
 				/>
 
+				<label htmlFor="event-num-days">Duration:</label>
+				<input
+					id="event-num-days"
+					className="input-text-field"
+					name="event-num-days"
+					onChange={e => setNumDays(e.target.value)}
+					type="number"
+					value={numDays}
+					min="1"
+					max="7"
+				/>
+
+				<label htmlFor="event-order">Order #:</label>
+				<input
+					id="event-order"
+					className="input-text-field"
+					name="event-order"
+					onChange={e => setOrder(e.target.value)}
+					type="number"
+					value={order}
+					min="1"
+					max="4"
+				/>
+
 				<button
 					className="update-button"
 					onClick={() => {
-						onUpdate(title);
+						onUpdate(title, numDays, order);
 					}}>
 					Update
 				</button>
