@@ -1,10 +1,39 @@
 import { useState } from 'react';
 
 export const UpdateDeleteEventModal = ({ data, onUpdate, onDelete, onClose }) => {
+	const colorOptions = [
+		{
+			id: 'purple',
+			name: 'Purple',
+			hexCode: '#b188b5',
+			isActive: true
+		},
+		{
+			id: 'blue',
+			name: 'Blue',
+			hexCode: '#1a759f',
+			isActive: false
+		},
+		{
+			id: 'green',
+			name: 'Green',
+			hexCode: '#a7b300',
+			isActive: false
+		},
+		{
+			id: 'orange',
+			name: 'Orange',
+			hexCode: '#d48844',
+			isActive: false
+		}
+	]
+
 	// States =================
 	const [title, setTitle] = useState(data.title || 'Event');
 	const [numDays, setNumDays] = useState(data.numDays || 1);
 	const [order, setOrder] = useState(data.order || 1);
+	const [color, setColor] = useState(data.color || colorOptions[0].hexCode);
+	const [isCentered, setIsCentered] = useState(data.isCentered || false);
 
 	return(
 		<>
@@ -13,6 +42,12 @@ export const UpdateDeleteEventModal = ({ data, onUpdate, onDelete, onClose }) =>
 
 				<div className="inline-row">
 					<span>Center</span>
+					<input
+						id="event-center"
+						type="checkbox"
+						checked={isCentered}
+						onChange={e => setIsCentered(e.target.checked)}
+					/>
 				</div>
 
 				<label htmlFor="event-title">Rename:</label>
@@ -48,10 +83,29 @@ export const UpdateDeleteEventModal = ({ data, onUpdate, onDelete, onClose }) =>
 					max="4"
 				/>
 
+				<div className="color-selection-label">Color:</div>
+				{colorOptions.map((option, idx) =>
+					<div key={idx} className="color-selection">
+						<label
+							className={`label-${option.id}`}
+							htmlFor={option.hexCode}>
+							<span className="swatch">{option.name}</span>
+						</label>
+						<input
+							type="radio"
+							id={`event-color-${option.id}`}
+							name="event-color"
+							value={option.hexCode}
+							checked={color === option.hexCode}
+							onChange={e => setColor(e.target.value)}
+						/>
+					</div>
+				)}
+
 				<button
 					className="update-button"
 					onClick={() => {
-						onUpdate(title, numDays, order);
+						onUpdate(title, numDays, order, color, isCentered);
 					}}>
 					Update
 				</button>

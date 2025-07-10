@@ -19,7 +19,7 @@ export const Event = ({ event, triggerUpdateModal, setLastEventClicked }) => {
 				e.stopPropagation();
 				triggerUpdateModal(() => true );
 				setLastEventClicked(() => {
-					return { id, title, numDays, order };
+					return { id, title, numDays, order, color, isCentered };
 				})
 			}}>
 			{title}

@@ -78,10 +78,10 @@ export default function Calendar() {
 				{ clickedEvent &&
 					<UpdateDeleteEventModal
 						data={lastEventClicked}
-						onUpdate={(title, numDays, order) => {
+						onUpdate={(title, numDays, order, color, isCentered) => {
 							const updatedEvents = events.map(event => {
 								if (event.id === lastEventClicked.id) {
-									return { ...event, title, numDays, order };
+									return { ...event, title, numDays, order, color, isCentered };
 								} else {
 									return event; // no changes to these item
 								}
