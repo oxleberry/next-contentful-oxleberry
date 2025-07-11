@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Head from 'next/head';
 import Header from '../../../components/Header';
@@ -20,7 +20,19 @@ export default function Calendar() {
 
 	const { days, dateDisplay } = useDate(events, nav);
 
-	console.log('events', events);
+	// on initial page load
+	useEffect(() => {
+		// check for events in local storage
+		const eventsFromLocalStorage = localStorage.getItem('oxle-events')
+			? JSON.parse(localStorage.getItem('oxle-events'))
+			: [];
+		setEvents(eventsFromLocalStorage);
+	}, []);
+
+	// update events in local storage
+	useEffect(() => {
+		localStorage.setItem('oxle-events', JSON.stringify(events));
+	}, [events]);
 
 	return (
 		<>
