@@ -6,6 +6,7 @@ import { CalendarHeader } from './CalendarHeader/CalendarHeader';
 import { Day } from './Day/Day';
 import { NewEventModal } from './NewEventModal/NewEventModal';
 import { UpdateDeleteEventModal } from './UpdateDeleteEventModal/UpdateDeleteEventModal';
+import { DeleteAllModal } from './DeleteAllModal/DeleteAllModal';
 import { useDate } from './hooks/useDate';
 
 
@@ -17,6 +18,8 @@ export default function Calendar() {
 	const [events, setEvents] = useState([]);
 	const [lastEventCreated, setLastEventCreated] = useState({});
 	const [lastEventClicked, setLastEventClicked] = useState({});
+	const [showDeleteTrigger, setShowDeleteTrigger] = useState(true);
+	const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
 
 	const { days, dateDisplay } = useDate(events, nav);
 
@@ -27,6 +30,11 @@ export default function Calendar() {
 			? JSON.parse(localStorage.getItem('oxle-events'))
 			: [];
 		setEvents(eventsFromLocalStorage);
+
+		// Set delay to hide button to trigger Delete All modal
+		setTimeout(() => {
+			setShowDeleteTrigger(false);
+		}, 5000);
 	}, []);
 
 	// update events in local storage
@@ -48,6 +56,8 @@ export default function Calendar() {
 						dateDisplay={dateDisplay}
 						onNext={() => setNav(nav + 1)}
 						onBack={() => setNav(nav - 1)}
+						showDeleteTrigger={showDeleteTrigger}
+						showDeleteAllModal={() => setShowDeleteAllModal(true)}
 					/>
 
 					<div className="weekdays">
@@ -106,6 +116,12 @@ export default function Calendar() {
 							setClickedEvent(false);
 						}}
 						onClose={() => setClickedEvent(false)}
+					/>
+				}
+
+				{ showDeleteAllModal &&
+					<DeleteAllModal
+						onClose={() => setShowDeleteAllModal(false)}
 					/>
 				}
 			</main>
