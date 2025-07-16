@@ -121,6 +121,10 @@ export default function Calendar() {
 
 				{ showDeleteAllModal &&
 					<DeleteAllModal
+						onDeleteAll={() => {
+							setEvents([]);
+							setShowDeleteAllModal(false);
+						}}
 						onClose={() => setShowDeleteAllModal(false)}
 					/>
 				}
