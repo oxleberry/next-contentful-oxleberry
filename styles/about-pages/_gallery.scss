@@ -68,6 +68,28 @@
 		}
 	}
 
+	// ==================================
+	/* Food Art - Override Styles */
+	// ==================================
+	&.food-art {
+		.gallery-container {
+			display: block;
+			column-count: 4;
+
+			@include bp(m) {
+				column-count: 2;
+			}
+
+			@include bp(s) {
+				column-count: 1;
+			}
+		}
+
+		picture {
+			display: inline-block;
+				padding-bottom: 4px;
+		}
+	}
 
 	// ==================================
 	/* Onesies - Override Styles */

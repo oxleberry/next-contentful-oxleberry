@@ -51,9 +51,9 @@ export default function Gallery({ gallery }) {
 					{images.map((image, idx) => {
 						return (
 							<picture key={idx} className={`img-${idx + 1}`}>
-							<source srcSet={image.fields.file.url} />
-							<img src={image.fields.file.url} alt={image.fields.description} />
-						</picture>
+								<source srcSet={image.fields.file.url} />
+								<img src={image.fields.file.url} alt={image.fields.description} />
+							</picture>
 						)
 					})}
 				</div>
